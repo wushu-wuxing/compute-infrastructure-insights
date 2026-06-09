@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>算力基础设施洞察 — 变压器 · 光棒 · 三大瓶颈</title>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:-apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif;
+  background:#0a0e1a;color:#c8d0e0;line-height:1.7;
+  overflow-x:hidden;
+}
+a{color:#7eb8ff;text-decoration:none}
+a:hover{color:#a8d4ff}
+::selection{background:#2b5797;color:#fff}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0a0e1a}
+::-webkit-scrollbar-thumb{background:#2b5797;border-radius:3px}
+
+/* ===== NAV ===== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:rgba(10,14,26,0.85);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(43,87,151,0.25);
+  padding:0 2rem;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+nav .logo{font-size:1.15rem;font-weight:700;color:#e0e8f5;letter-spacing:1px}
+nav .logo span{color:#4a9eff}
+nav .nav-links{display:flex;gap:.25rem;list-style:none}
+nav .nav-links a{
+  padding:.4rem .85rem;border-radius:6px;font-size:.82rem;
+  color:#8899b0;transition:.25s;white-space:nowrap;
+}
+nav .nav-links a:hover,
+nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
+.menu-toggle{display:none;background:none;border:none;color:#c8d0e0;font-size:1.5rem;cursor:pointer}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;padding:6rem 2rem 4rem;
+  background:radial-gradient(ellipse at 30% 50%, rgba(43,87,151,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 30%, rgba(122,62,200,0.08) 0%, transparent 50%),
+              #0a0e1a;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 50% 50%, rgba(43,87,151,0.03) 0%, transparent 50%);
+  animation:heroPulse 8s ease-in-out infinite;
+}
+@keyframes heroPulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.1);opacity:1}}
+.hero h1{
+  font-size:clamp(2rem,5vw,3.5rem);font-weight:800;
+  background:linear-gradient(135deg,#e0e8f5 0%,#4a9eff 50%,#7b61ff 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:.75rem;position:relative;letter-spacing:2px;
+}
+.hero .subtitle{
+  font-size:clamp(1rem,2vw,1.25rem);color:#6b7b95;margin-bottom:2rem;
+  letter-spacing:3px;
+}
+.hero .tagline{
+  font-size:clamp(.9rem,1.5vw,1.05rem);color:#4a6a88;
+  max-width:640px;line-height:1.9;position:relative;
+}
+.hero .scroll-hint{
+  position:absolute;bottom:2rem;color:#3a4a5a;font-size:.75rem;
+  animation:bounce 2s infinite;
+}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ===== SECTION COMMON ===== */
+.section{
+  max-width:1200px;margin:0 auto;padding:5rem 2rem;
+}
+.section-header{
+  text-align:center;margin-bottom:3.5rem;
+}
+.section-header h2{
+  font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:#e0e8f5;
+  margin-bottom:.5rem;
+}
+.section-header .divider{
+  width:60px;height:3px;background:linear-gradient(90deg,#2b5797,#7b61ff);
+  margin:1rem auto;border-radius:2px;
+}
+.section-header p{color:#6b7b95;max-width:600px;margin:0 auto;font-size:.92rem}
+
+/* ===== GRID CARDS ===== */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:1.5rem}
+
+.card{
+  background:linear-gradient(145deg,rgba(20,28,50,0.7),rgba(12,18,35,0.9));
+  border:1px solid rgba(43,87,151,0.15);
+  border-radius:14px;padding:1.75rem;transition:.35s;
+}
+.card:hover{border-color:rgba(43,87,151,0.4);transform:translateY(-3px);box-shadow:0 8px 30px rgba(43,87,151,0.1)}
+.card h3{font-size:1.05rem;color:#e0e8f5;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.card .meta{font-size:.78rem;color:#5a6a80;margin-bottom:.5rem}
+.card p{font-size:.88rem;color:#8899b0;margin-bottom:.5rem}
+.card .tag{
+  display:inline-block;font-size:.7rem;padding:.15rem .55rem;border-radius:4px;
+  background:rgba(43,87,151,0.2);color:#7eb8ff;margin-right:.35rem;margin-top:.25rem;
+}
+.card .badge{
+  display:inline-block;font-size:.65rem;padding:.1rem .45rem;border-radius:3px;
+  background:rgba(255,200,50,0.15);color:#ffc832;margin-right:.25rem;
+}
+
+/* ===== DATA TABLES ===== */
+.data-table{
+  width:100%;border-collapse:collapse;font-size:.82rem;margin:1.5rem 0;
+}
+.data-table th{
+  background:rgba(43,87,151,0.15);color:#7eb8ff;
+  padding:.65rem .75rem;text-align:left;font-weight:600;
+  border-bottom:2px solid rgba(43,87,151,0.25);
+}
+.data-table td{padding:.55rem .75rem;border-bottom:1px solid rgba(43,87,151,0.1)}
+.data-table tr:hover td{background:rgba(43,87,151,0.06)}
+.data-table .highlight{color:#4a9eff;font-weight:600}
+
+/* ===== STAT BLOCKS ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:2rem 0}
+.stat-block{
+  text-align:center;padding:1.25rem .75rem;
+  background:rgba(43,87,151,0.06);border-radius:10px;
+  border:1px solid rgba(43,87,151,0.1);
+}
+.stat-block .number{
+  font-size:1.6rem;font-weight:800;
+  background:linear-gradient(135deg,#4a9eff,#7b61ff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.stat-block .label{font-size:.75rem;color:#5a6a80;margin-top:.25rem}
+
+/* ===== BOTTLENECK COMPARE ===== */
+.bottleneck-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0}
+.bottleneck-card{
+  border-radius:12px;padding:1.5rem;text-align:center;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.bottleneck-card h3{font-size:1rem;margin-bottom:.75rem}
+.bottleneck-card .icon{font-size:2.5rem;margin-bottom:.5rem}
+.bottleneck-card .severity{margin:.5rem 0;font-size:.85rem}
+.bottleneck-card .stars{color:#ffc832;letter-spacing:2px;font-size:.9rem}
+.bot-chip{background:rgba(43,87,151,0.12)}.bot-power{background:rgba(200,100,50,0.1)}.bot-fiber{background:rgba(200,50,100,0.1)}
+
+/* ===== COMPARISON TABLE (special) ===== */
+.comp-table{width:100%;border-collapse:collapse;font-size:.78rem;margin:1.5rem 0}
+.comp-table th,.comp-table td{padding:.5rem .65rem;text-align:center;border:1px solid rgba(43,87,151,0.12)}
+.comp-table th{background:rgba(43,87,151,0.12);color:#7eb8ff;font-size:.72rem;text-transform:uppercase;letter-spacing:1px}
+.comp-table .row-label{text-align:left;color:#c8d0e0;font-weight:600}
+.comp-table .c1{background:rgba(43,87,151,0.04)}
+.comp-table .c2{background:rgba(100,60,180,0.04)}
+.comp-table .winner{color:#ffc832;font-weight:700}
+
+/* ===== QUOTE BLOCK ===== */
+.quote-block{
+  background:linear-gradient(135deg,rgba(43,87,151,0.08),rgba(122,62,200,0.05));
+  border-left:3px solid #4a9eff;border-radius:8px;
+  padding:1.5rem 2rem;margin:2rem 0;font-size:.95rem;color:#b0c0d5;
+  line-height:1.9;
+}
+.quote-block strong{color:#e0e8f5}
+.quote-block .source{display:block;margin-top:.75rem;font-size:.78rem;color:#5a6a80}
+
+/* ===== TIMELINE ===== */
+.timeline{position:relative;padding-left:2rem;margin:2rem 0}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#2b5797,#7b61ff)}
+.timeline-item{position:relative;padding:0 0 1.5rem 1rem}
+.timeline-item::before{content:'';position:absolute;left:-.45rem;top:.3rem;width:10px;height:10px;border-radius:50%;background:#4a9eff;border:2px solid #0a0e1a}
+.timeline-item .date{font-size:.75rem;color:#5a6a80}
+.timeline-item h4{font-size:.92rem;color:#e0e8f5;margin:.15rem 0 .3rem}
+.timeline-item p{font-size:.82rem;color:#8899b0}
+
+/* ===== FOOTER ===== */
+footer{
+  text-align:center;padding:3rem 2rem;color:#4a5a6a;font-size:.78rem;
+  border-top:1px solid rgba(43,87,151,0.1);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  nav{padding:0 1rem}
+  .menu-toggle{display:block}
+  nav .nav-links{
+    display:none;position:absolute;top:60px;left:0;right:0;
+    flex-direction:column;background:rgba(10,14,26,0.95);padding:.5rem 1rem;
+    border-bottom:1px solid rgba(43,87,151,0.2);
+  }
+  nav .nav-links.open{display:flex}
+  .bottleneck-grid{grid-template-columns:1fr}
+  .grid-2{grid-template-columns:1fr}
+  .section{padding:3rem 1rem}
+  .hero h1{font-size:1.8rem}
+  .comp-table{font-size:.7rem}
+  .comp-table th,.comp-table td{padding:.35rem .4rem}
+}
+
+/* ===== ANIMATIONS ===== */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.3s}.delay-4{transition-delay:.4s}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav>
+  <div class="logo">⚡<span>算力</span>洞察</div>
+  <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li><a href="#home" class="active">首页</a></li>
+    <li><a href="#transformer">变压器</a></li>
+    <li><a href="#fiber">光棒</a></li>
+    <li><a href="#compare">跨行业对比</a></li>
+    <li><a href="#bottleneck">三大瓶颈</a></li>
+    <li><a href="#about">关于</a></li>
+  </ul>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="home" class="hero">
+  <h1>算力基础设施洞察</h1>
+  <p class="subtitle">Transformer · Fiber · Power · Communication</p>
+  <p class="tagline">
+    当AI的算力需求以指数级增长，<br>
+    真正的瓶颈不在GPU——<br>
+    在变压器、在光棒、在每一寸被卡住的产业链上。
+  </p>
+  <div class="scroll-hint">↓ 向下探索</div>
+</section>
+
+<!-- ===== 变压器篇 ===== -->
+<section id="transformer" class="section fade-in">
+  <div class="section-header">
+    <h2>⚡ 变压器行业全景</h2>
+    <div class="divider"></div>
+    <p>全球缺变压器！订单排到2028年——AI数据中心正在吞噬每一台能造出来的变压器</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-block"><div class="number">1,200亿</div><div class="label">特变电工年营收</div></div>
+    <div class="stat-block"><div class="number">40%+</div><div class="label">特高压市占率</div></div>
+    <div class="stat-block"><div class="number">3年+</div><div class="label">订单可见度</div></div>
+    <div class="stat-block"><div class="number">3家</div><div class="label">全球能做±1100kV仅3家</div></div>
+  </div>
+
+  <h3 style="color:#7eb8ff;margin:2rem 0 1rem">🏢 三家深度拆解</h3>
+  <div class="grid-3">
+    <div class="card">
+      <h3>🏆 特变电工 · 600089</h3>
+      <div class="meta">市值≈1,300亿 · 营收≈1,200亿</div>
+      <p>变压器行业"茅台"——全电压等级覆盖，从发电端到用电端。全球唯三能造±1100kV换流变压器的企业。特高压市占率第一。稳、大、全。</p>
+      <span class="tag">AI受益度 ⭐⭐⭐⭐⭐</span>
+      <span class="tag">估值 PE~12-15</span>
+    </div>
+    <div class="card">
+      <h3>🔌 许继电气 · 000400</h3>
+      <div class="meta">市值≈230亿 · 营收≈230亿</div>
+      <p>系统集成商卡位——不是卖变压器的，是卖电力解决方案的。国网系核心标的。直流输电HVDC核心技术，数据中心智能配电系统龙头。</p>
+      <span class="tag">AI受益度 ⭐⭐⭐⭐⭐</span>
+      <span class="tag">净利率 ~10%</span>
+    </div>
+    <div class="card">
+      <h3>🔥 金盘科技 · 688676</h3>
+      <div class="meta">市值≈380亿 · 干式变压器~70%</div>
+      <p>AI时代的"铲子公司"——干式变压器是数据中心安全首选。海外营收占比40%+，弹性最大。2022→2025营收从50亿冲击100亿+。</p>
+      <span class="tag">AI受益度 ⭐⭐⭐⭐⭐</span>
+      <span class="tag">海外占比 40%</span>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <strong>⚡ 变压器的故事已经讲了大半章。</strong>
+    全球变压器订单排到2028年，特高压+数据中心双轮驱动。这是确定性最高的赛道之一——但弹性最大的阶段可能已经过去。
+    <span class="source">—— 2026年6月 · 无殊判断</span>
+  </div>
+
+  <h3 style="color:#7eb8ff;margin:2rem 0 1rem">📋 11家企业全景</h3>
+  <table class="data-table">
+    <thead><tr><th>梯队</th><th>企业</th><th>代码</th><th>核心优势</th><th>AI受益</th></tr></thead>
+    <tbody>
+      <tr><td>🥇</td><td><strong>特变电工</strong></td><td>600089</td><td>全链龙头·特高压第一</td><td class="highlight">⭐⭐⭐⭐⭐</td></tr>
+      <tr><td>🥇</td><td><strong>许继电气</strong></td><td>000400</td><td>系统集成·国网核心</td><td class="highlight">⭐⭐⭐⭐⭐</td></tr>
+      <tr><td>🥇</td><td><strong>金盘科技</strong></td><td>688676</td><td>干变龙头·出口40%+</td><td class="highlight">⭐⭐⭐⭐⭐</td></tr>
+      <tr><td>🥇</td><td>中国西电</td><td>601179</td><td>特高压主力·央企</td><td class="highlight">⭐⭐⭐⭐</td></tr>
+      <tr><td>🥈</td><td>保变电气</td><td>600550</td><td>特高压变压器第二</td><td>⭐⭐⭐⭐</td></tr>
+      <tr><td>🥈</td><td>华明装备</td><td>002270</td><td>分接开关隐形冠军</td><td>⭐⭐⭐</td></tr>
+      <tr><td>🥈</td><td>伊戈尔</td><td>002922</td><td>数据中心专用变压器</td><td>⭐⭐⭐⭐</td></tr>
+      <tr><td>🥈</td><td>三变科技</td><td>002112</td><td>中小变压器弹性标</td><td>⭐⭐⭐</td></tr>
+      <tr><td>🥉</td><td>思源电气</td><td>600517</td><td>电力电子·SVG/SVC</td><td>⭐⭐⭐</td></tr>
+      <tr><td>🥉</td><td>顺钠股份</td><td>000533</td><td>干变·树脂绝缘</td><td>⭐⭐⭐</td></tr>
+      <tr><td>🥉</td><td>扬电科技</td><td>301012</td><td>非晶变压器新锐</td><td>⭐⭐⭐</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== 光棒篇 ===== -->
+<section id="fiber" class="section fade-in">
+  <div class="section-header">
+    <h2>💡 光棒产业链 · 550%暴涨</h2>
+    <div class="divider"></div>
+    <p>从22元到160元，一年550%——全球陷入一棒难求的绝境</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-block"><div class="number">550%</div><div class="label">光棒年涨幅</div></div>
+    <div class="stat-block"><div class="number">18-24月</div><div class="label">扩产周期</div></div>
+    <div class="stat-block"><div class="number">9连冠</div><div class="label">长飞全球第一</div></div>
+    <div class="stat-block"><div class="number"><10家</div><div class="label">全球能做光棒的企业</div></div>
+  </div>
+
+  <h3 style="color:#7eb8ff;margin:2rem 0 1rem">📈 光棒价格暴涨时间线</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="date">2021-2022 · 繁荣期</div>
+      <h4>光棒供不应求，价格高位运行</h4>
+      <p>全球光纤需求旺盛，光棒价格在80-120元区间</p>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2023-2024 · 寒冬期 🥶</div>
+      <h4>产能过剩，价格暴跌</h4>
+      <p>光棒价格跌至22-30元/等效芯公里，行业洗牌</p>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2025 · 触底</div>
+      <h4>AI数据中心需求开始爆发</h4>
+      <p>光纤需求骤增，光棒库存快速消耗，供需开始逆转</p>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2026 · 🔥 暴涨期</div>
+      <h4>光棒价格飙至160元，涨幅+550%</h4>
+      <p>一货难求，下游拿现金排队抢不到货。长飞2026Q1净利润+226%</p>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2027-2028 · 预计</div>
+      <h4>扩产周期需18-24个月，短缺至少持续到2028</h4>
+      <p>一条千吨级产线投资数十亿——供不应求是长期结构</p>
+    </div>
+  </div>
+
+  <h3 style="color:#7eb8ff;margin:2rem 0 1rem">🏢 两巨头深度拆解</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3>🏆 长飞光纤 · 601869</h3>
+      <div class="meta">市值≈1,837亿 · 2025营收142.5亿</div>
+      <p><strong>全球光棒之王，连续9年全球出货量第一。</strong> 全球唯一同时掌握PCVD/VAD/OVD三种光棒工艺的企业。2026Q1净利润同比+226%——行业反转最猛烈。</p>
+      <div class="stat-grid" style="margin:.75rem 0">
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">30.7%</div><div class="label" style="font-size:.65rem">毛利率</div></div>
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">+226%</div><div class="label" style="font-size:.65rem">2026Q1净利增速</div></div>
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">~85%+</div><div class="label" style="font-size:.65rem">光棒自给率</div></div>
+      </div>
+      <span class="tag">全球光棒产能第一</span>
+      <span class="tag">SL3多芯光纤商用</span>
+    </div>
+    <div class="card">
+      <h3>🌊 亨通光电 · 600487</h3>
+      <div class="meta">市值≈2,429亿 · 2025营收668.5亿</div>
+      <p><strong>光通信+海缆双引擎。</strong> 光棒自给率80%+，海缆全球前五。业务多元化抗周期。2026Q1净利润同比+98.5%，近乎翻倍。</p>
+      <div class="stat-grid" style="margin:.75rem 0">
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">12.5%</div><div class="label" style="font-size:.65rem">整体毛利率</div></div>
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">+98.5%</div><div class="label" style="font-size:.65rem">2026Q1净利增速</div></div>
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">~80%+</div><div class="label" style="font-size:.65rem">光棒自给率</div></div>
+      </div>
+      <span class="tag">海缆全球前5</span>
+      <span class="tag">光+电+海三线</span>
+    </div>
+  </div>
+
+  <h3 style="color:#7eb8ff;margin:2rem 0 1rem">🔗 产业链卡脖子全景</h3>
+  <table class="data-table">
+    <thead><tr><th>环节</th><th>国内现状</th><th>全球格局</th><th>卡脖子程度</th></tr></thead>
+    <tbody>
+      <tr><td>🔴 高纯4N8石英砂</td><td>石英股份追赶中</td><td>Unimin 🇺🇸 垄断</td><td class="highlight">⭐⭐⭐⭐⭐</td></tr>
+      <tr><td>🔴 高纯SiCl₄</td><td>有产能·纯度不够</td><td>信越 🇯🇵 · 瓦克 🇩🇪</td><td class="highlight">⭐⭐⭐⭐</td></tr>
+      <tr><td>🟡 光棒制造</td><td>长飞全球第一 🏆</td><td>长飞/康宁/信越</td><td>⭐⭐</td></tr>
+      <tr><td>🟢 光纤拉丝</td><td>全球产能最大</td><td>中国占70%+</td><td>⭐</td></tr>
+      <tr><td>🟢 光纤光缆</td><td>全球最大</td><td>中国占60%+</td><td>⭐</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:#7eb8ff;margin:2rem 0 1rem">🌟 国产突破：SL3波段多芯光纤</h3>
+  <div class="card" style="border-color:rgba(74,158,255,0.3)">
+    <p>2026年，长飞牵头的<strong>SL3波段多芯光纤</strong>在<strong>青岛正式开通商用</strong>。</p>
+    <div class="stat-grid" style="margin:.75rem 0">
+      <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">+50%</div><div class="label" style="font-size:.65rem">单芯带宽提升</div></div>
+      <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">5x</div><div class="label" style="font-size:.65rem">整纤传输容量</div></div>
+      <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">100%</div><div class="label" style="font-size:.65rem">完全国产自主</div></div>
+    </div>
+    <p style="color:#8899b0;font-size:.85rem">下一代光纤技术从实验室走向商用——不增加光缆铺设，单纤容量翻5倍。</p>
+  </div>
+</section>
+
+<!-- ===== 跨行业对比 ===== -->
+<section id="compare" class="section fade-in">
+  <div class="section-header">
+    <h2>⚔️ 变压器 × 光棒 跨行业对决</h2>
+    <div class="divider"></div>
+    <p>AI基础设施的两大命脉——供电与通信。哪个壁垒更高？哪个更具投资价值？</p>
+  </div>
+
+  <div class="quote-block">
+    <strong>表面上两个完全不同的行业，底层驱动逻辑高度相似。</strong>
+    AI数据中心需要电 → 变压器是配电核心 → 特高压技术壁垒高<br>
+    AI数据中心需要连接 → 光棒是通信核心 → 工艺壁垒极高
+    <span class="source">殊途同归——AI基础设施的"电"与"光"</span>
+  </div>
+
+  <table class="comp-table">
+    <thead>
+      <tr><th>对比维度</th><th class="c1">⚡ 变压器</th><th class="c2">💡 光棒</th><th>胜者</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="row-label">技术壁垒</td><td class="c1">±1100kV换流变全球3家</td><td class="c2">PCVD/VAD/OVD工艺需10年+</td><td class="winner">光棒</td></tr>
+      <tr><td class="row-label">资金壁垒</td><td class="c1">产线投资10-30亿</td><td class="c2">光棒产线30-50亿</td><td class="winner">光棒</td></tr>
+      <tr><td class="row-label">时间壁垒</td><td class="c1">新建产能2-3年</td><td class="c2">扩产周期3-5年</td><td class="winner">光棒</td></tr>
+      <tr><td class="row-label">国内龙头</td><td class="c1">特变电工 🏆</td><td class="c2">长飞光纤 🏆</td><td>-</td></tr>
+      <tr><td class="row-label">全球地位</td><td class="c1">追赶ABB/西门子</td><td class="c2">长飞连续9年全球第一</td><td class="winner">光棒</td></tr>
+      <tr><td class="row-label">行业周期</td><td class="c1">🔥 过热期</td><td class="c2">🌱 复苏初期</td><td class="winner">光棒（空间更大）</td></tr>
+      <tr><td class="row-label">AI受益纯度</td><td class="c1">⭐⭐⭐</td><td class="c2">⭐⭐⭐⭐⭐</td><td class="winner">光棒</td></tr>
+      <tr><td class="row-label">投资弹性</td><td class="c1">⭐⭐⭐</td><td class="c2">⭐⭐⭐⭐⭐</td><td class="winner">光棒</td></tr>
+      <tr><td class="row-label">防守确定性</td><td class="c1">⭐⭐⭐⭐⭐</td><td class="c2">⭐⭐⭐</td><td class="winner">变压器</td></tr>
+    </tbody>
+  </table>
+
+  <div class="quote-block" style="border-left-color:#ffc832;margin-top:2rem">
+    <strong>⚡ 变压器的故事已经讲了大半章。</strong><br>
+    <strong>💡 光棒的故事才刚刚翻开第一页——而这第一页的开篇，就是550%。</strong>
+    <span class="source">—— 2026年6月 · 无殊判断</span>
+  </div>
+
+  <h3 style="color:#7eb8ff;margin:2rem 0 1rem">🏆 四家企业最终对比</h3>
+  <table class="data-table">
+    <thead><tr><th>对比项</th><th>特变电工</th><th>长飞光纤</th><th>亨通光电</th><th>金盘科技</th></tr></thead>
+    <tbody>
+      <tr><td><strong>行业</strong></td><td>变压器</td><td>光棒+光纤</td><td>光棒+海缆</td><td>干式变压器</td></tr>
+      <tr><td><strong>市值</strong></td><td>≈1,300亿</td><td>≈1,837亿</td><td>≈2,429亿</td><td>≈380亿</td></tr>
+      <tr><td><strong>壁垒等级</strong></td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td></tr>
+      <tr><td><strong>AI纯度</strong></td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td></tr>
+      <tr><td><strong>当前周期</strong></td><td>🔥 过热</td><td>🌱 复苏初期</td><td>🌱 复苏初期</td><td>🔥 高景气</td></tr>
+      <tr><td><strong>弹性排名</strong></td><td>第3</td><td class="highlight">第1 🏆</td><td>第2</td><td>第4</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== 三大瓶颈 ===== -->
+<section id="bottleneck" class="section fade-in">
+  <div class="section-header">
+    <h2>🧠⚡💡 算力的三大瓶颈</h2>
+    <div class="divider"></div>
+    <p>GPU 18个月翻一倍——但光棒18个月翻不了产能，变压器18个月造不出来</p>
+  </div>
+
+  <div class="bottleneck-grid">
+    <div class="bottleneck-card bot-chip">
+      <div class="icon">🧠</div>
+      <h3>芯片瓶颈</h3>
+      <div class="severity">严重程度 ⭐⭐⭐</div>
+      <div class="stars">★★★</div>
+      <p style="color:#8899b0;font-size:.82rem;margin-top:.5rem">英伟达主导，但AMD追赶，产能可爬坡</p>
+    </div>
+    <div class="bottleneck-card bot-power">
+      <div class="icon">⚡</div>
+      <h3>电力瓶颈</h3>
+      <div class="severity">严重程度 ⭐⭐⭐⭐</div>
+      <div class="stars">★★★★</div>
+      <p style="color:#8899b0;font-size:.82rem;margin-top:.5rem">变压器全球缺货，变电站建设周期3-5年</p>
+    </div>
+    <div class="bottleneck-card bot-fiber">
+      <div class="icon">💡</div>
+      <h3>通信瓶颈</h3>
+      <div class="severity">严重程度 ⭐⭐⭐⭐⭐</div>
+      <div class="stars">★★★★★</div>
+      <p style="color:#8899b0;font-size:.82rem;margin-top:.5rem">全球能做纯光棒的<10家，原料被卡脖子</p>
+    </div>
+  </div>
+
+  <table class="data-table" style="margin-top:2rem">
+    <thead><tr><th>瓶颈</th><th>可替代性</th><th>扩产速度</th><th>综合紧迫度</th></tr></thead>
+    <tbody>
+      <tr><td><strong>🧠 GPU芯片</strong></td><td>英伟达为主·AMD追赶</td><td>12-18月</td><td class="highlight">⭐⭐⭐⭐</td></tr>
+      <tr><td><strong>⚡ 变压器</strong></td><td>特变/ABB/西门子都能造</td><td>24-36月</td><td class="highlight">⭐⭐⭐⭐</td></tr>
+      <tr><td><strong>💡 光棒</strong></td><td>全球能做纯光棒的<10家</td><td>18-24月</td><td class="highlight" style="color:#ff6b6b">⭐⭐⭐⭐⭐ 🔥</td></tr>
+    </tbody>
+  </table>
+
+  <div class="quote-block" style="border-left-color:#ff6b6b">
+    <strong>2026年，算力三大瓶颈中最紧的一环，是光棒。</strong><br>
+    芯片缺可以等台积电扩产，变压器缺可以让特变扩产——<br>
+    光棒缺，上游高纯石英砂被Unimin🇺🇸卡着，扩产不是想扩就能扩的。<br>
+    这轮光棒短缺周期至少持续到<strong>2028年</strong>。
+    <span class="source">—— 2026年6月 · 无殊判断</span>
+  </div>
+</section>
+
+<!-- ===== 关于 ===== -->
+<section id="about" class="section fade-in">
+  <div class="section-header">
+    <h2>📬 关于这个站</h2>
+    <div class="divider"></div>
+    <p>一场深夜对话衍生的知识站</p>
+  </div>
+
+  <div style="max-width:700px;margin:0 auto;text-align:center">
+    <p style="color:#8899b0;font-size:.92rem;line-height:2">
+      2026年6月7日深夜，<strong>渡</strong>和<strong>无殊</strong>在讨论中画出了
+      一幅AI基础设施产业的投资地图——从变压器到光棒，从特变电工到长飞光纤，
+      从550%的暴涨到三大瓶颈分析。
+    </p>
+    <p style="color:#6b7b95;font-size:.85rem;margin-top:1.5rem">
+      每一行分析都是口述+查阅公开财报后的判断，不构成投资建议。<br>
+      数据来源：新浪财经、东方财富、腾讯行情、公开财报。<br>
+      建站：无殊 · 灵感：渡
+    </p>
+    <p style="color:#4a5a6a;font-size:.75rem;margin-top:2rem">
+      保存于 <code style="color:#6b7b95">D:\Hermes One无殊\变压器行业研究\</code><br>
+      及 <code style="color:#6b7b95">C:\Users\ASUS\workspace\算力基础设施洞察\</code>
+    </p>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  算力基础设施洞察 · 2026 · 渡 & 无殊
+</footer>
+
+<script>
+// ===== SCROLL ANIMATION =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) entry.target.classList.add('visible')
+  })
+},{threshold:.1})
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el))
+
+// ===== ACTIVE NAV =====
+const sections = document.querySelectorAll('section[id]')
+const navLinks = document.querySelectorAll('.nav-links a')
+const onScroll = () => {
+  let current = ''
+  sections.forEach(s => {
+    if(window.scrollY >= s.offsetTop - 150) current = s.id
+  })
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current))
+}
+window.addEventListener('scroll', onScroll)
+</script>
+</body>
+</html>
