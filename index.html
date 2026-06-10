@@ -295,6 +295,55 @@ nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
 .timeline-item h4{font-size:.92rem;color:#e0e8f5;margin:.15rem 0 .3rem}
 .timeline-item p{font-size:.82rem;color:#8899b0}
 
+/* ===== ARTICLE STYLES ===== */
+.article-body{max-width:760px;margin:0 auto;color:#b8c8dd;font-size:.92rem;line-height:1.95}
+.article-body h2{font-size:1.35rem;color:#e0e8f5;margin:2.5rem 0 1rem;padding-bottom:.4rem;border-bottom:1px solid rgba(43,87,151,0.15)}
+.article-body h3{font-size:1.05rem;color:#c8d8f0;margin:2rem 0 .75rem}
+.article-body p{margin:0 0 .85rem}
+.article-body strong{color:#e0e8f5}
+.article-body .highlight-box{
+  background:linear-gradient(135deg,rgba(43,87,151,0.08),rgba(122,62,200,0.04));
+  border-left:3px solid #4a9eff;border-radius:6px;
+  padding:1rem 1.5rem;margin:1.25rem 0;font-size:.88rem;color:#a0b5d0;
+}
+.article-body .highlight-box strong{color:#7eb8ff}
+.article-body .divider-line{
+  text-align:center;color:#3a4a6a;letter-spacing:6px;
+  margin:1.5rem 0;font-size:.8rem;
+}
+.article-body .article-footer{
+  margin-top:3rem;padding-top:1.5rem;
+  border-top:1px solid rgba(43,87,151,0.12);
+  text-align:center;color:#5a6a80;font-size:.82rem;
+}
+.article-body .article-footer strong{color:#8899b0}
+.article-body .eureka{
+  font-size:1.05rem;background:rgba(255,200,50,0.06);
+  border-radius:8px;padding:1rem 1.5rem;margin:1.25rem 0;
+  border:1px solid rgba(255,200,50,0.12);
+  color:#d0c080;
+}
+.article-body .eureka strong{color:#ffc832}
+.article-body .warning-box{
+  background:rgba(255,100,50,0.05);border-left:3px solid #ff6b6b;
+  border-radius:6px;padding:1rem 1.5rem;margin:1.25rem 0;
+  font-size:.88rem;color:#c09080;
+}
+.article-body .warning-box strong{color:#ff6b6b}
+.article-body table{width:100%;border-collapse:collapse;font-size:.82rem;margin:1.25rem 0}
+.article-body th{background:rgba(43,87,151,0.12);color:#7eb8ff;padding:.5rem .65rem;text-align:left;font-weight:600;border-bottom:2px solid rgba(43,87,151,0.2)}
+.article-body td{padding:.45rem .65rem;border-bottom:1px solid rgba(43,87,151,0.08);color:#8899b0}
+.article-body tr:hover td{background:rgba(43,87,151,0.04)}
+.article-body code{
+  background:rgba(43,87,151,0.15);padding:.12rem .4rem;
+  border-radius:3px;font-size:.82rem;color:#a0c0e0;
+}
+.article-body blockquote{
+  border-left:3px solid rgba(74,158,255,0.25);
+  padding:.5rem 1rem;margin:1rem 0;color:#6b7b95;font-size:.85rem;
+  font-style:italic;
+}
+
 /* ===== FOOTER ===== */
 footer{
   text-align:center;padding:3rem 2rem;color:#4a5a6a;font-size:.78rem;
@@ -345,6 +394,7 @@ footer{
     <li><a href="#fiber">光棒</a></li>
     <li><a href="#compare">跨行业对比</a></li>
     <li><a href="#bottleneck">三大瓶颈</a></li>
+    <li><a href="#pe">市盈率</a></li>
     <li><a href="#about">关于</a></li>
   </ul>
   <a href="#wechat" class="nav-wechat-btn">💚 微信群</a>
@@ -680,6 +730,108 @@ footer{
             crossorigin="anonymous"
             async>
     </script>
+  </div>
+</section>
+
+<!-- ===== 市盈率 ===== -->
+<section id="pe" class="section fade-in">
+  <div class="section-header">
+    <h2>📊 市盈率这件小事</h2>
+    <div class="divider"></div>
+    <p>90%的人都想反了——10元的股票和100元的股票，哪个更危险？</p>
+  </div>
+  <div class="article-body">
+
+    <p>10元的垃圾股能跌到5元，100元的牛股能翻到200元。</p>
+    <p>真正该盯的数字，是<strong>市盈率</strong>。</p>
+    <p>10元的股票和100元的股票，哪个更危险？90%的人想错了。</p>
+
+    <div class="divider-line">···</div>
+
+    <h2>🧠 先搞懂市盈率是什么</h2>
+    <p>把市盈率（PE）当成"理想情况下的<strong>回本年份</strong>"。</p>
+    <p>算法不复杂：</p>
+    <div class="highlight-box">
+      <strong>PE = 公司总市值 ÷ 年度净利润</strong>
+    </div>
+    <p>举个例子：一家公司值100万，一年净赚10万，PE就是<strong>10倍</strong>——你投的钱按这个速度，10年拿回来。</p>
+    <p>如果一年只赚1万，PE就飙到<strong>100倍</strong>，回本要等一个世纪。</p>
+    <p>哪个更划算？一目了然。</p>
+
+    <h2>🪞 PE才是照妖镜，股价不是</h2>
+    <p>现在问题来了——一只卖10元，一只卖100元，到底哪个贵？</p>
+    <p><strong>别盯股价，要看背后的PE。</strong></p>
+    <p>假如10元那只PE是100倍，100元那只PE只有10倍——那反而是100块的更划算。</p>
+    <p>因为<strong>PE才是照妖镜，股价不是</strong>。</p>
+    <p>但九成人都栽进同一个坑：觉得PE越低越好。</p>
+    <div class="eureka"><strong>大错特错。</strong></div>
+    <p>我见过PE只有5倍的股票，买进去一路跌；也见过PE飙到100倍的股票，半年翻了一番。</p>
+    <p>为什么？</p>
+
+    <h2>🔮 选股不是比数字高低，是看成长空间</h2>
+    <p>逻辑链其实很简单：</p>
+    <div class="highlight-box">
+      <strong>一家公司业绩炸裂，净利润翻着跟头涨 → PE不用你操心，自己就往下掉。</strong>
+    </div>
+    <p>因为PE的分子是股价，分母是利润。利润翻倍了，股价没动，PE直接腰斩。</p>
+    <p>反过来——</p>
+    <div class="highlight-box">
+      <strong>市场疯抢一家高增长公司 → 股价起飞 → PE水涨船高。</strong>
+    </div>
+    <p>所以高PE不一定是坏事，低PE不一定是好事。<br>关键看它背后有没有<strong>撑起那个价格的未来</strong>。</p>
+
+    <div class="divider-line">···</div>
+
+    <h2>📊 三种市盈率，你得拆开看</h2>
+    <p>盘面上常挂着三兄弟：</p>
+    <table>
+      <thead><tr><th>类型</th><th>怎么算的</th><th>适合谁</th></tr></thead>
+      <tbody>
+        <tr><td><strong>静态PE</strong></td><td>用去年全年净利润算</td><td>银行、基建——像老黄牛一样踏实</td></tr>
+        <tr><td><strong>动态PE</strong></td><td>拿近一季度净利润×4估算全年</td><td>AI、新能源——窜得快的赛道</td></tr>
+        <tr><td><strong style="color:#7eb8ff">滚动PE（TTM）</strong></td><td>用过去一整年实打实的利润算</td><td><strong>✅ 普通散户盯这个就够了</strong></td></tr>
+      </tbody>
+    </table>
+    <p>滚动PE最实在，用的是已经发生的钱，没那么容易被忽悠。</p>
+
+    <h2>🚫 一条死规矩</h2>
+    <p><strong>不同赛道的PE不能硬拉在一起比。</strong></p>
+    <p>把银行股和科技股放在一起比PE，就像拿冰箱和西瓜比分量——根本不搭边。</p>
+    <p>大概的参考范围：</p>
+    <table>
+      <thead><tr><th>赛道</th><th>PE范围</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>🏦 银行、基建</td><td>5～15倍</td><td>吃老本的行业，增长慢</td></tr>
+        <tr><td>🏭 制造、零售</td><td>20～35倍</td><td>中等增速</td></tr>
+        <tr><td>🤖 AI、芯片</td><td>30～60倍+</td><td>高增长赛道，天花板高</td></tr>
+      </tbody>
+    </table>
+    <p>高增长公司前期烧钱多、利润薄甚至亏本，但市场赌的是它<strong>明天能爆发</strong>。资金愿意给它更高的PE，恰恰说明市场看好它——而不是它贵。</p>
+
+    <h2>⚠️ 有一类公司要瞪大眼睛</h2>
+    <p>钢铁、煤炭这些重资产行业，PE看起来低得诱人。</p>
+    <p>但这里有个坑——</p>
+    <div class="warning-box">
+      <strong>PE已经是扣除了折旧之后的数字。</strong>净利润里已经把设备磨损的钱算进去了。但这类公司赚来的钱，很大一部分还得继续投进设备维修和厂房更新里。真正能落袋为安的自由现金流（FCF），远低于净利润。
+    </div>
+    <p>而且这种公司成长空间有限，一不小心现金流就容易绷断。</p>
+    <p>这时候只盯着PE就是跳坑。你得死死盯住<strong>现金流</strong>和<strong>资产回报率（ROE）</strong>——那才是真正的照妖镜。</p>
+
+    <div class="divider-line">···</div>
+
+    <h2>💡 最后说一句</h2>
+    <p>市盈率这件小事，说小也小——就是一道除法题；说大也大——把股价这件外衣扒了，让你看到公司真实的样子。</p>
+    <div class="eureka">
+      <strong>别让股价骗了你。</strong><br>
+      10元可以很贵，100元可以很便宜。<br>
+      贵的不是价格，是你不值那个价的判断。
+    </div>
+    <p>下次看到一只低价股，先问一句：<br><strong>它的PE是多少？利润在涨还是在跌？</strong></p>
+    <p>把这想清楚了，你就已经跑赢了90%的散户。</p>
+
+    <div class="article-footer">
+      —— <strong>渡曰</strong> · 无殊润笔 · 2026年6月
+    </div>
   </div>
 </section>
 
