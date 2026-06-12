@@ -39,6 +39,33 @@ nav .nav-links a{
 }
 nav .nav-links a:hover,
 nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
+.nav-comment-btn{
+  font-size:.78rem;padding:.35rem .85rem;border-radius:8px;
+  border:1px solid rgba(74,158,255,0.35);
+  color:#7eb8ff;white-space:nowrap;margin-left:.5rem;
+  transition:.25s;
+}
+.nav-comment-btn:hover{
+  background:rgba(74,158,255,0.12);border-color:#4a9eff;color:#b8d8ff;
+}
+.nav-wechat-btn{
+  font-size:.78rem;padding:.35rem .85rem;border-radius:8px;
+  border:1px solid rgba(7,193,96,0.35);
+  color:#07c160;white-space:nowrap;margin-left:.35rem;
+  transition:.25s;
+}
+.nav-wechat-btn:hover{
+  background:rgba(7,193,96,0.1);border-color:#07c160;color:#4ae68a;
+}
+.nav-kg-link{
+  font-size:.78rem;padding:.35rem .85rem;border-radius:8px;
+  border:1px solid rgba(167,139,250,0.35);
+  color:#a78bfa;white-space:nowrap;margin-left:.35rem;
+  transition:.25s;
+}
+.nav-kg-link:hover{
+  background:rgba(167,139,250,0.1);border-color:#a78bfa;color:#d8c8ff;
+}
 .menu-toggle{display:none;background:none;border:none;color:#c8d0e0;font-size:1.5rem;cursor:pointer}
 
 /* ===== HERO ===== */
@@ -98,6 +125,7 @@ nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
 .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:1.5rem}
 
 .card{
+  position:relative;
   background:linear-gradient(145deg,rgba(20,28,50,0.7),rgba(12,18,35,0.9));
   border:1px solid rgba(43,87,151,0.15);
   border-radius:14px;padding:1.75rem;transition:.35s;
@@ -141,20 +169,114 @@ nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
 .stat-block .label{font-size:.75rem;color:#5a6a80;margin-top:.25rem}
+.stat-block .benchmark{font-size:.65rem;color:#4a5a6a;margin-top:.2rem;border-top:1px solid rgba(43,87,151,0.08);padding-top:.2rem}
+.stat-block .benchmark .high{color:#4ae68a}
+.stat-block .benchmark .mid{color:#ffc832}
+.stat-block .benchmark .low{color:#ff6b6b}
+
+/* ===== SCROLL PROGRESS BAR ===== */
+.scroll-progress{
+  position:fixed;top:0;left:0;right:0;height:3px;z-index:1001;
+  background:linear-gradient(90deg,#4a9eff,#7b61ff,#ff6b6b);
+  transform-origin:0 50%;transform:scaleX(0);transition:transform .1s linear;
+}
+
+/* ===== DECORATIVE PARTICLES ===== */
+.particles{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;z-index:0}
+.particle{
+  position:absolute;width:4px;height:4px;border-radius:50%;
+  background:rgba(74,158,255,0.15);animation:particleFloat linear infinite;
+}
+.particle:nth-child(1){left:10%;animation-duration:18s;animation-delay:0s;width:3px;height:3px}
+.particle:nth-child(2){left:25%;animation-duration:22s;animation-delay:2s;width:5px;height:5px;background:rgba(122,62,200,0.12)}
+.particle:nth-child(3){left:45%;animation-duration:16s;animation-delay:4s;width:3px;height:3px}
+.particle:nth-child(4){left:60%;animation-duration:20s;animation-delay:1s;width:6px;height:6px;background:rgba(255,200,50,0.08)}
+.particle:nth-child(5){left:78%;animation-duration:24s;animation-delay:3s;width:4px;height:4px}
+.particle:nth-child(6){left:90%;animation-duration:19s;animation-delay:5s;width:3px;height:3px;background:rgba(74,158,255,0.1)}
+@keyframes particleFloat{
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(-10vh) scale(1);opacity:0}
+}
 
 /* ===== BOTTLENECK COMPARE ===== */
 .bottleneck-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0}
 .bottleneck-card{
-  border-radius:12px;padding:1.5rem;text-align:center;
-  border:1px solid rgba(255,255,255,0.06);
+  position:relative;border-radius:12px;padding:1.5rem;text-align:center;
+  border:1px solid rgba(255,255,255,0.06);overflow:hidden;
 }
+.bottleneck-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  border-radius:0 0 12px 12px;
+}
+.bottleneck-card.bot-chip::after{background:linear-gradient(90deg,#2b5797,#4a9eff)}
+.bottleneck-card.bot-power::after{background:linear-gradient(90deg,#c86432,#ff6b35)}
+.bottleneck-card.bot-fiber::after{background:linear-gradient(90deg,#c83264,#ff4d8a)}
 .bottleneck-card h3{font-size:1rem;margin-bottom:.75rem}
 .bottleneck-card .icon{font-size:2.5rem;margin-bottom:.5rem}
 .bottleneck-card .severity{margin:.5rem 0;font-size:.85rem}
 .bottleneck-card .stars{color:#ffc832;letter-spacing:2px;font-size:.9rem}
-.bot-chip{background:rgba(43,87,151,0.12)}.bot-power{background:rgba(200,100,50,0.1)}.bot-fiber{background:rgba(200,50,100,0.1)}
+/* severity bar — fills empty space visually */
+.bottleneck-card .sev-bar{
+  margin:.8rem auto 0;height:6px;max-width:140px;border-radius:3px;
+  background:rgba(255,255,255,0.04);overflow:hidden;
+}
+.bottleneck-card .sev-bar-inner{
+  height:100%;border-radius:3px;transition:width 1s ease .3s;
+}
+.bottleneck-card .sev-desc{font-size:.75rem;color:#5a6a80;margin-top:.6rem;line-height:1.5}
+.bot-chip .sev-bar-inner{width:45%;background:linear-gradient(90deg,#2b5797,#4a9eff)}
+.bot-power .sev-bar-inner{width:70%;background:linear-gradient(90deg,#c86432,#ff6b35)}
+.bot-fiber .sev-bar-inner{width:95%;background:linear-gradient(90deg,#c83264,#ff4d8a)}
+.bot-chip{background:rgba(43,87,151,0.12)}
+.bot-power{background:rgba(200,100,50,0.1)}
+.bot-fiber{background:rgba(200,50,100,0.1)}
 
-/* ===== COMPARISON TABLE (special) ===== */
+/* ===== CARD CORNER DECORATIONS ===== */
+.card{cursor:default}
+.card::before,.card::after{
+  content:'';position:absolute;width:20px;height:20px;
+  border-color:rgba(74,158,255,0.12);border-style:solid;opacity:0;
+  transition:opacity .4s ease;
+}
+.card::before{top:10px;left:10px;border-width:2px 0 0 2px;border-radius:4px 0 0 0}
+.card::after{bottom:10px;right:10px;border-width:0 2px 2px 0;border-radius:0 0 4px 0}
+.card:hover::before,.card:hover::after{opacity:1}
+
+/* ===== SECTION DECORATIVE DIVIDER ===== */
+.section-divider{
+  text-align:center;font-size:1.5rem;color:rgba(43,87,151,0.2);
+  letter-spacing:8px;margin:-2rem 0;pointer-events:none;user-select:none;
+}
+
+/* ===== ANIMATIONS ===== */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+/* staggered children */
+.fade-in .stat-block,.fade-in .card,.fade-in .bottleneck-card,
+.fade-in .timeline-item,.fade-in .quote-block,.fade-in .data-table{opacity:0;transform:translateY(15px);transition:opacity .5s ease,transform .5s ease}
+.fade-in.visible .stat-block,.fade-in.visible .card,.fade-in.visible .bottleneck-card,
+.fade-in.visible .timeline-item,.fade-in.visible .quote-block,.fade-in.visible .data-table{opacity:1;transform:translateY(0)}
+/* stagger delays */
+.fade-in.visible .stat-block:nth-child(1){transition-delay:.05s}
+.fade-in.visible .stat-block:nth-child(2){transition-delay:.1s}
+.fade-in.visible .stat-block:nth-child(3){transition-delay:.15s}
+.fade-in.visible .stat-block:nth-child(4){transition-delay:.2s}
+.fade-in.visible .card:nth-child(1){transition-delay:.05s}
+.fade-in.visible .card:nth-child(2){transition-delay:.15s}
+.fade-in.visible .card:nth-child(3){transition-delay:.25s}
+.fade-in.visible .bottleneck-card:nth-child(1){transition-delay:0s}
+.fade-in.visible .bottleneck-card:nth-child(2){transition-delay:.1s}
+.fade-in.visible .bottleneck-card:nth-child(3){transition-delay:.2s}
+.fade-in.visible .timeline-item:nth-child(1){transition-delay:0s}
+.fade-in.visible .timeline-item:nth-child(2){transition-delay:.08s}
+.fade-in.visible .timeline-item:nth-child(3){transition-delay:.16s}
+.fade-in.visible .timeline-item:nth-child(4){transition-delay:.24s}
+.fade-in.visible .timeline-item:nth-child(5){transition-delay:.32s}
+.fade-in.visible .quote-block{transition-delay:.1s}
+.fade-in.visible .data-table{transition-delay:.15s}
+.delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.3s}.delay-4{transition-delay:.4s}
 .comp-table{width:100%;border-collapse:collapse;font-size:.78rem;margin:1.5rem 0}
 .comp-table th,.comp-table td{padding:.5rem .65rem;text-align:center;border:1px solid rgba(43,87,151,0.12)}
 .comp-table th{background:rgba(43,87,151,0.12);color:#7eb8ff;font-size:.72rem;text-transform:uppercase;letter-spacing:1px}
@@ -182,6 +304,55 @@ nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
 .timeline-item h4{font-size:.92rem;color:#e0e8f5;margin:.15rem 0 .3rem}
 .timeline-item p{font-size:.82rem;color:#8899b0}
 
+/* ===== ARTICLE STYLES ===== */
+.article-body{max-width:760px;margin:0 auto;color:#b8c8dd;font-size:.92rem;line-height:1.95}
+.article-body h2{font-size:1.35rem;color:#e0e8f5;margin:2.5rem 0 1rem;padding-bottom:.4rem;border-bottom:1px solid rgba(43,87,151,0.15)}
+.article-body h3{font-size:1.05rem;color:#c8d8f0;margin:2rem 0 .75rem}
+.article-body p{margin:0 0 .85rem}
+.article-body strong{color:#e0e8f5}
+.article-body .highlight-box{
+  background:linear-gradient(135deg,rgba(43,87,151,0.08),rgba(122,62,200,0.04));
+  border-left:3px solid #4a9eff;border-radius:6px;
+  padding:1rem 1.5rem;margin:1.25rem 0;font-size:.88rem;color:#a0b5d0;
+}
+.article-body .highlight-box strong{color:#7eb8ff}
+.article-body .divider-line{
+  text-align:center;color:#3a4a6a;letter-spacing:6px;
+  margin:1.5rem 0;font-size:.8rem;
+}
+.article-body .article-footer{
+  margin-top:3rem;padding-top:1.5rem;
+  border-top:1px solid rgba(43,87,151,0.12);
+  text-align:center;color:#5a6a80;font-size:.82rem;
+}
+.article-body .article-footer strong{color:#8899b0}
+.article-body .eureka{
+  font-size:1.05rem;background:rgba(255,200,50,0.06);
+  border-radius:8px;padding:1rem 1.5rem;margin:1.25rem 0;
+  border:1px solid rgba(255,200,50,0.12);
+  color:#d0c080;
+}
+.article-body .eureka strong{color:#ffc832}
+.article-body .warning-box{
+  background:rgba(255,100,50,0.05);border-left:3px solid #ff6b6b;
+  border-radius:6px;padding:1rem 1.5rem;margin:1.25rem 0;
+  font-size:.88rem;color:#c09080;
+}
+.article-body .warning-box strong{color:#ff6b6b}
+.article-body table{width:100%;border-collapse:collapse;font-size:.82rem;margin:1.25rem 0}
+.article-body th{background:rgba(43,87,151,0.12);color:#7eb8ff;padding:.5rem .65rem;text-align:left;font-weight:600;border-bottom:2px solid rgba(43,87,151,0.2)}
+.article-body td{padding:.45rem .65rem;border-bottom:1px solid rgba(43,87,151,0.08);color:#8899b0}
+.article-body tr:hover td{background:rgba(43,87,151,0.04)}
+.article-body code{
+  background:rgba(43,87,151,0.15);padding:.12rem .4rem;
+  border-radius:3px;font-size:.82rem;color:#a0c0e0;
+}
+.article-body blockquote{
+  border-left:3px solid rgba(74,158,255,0.25);
+  padding:.5rem 1rem;margin:1rem 0;color:#6b7b95;font-size:.85rem;
+  font-style:italic;
+}
+
 /* ===== FOOTER ===== */
 footer{
   text-align:center;padding:3rem 2rem;color:#4a5a6a;font-size:.78rem;
@@ -198,21 +369,29 @@ footer{
     border-bottom:1px solid rgba(43,87,151,0.2);
   }
   nav .nav-links.open{display:flex}
-  .bottleneck-grid{grid-template-columns:1fr}
+  nav .nav-links a{padding:.5rem .75rem;font-size:.85rem}
+  .bottleneck-grid{grid-template-columns:1fr;gap:.6rem}
+  .bottleneck-card{padding:1rem .75rem}
+  .bottleneck-card .icon{font-size:1.8rem}
+  .bottleneck-card .sev-bar{max-width:100px;height:4px}
+  .bottleneck-card .sev-desc{font-size:.7rem}
   .grid-2{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:repeat(2,1fr);gap:.6rem}
+  .stat-block{padding:.75rem .5rem}
+  .stat-block .number{font-size:1.2rem}
   .section{padding:3rem 1rem}
   .hero h1{font-size:1.8rem}
-  .comp-table{font-size:.7rem}
-  .comp-table th,.comp-table td{padding:.35rem .4rem}
+  .hero{padding:5rem 1rem 3rem}
+  .comp-table{font-size:.65rem}
+  .comp-table th,.comp-table td{padding:.3rem .35rem}
+  .card{padding:1.2rem}
+  .card::before,.card::after{display:none}
+  .section-divider{font-size:1rem;margin:-1.5rem 0}
 }
-
-/* ===== ANIMATIONS ===== */
-.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-.fade-in.visible{opacity:1;transform:translateY(0)}
-.delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.3s}.delay-4{transition-delay:.4s}
 </style>
 </head>
 <body>
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- ===== NAVIGATION ===== -->
 <nav>
@@ -224,8 +403,15 @@ footer{
     <li><a href="#fiber">光棒</a></li>
     <li><a href="#compare">跨行业对比</a></li>
     <li><a href="#bottleneck">三大瓶颈</a></li>
+    <li><a href="#pcb">PCB</a></li>
+    <li><a href="#glass">玻璃基板</a></li>
+    <li><a href="#pricewatch">📊股价观察</a></li>
+    <li><a href="#pe">市盈率</a></li>
+    <li><a href="知识图谱-算力基础设施全链路.html" class="nav-kg-link">🧠 全链路</a></li>
     <li><a href="#about">关于</a></li>
   </ul>
+  <a href="#wechat" class="nav-wechat-btn">💚 微信群</a>
+  <a href="#comments" class="nav-comment-btn">💬 评论区</a>
 </nav>
 
 <!-- ===== HERO ===== -->
@@ -238,6 +424,11 @@ footer{
     在变压器、在光棒、在每一寸被卡住的产业链上。
   </p>
   <div class="scroll-hint">↓ 向下探索</div>
+  <div class="particles">
+    <div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div>
+  </div>
 </section>
 
 <!-- ===== 变压器篇 ===== -->
@@ -249,10 +440,10 @@ footer{
   </div>
 
   <div class="stat-grid">
-    <div class="stat-block"><div class="number">1,200亿</div><div class="label">特变电工年营收</div></div>
-    <div class="stat-block"><div class="number">40%+</div><div class="label">特高压市占率</div></div>
-    <div class="stat-block"><div class="number">3年+</div><div class="label">订单可见度</div></div>
-    <div class="stat-block"><div class="number">3家</div><div class="label">全球能做±1100kV仅3家</div></div>
+    <div class="stat-block"><div class="number">1,200亿</div><div class="label">特变电工年营收</div><div class="benchmark">*** 行业第2约400亿 · <span class="high">3x</span></div></div>
+    <div class="stat-block"><div class="number">40%+</div><div class="label">特高压市占率</div><div class="benchmark">*** 第2名约15% · <span class="high">2.7x</span></div></div>
+    <div class="stat-block"><div class="number">3年+</div><div class="label">订单可见度</div><div class="benchmark">*** 行业平均<strong>1-2</strong>年 · <span class="high">1.5x+</span></div></div>
+    <div class="stat-block"><div class="number">3家</div><div class="label">能做±1100kV企业</div><div class="benchmark"><span class="high">*** 全球仅此3家</span> · 行业最高壁垒</div></div>
   </div>
 
   <h3 style="color:#7eb8ff;margin:2rem 0 1rem">🏢 三家深度拆解</h3>
@@ -305,6 +496,8 @@ footer{
   </table>
 </section>
 
+<div class="section-divider">✦ ✦ ✦</div>
+
 <!-- ===== 光棒篇 ===== -->
 <section id="fiber" class="section fade-in">
   <div class="section-header">
@@ -314,10 +507,10 @@ footer{
   </div>
 
   <div class="stat-grid">
-    <div class="stat-block"><div class="number">550%</div><div class="label">光棒年涨幅</div></div>
-    <div class="stat-block"><div class="number">18-24月</div><div class="label">扩产周期</div></div>
-    <div class="stat-block"><div class="number">9连冠</div><div class="label">长飞全球第一</div></div>
-    <div class="stat-block"><div class="number"><10家</div><div class="label">全球能做光棒的企业</div></div>
+    <div class="stat-block"><div class="number">550%</div><div class="label">光棒年涨幅</div><div class="benchmark">*** 工业品年均±20% · <span class="high">超行业27倍</span></div></div>
+    <div class="stat-block"><div class="number">18-24月</div><div class="label">扩产周期</div><div class="benchmark">*** GPU迭代18月 · <span class="mid">与芯片打平</span></div></div>
+    <div class="stat-block"><div class="number">9连冠</div><div class="label">长飞全球第一</div><div class="benchmark">*** 康宁第2 · <span class="high">长飞=康宁+信越之和</span></div></div>
+    <div class="stat-block"><div class="number"><10家</div><div class="label">能做光棒的企业</div><div class="benchmark">*** 能做芯片的>50家 · <span class="high">比芯片还稀缺</span></div></div>
   </div>
 
   <h3 style="color:#7eb8ff;margin:2rem 0 1rem">📈 光棒价格暴涨时间线</h3>
@@ -356,9 +549,9 @@ footer{
       <div class="meta">市值≈1,837亿 · 2025营收142.5亿</div>
       <p><strong>全球光棒之王，连续9年全球出货量第一。</strong> 全球唯一同时掌握PCVD/VAD/OVD三种光棒工艺的企业。2026Q1净利润同比+226%——行业反转最猛烈。</p>
       <div class="stat-grid" style="margin:.75rem 0">
-        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">30.7%</div><div class="label" style="font-size:.65rem">毛利率</div></div>
-        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">+226%</div><div class="label" style="font-size:.65rem">2026Q1净利增速</div></div>
-        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">~85%+</div><div class="label" style="font-size:.65rem">光棒自给率</div></div>
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">30.7%</div><div class="label" style="font-size:.65rem">毛利率</div><div class="benchmark" style="font-size:.6rem">*** 行业平均15% · <span class="high">2x</span></div></div>
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">+226%</div><div class="label" style="font-size:.65rem">2026Q1净利增速</div><div class="benchmark" style="font-size:.6rem">*** 亨通+98% · 行业+45% · <span class="high">5x行业</span></div></div>
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">~85%+</div><div class="label" style="font-size:.65rem">光棒自给率</div><div class="benchmark" style="font-size:.6rem">*** 行业<strong>40%</strong> · <span class="high">2.1x</span></div></div>
       </div>
       <span class="tag">全球光棒产能第一</span>
       <span class="tag">SL3多芯光纤商用</span>
@@ -368,9 +561,9 @@ footer{
       <div class="meta">市值≈2,429亿 · 2025营收668.5亿</div>
       <p><strong>光通信+海缆双引擎。</strong> 光棒自给率80%+，海缆全球前五。业务多元化抗周期。2026Q1净利润同比+98.5%，近乎翻倍。</p>
       <div class="stat-grid" style="margin:.75rem 0">
-        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">12.5%</div><div class="label" style="font-size:.65rem">整体毛利率</div></div>
-        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">+98.5%</div><div class="label" style="font-size:.65rem">2026Q1净利增速</div></div>
-        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">~80%+</div><div class="label" style="font-size:.65rem">光棒自给率</div></div>
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">12.5%</div><div class="label" style="font-size:.65rem">整体毛利率</div><div class="benchmark" style="font-size:.6rem">*** 光棒业务~25% · 电缆拉低</div></div>
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">+98.5%</div><div class="label" style="font-size:.65rem">2026Q1净利增速</div><div class="benchmark" style="font-size:.6rem">*** 行业+45% · <span class="high">2.2x行业</span></div></div>
+        <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">~80%+</div><div class="label" style="font-size:.65rem">光棒自给率</div><div class="benchmark" style="font-size:.6rem">*** 行业<strong>40%</strong> · <span class="high">2x</span></div></div>
       </div>
       <span class="tag">海缆全球前5</span>
       <span class="tag">光+电+海三线</span>
@@ -393,13 +586,15 @@ footer{
   <div class="card" style="border-color:rgba(74,158,255,0.3)">
     <p>2026年，长飞牵头的<strong>SL3波段多芯光纤</strong>在<strong>青岛正式开通商用</strong>。</p>
     <div class="stat-grid" style="margin:.75rem 0">
-      <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">+50%</div><div class="label" style="font-size:.65rem">单芯带宽提升</div></div>
-      <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">5x</div><div class="label" style="font-size:.65rem">整纤传输容量</div></div>
-      <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">100%</div><div class="label" style="font-size:.65rem">完全国产自主</div></div>
+      <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">+50%</div><div class="label" style="font-size:.65rem">单芯带宽提升</div><div class="benchmark" style="font-size:.6rem">*** 传统单模年提5-10% · <span class="high">5-10x</span></div></div>
+      <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">5x</div><div class="label" style="font-size:.65rem">整纤传输容量</div><div class="benchmark" style="font-size:.6rem">*** 标准G.652光纤≤1x · <span class="high">5倍于普通光纤</span></div></div>
+      <div class="stat-block" style="padding:.5rem"><div class="number" style="font-size:1.1rem">100%</div><div class="label" style="font-size:.65rem">完全国产自主</div><div class="benchmark" style="font-size:.6rem">*** 行业核心设备进口率~60% · <span class="mid">打破封锁</span></div></div>
     </div>
     <p style="color:#8899b0;font-size:.85rem">下一代光纤技术从实验室走向商用——不增加光缆铺设，单纤容量翻5倍。</p>
   </div>
 </section>
+
+<div class="section-divider">✦ ✦ ✦</div>
 
 <!-- ===== 跨行业对比 ===== -->
 <section id="compare" class="section fade-in">
@@ -453,6 +648,8 @@ footer{
   </table>
 </section>
 
+<div class="section-divider">✦ ✦ ✦</div>
+
 <!-- ===== 三大瓶颈 ===== -->
 <section id="bottleneck" class="section fade-in">
   <div class="section-header">
@@ -465,23 +662,23 @@ footer{
     <div class="bottleneck-card bot-chip">
       <div class="icon">🧠</div>
       <h3>芯片瓶颈</h3>
-      <div class="severity">严重程度 ⭐⭐⭐</div>
       <div class="stars">★★★</div>
-      <p style="color:#8899b0;font-size:.82rem;margin-top:.5rem">英伟达主导，但AMD追赶，产能可爬坡</p>
+      <div class="sev-bar"><div class="sev-bar-inner"></div></div>
+      <div class="sev-desc">英伟达主导 · AMD追赶 · 产能12-18月可爬坡</div>
     </div>
     <div class="bottleneck-card bot-power">
       <div class="icon">⚡</div>
       <h3>电力瓶颈</h3>
-      <div class="severity">严重程度 ⭐⭐⭐⭐</div>
       <div class="stars">★★★★</div>
-      <p style="color:#8899b0;font-size:.82rem;margin-top:.5rem">变压器全球缺货，变电站建设周期3-5年</p>
+      <div class="sev-bar"><div class="sev-bar-inner"></div></div>
+      <div class="sev-desc">变压器全球缺货 · 变电站建设周期3-5年</div>
     </div>
     <div class="bottleneck-card bot-fiber">
       <div class="icon">💡</div>
       <h3>通信瓶颈</h3>
-      <div class="severity">严重程度 ⭐⭐⭐⭐⭐</div>
       <div class="stars">★★★★★</div>
-      <p style="color:#8899b0;font-size:.82rem;margin-top:.5rem">全球能做纯光棒的<10家，原料被卡脖子</p>
+      <div class="sev-bar"><div class="sev-bar-inner"></div></div>
+      <div class="sev-desc">全球能做纯光棒&lt;10家 · 上游石英砂被🇺🇸卡着</div>
     </div>
   </div>
 
@@ -500,6 +697,965 @@ footer{
     光棒缺，上游高纯石英砂被Unimin🇺🇸卡着，扩产不是想扩就能扩的。<br>
     这轮光棒短缺周期至少持续到<strong>2028年</strong>。
     <span class="source">—— 2026年6月 · 无殊判断</span>
+  </div>
+</section>
+
+<div style="text-align:center;padding:2.5rem 2rem;background:linear-gradient(135deg,rgba(167,139,250,0.04),rgba(74,158,255,0.03));border:1px solid rgba(167,139,250,0.1);border-radius:12px;max-width:700px;margin:0 auto;transition:.3s">
+  <p style="font-size:.8rem;color:#5a6a80;margin-bottom:.35rem">📖 完整逻辑链</p>
+  <a href="知识图谱-算力基础设施全链路.html" style="font-size:1.1rem;font-weight:700;color:#a78bfa;text-decoration:none">🧠 查看算力全链路知识图谱 →</a>
+  <p style="font-size:.72rem;color:#4a5a6a;margin-top:.25rem">从驱动力到瓶颈到价格位置 · 七篇一体 · 一口吃透</p>
+</div>
+
+
+<!-- ===== PCB ===== -->
+<section id="pcb" class="section" style="scroll-margin-top:80px;opacity:1;transform:none">
+  <div class="section-header">
+    <h2>🔌 PCB · AI算力的核心底座</h2>
+    <div class="divider"></div>
+    <p>没有PCB，就没有现代电子——它承载算力、连接万物，是AI时代最确定的硬件升级主线</p>
+  </div>
+  <div class="article-body">
+
+    <div class="divider-line">···</div>
+
+    <h2>🏛️ 一、PCB是什么——电子产业之母</h2>
+
+    <p><strong>PCB（Printed Circuit Board，印制电路板）</strong>是所有电子产品的物理基座。芯片、电容、电阻、连接器——一切电子元器件都通过PCB实现电气互联。</p>
+
+    <p>一个简单的类比，看清它在AI算力链条中的位置：</p>
+    <table>
+      <thead><tr><th>角色</th><th>类比</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>芯片</strong></td><td>大脑 🧠</td><td>负责计算和处理</td></tr>
+        <tr><td><strong>光模块</strong></td><td>眼睛 👁️</td><td>负责信号转换</td></tr>
+        <tr><td><strong>光纤/光缆</strong></td><td>神经 ⚡</td><td>负责远距离传输</td></tr>
+        <tr><td><strong style="color:#ffc832">PCB</strong></td><td style="color:#ffc832"><strong>血管 + 骨架 🦴</strong></td><td style="color:#ffc832"><strong>给所有元件供电+提供物理支撑</strong></td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>全球PCB产值：</strong>约<strong>700亿美金</strong>（2025年），是电子产业链中体量最庞大、贯穿一切应用的环节。</p>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🔀 二、行业分化——AI时代的"冰火两重天"</h2>
+
+    <p>AI正在撕裂PCB产业，分成两条完全不同的路：</p>
+
+    <table>
+      <thead><tr><th></th><th style="color:#4ae68a">🔥 高端算力PCB</th><th style="color:#ff6b6b">❄️ 普通PCB</th></tr></thead>
+      <tbody>
+        <tr><td><strong>需求</strong></td><td>AI服务器/交换机/光模块需求激增</td><td>消费电子/家电持平或下滑</td></tr>
+        <tr><td><strong>层数工艺</strong></td><td>24-40层超高多层 + HDI + mSAP</td><td>4-8层，同质化严重</td></tr>
+        <tr><td><strong>议价能力</strong></td><td>强——技术壁垒高，客户锁定</td><td>弱——客户随时可换供应商</td></tr>
+        <tr><td><strong>成本传导</strong></td><td>上游涨价向下游顺畅传导</td><td>难以传导，利润被挤压</td></tr>
+        <tr><td><strong>盈利趋势</strong></td><td style="color:#4ae68a"><strong>📈 利润大幅增长</strong></td><td style="color:#ff6b6b"><strong>📉 业绩承压</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="eureka">
+      <strong>核心逻辑：不是PCB赛道好不好——是你做的是哪个PCB。</strong><br>
+      头部厂商凭借技术与设备壁垒切入高端市场，盈利量价齐升。<br>
+      普通PCB厂商深陷红海，同质化竞争，越来越难。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🔗 三、产业链全景——从上游到应用的三个层级</h2>
+
+    <table>
+      <thead><tr><th>层级</th><th>做什么</th><th>代表产品</th><th>壁垒</th><th>全球主导</th></tr></thead>
+      <tbody>
+        <tr><td>🟢 <strong>上游</strong></td><td>原材料 — 覆铜板(CCL)·特种树脂·低损耗玻纤布·HVLP铜箔</td><td>覆铜板占PCB成本~30%</td><td>🟡 中等 — 材料配方+量产工艺</td><td>松下🇯🇵 · 生益科技🇨🇳 · 三菱瓦斯🇯🇵</td></tr>
+        <tr><td>🟡 <strong>中游</strong></td><td>PCB制造 — 钻孔·电镀·蚀刻·压合·mSAP·测试</td><td>高多层板/HDI/封装基板</td><td style="color:#ff6b6b"><strong>🔴 极高 — 十亿级资本开支+工艺积累</strong></td><td>鹏鼎/臻鼎🇨🇳 · 深南🇨🇳 · 沪电🇨🇳 · 旗胜🇯🇵</td></tr>
+        <tr><td>🔵 <strong>下游</strong></td><td>应用终端 — AI服务器·交换机·光模块·汽车·消费电子</td><td>各类电子产品</td><td>🟢 低 — 应用层</td><td>NVIDIA · 苹果 · 华为 · 特斯拉 · 三星</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>成本结构：</strong>覆铜板（CCL）约占PCB成本的30-40%，铜箔又是覆铜板的核心原料——<strong>铜价涨跌直接传导到PCB利润</strong>。AI PCB对低损耗材料的刚需，进一步推高了高端CCL的溢价能力。</p>
+
+    <h3>PCB按层数/工艺的分类——单价差100倍</h3>
+
+    <table>
+      <thead><tr><th>类型</th><th>层数</th><th>特征</th><th>单价</th><th>应用</th></tr></thead>
+      <tbody>
+        <tr><td><strong>单/双面板</strong></td><td>1-2层</td><td>最简单</td><td>~$10/㎡</td><td>家电·低端消费电子</td></tr>
+        <tr><td><strong>普通多层板</strong></td><td>4-8层</td><td>通用主力</td><td>~$50/㎡</td><td>PC·工控·通信基站</td></tr>
+        <tr><td><strong style="color:#ffc832">AI高多层板</strong></td><td style="color:#ffc832"><strong>24-40层+</strong></td><td>超高多层 + mSAP工艺 + 激光盲孔</td><td>~$200-400/㎡</td><td style="color:#ff6b6b"><strong>🔥 AI服务器 · 核心交换机</strong></td></tr>
+        <tr><td><strong>HDI板</strong></td><td>任意层</td><td>微盲孔堆叠，高密度互连</td><td>~$400/㎡</td><td>智能手机·AI加速卡</td></tr>
+        <tr><td><strong>封装基板</strong></td><td>极高密度</td><td>直接承载芯片的最精密PCB</td><td>~$1000/㎡+</td><td style="color:#ff6b6b"><strong>🔥 CPU/GPU · Chiplet · HBM</strong></td></tr>
+        <tr><td><strong>柔性板(FPC)</strong></td><td>1-4层</td><td>可弯曲</td><td>~$100/㎡</td><td>折叠手机·摄像头模组</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <strong>单价差距100倍，关键不是层数，是工艺壁垒。</strong><br>
+      AI算力板需要<strong>24-40层超高多层 + HDI复合结构</strong>，采用<strong>mSAP（改良半加成法）</strong>工艺规避强酸侧蚀，<br>
+      配合激光钻微盲孔实现层间互联。单条高端产线资本开支<strong>十亿级</strong>——这不是谁都能投的。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🌐 四、全球竞争格局——54% vs 5%的撕裂</h2>
+
+    <table>
+      <thead><tr><th>地区</th><th>产值占比</th><th>优势领域</th><th>趋势</th></tr></thead>
+      <tbody>
+        <tr><td><strong>中国大陆</strong></td><td style="color:#4ae68a"><strong>~54%</strong></td><td>多层板/HDI中低端</td><td>产能向高端迁移中 📈</td></tr>
+        <tr><td><strong>中国台湾</strong></td><td>~13%</td><td>封装基板/高端HDI</td><td>保持技术领先</td></tr>
+        <tr><td><strong>日本</strong></td><td>~10%</td><td>封装基板/高端柔性板</td><td>IC载板+材料实力最强</td></tr>
+        <tr><td><strong>韩国</strong></td><td>~10%</td><td>封装基板/HDI</td><td>Samsung Electro-Mechanics领跑</td></tr>
+        <tr><td><strong>欧美</strong></td><td>~8%</td><td>军工/航天/高端工业</td><td>特殊领域不可替代</td></tr>
+        <tr><td><strong>东南亚</strong></td><td>~5%</td><td>低端产能转移地</td><td>承接中低端外溢</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>一个数字说清格局：</strong>全球高端PCB前十厂商占据<strong>90%份额</strong>，大陆与台湾合计占前十中的<strong>8席</strong>——但大陆企业集中在中低端，封装基板国产化率不足<strong>5%</strong>。</p>
+
+    <div class="highlight-box">
+      <strong>54%的产量，<5%的高端自给率。</strong>这就是中国PCB产业的撕裂——<br>
+      体量世界第一，利润大头仍在日韩台企业手里。<br>
+      而<strong>深南电路、沪电股份</strong>正从这5%突破，这是十倍替代空间。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🚀 五、AI驱动的技术升级——不用不行</h2>
+
+    <p>AI服务器对PCB的需求不是"多一点"，是"翻天覆地"：</p>
+
+    <table>
+      <thead><tr><th>对比项</th><th>普通服务器</th><th style="color:#ff6b6b">AI服务器</th><th>差距</th></tr></thead>
+      <tbody>
+        <tr><td><strong>PCB层数</strong></td><td>8-16层</td><td style="color:#ff6b6b"><strong>24-40层+</strong></td><td>2-3x</td></tr>
+        <tr><td><strong>PCB价值量/台</strong></td><td>~$200</td><td style="color:#ff6b6b"><strong>~$1000-2000</strong></td><td><strong>5-10x</strong></td></tr>
+        <tr><td><strong>工艺要求</strong></td><td>传统蚀刻</td><td style="color:#ff6b6b"><strong>mSAP + 激光盲孔</strong></td><td>代际跨越</td></tr>
+        <tr><td><strong>材料等级</strong></td><td>普通FR-4</td><td style="color:#ff6b6b"><strong>M6/M7/M8级PPE/PTFE</strong></td><td>材料彻底升级</td></tr>
+        <tr><td><strong>封装基板用量</strong></td><td>少</td><td style="color:#ff6b6b"><strong>大量（CPU+GPU+HBM）</strong></td><td>5-10x</td></tr>
+      </tbody>
+    </table>
+
+    <div class="eureka">
+      <strong>每台AI服务器的PCB价值量是普通服务器的5-10倍。</strong><br>
+      2025年全球AI服务器出货量约250-300万台，对应高端PCB市场约<strong>300亿人民币</strong>。<br>
+      到2028年，这个数字可能翻倍至600亿——这不是周期，是<strong>结构性增量</strong>。
+    </div>
+
+    <p><strong>技术升级路径的四个梯队：</strong></p>
+    <table>
+      <thead><tr><th>路径</th><th>特征</th><th>趋势</th></tr></thead>
+      <tbody>
+        <tr><td>📉 <strong>普通多层板</strong></td><td>4-10层，产能严重过剩</td><td>占比下降，毛利压缩</td></tr>
+        <tr><td>📈 <strong>AI高多层板</strong></td><td>24-40层+mSAP，AI服务器主力</td><td style="color:#4ae68a"><strong>占比快速上升 ↗️</strong></td></tr>
+        <tr><td>📈 <strong>HDI+类载板</strong></td><td>微盲孔技术，PCB与封装边界模糊</td><td style="color:#ffc832"><strong>跨界演进中 ↗️</strong></td></tr>
+        <tr><td>🚀 <strong>封装基板(IC载板)</strong></td><td>直接承载芯片，PCB的终极形态</td><td style="color:#ff6b6b"><strong>🔥 爆发式增长</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🧪 六、核心材料突破——打穿上游卡脖子</h2>
+
+    <p>AI对PCB的升级压力传导到上游材料端，催生了三大领域的国产突破：</p>
+
+    <h3>🟢 特种树脂（电子级PPO/PPE）</h3>
+    <table>
+      <thead><tr><th>标的</th><th>核心看点</th><th>壁垒</th></tr></thead>
+      <tbody>
+        <tr><td><strong>东材科技</strong></td><td>突破电子级PPO（聚苯醚）量产，AI高频覆铜板关键树脂原料</td><td>🔴 极高 — 之前只有日本三菱瓦斯能稳定量产</td></tr>
+        <tr><td><strong>圣泉集团</strong></td><td>特种酚醛树脂+PPO树脂，打破高端电子树脂海外垄断</td><td>🔴 极高 — 合成工艺+纯度控制</td></tr>
+        <tr><td><strong>生益科技</strong></td><td>覆铜板已达<strong>M8/M9级</strong>，全球高端CCL第一梯队</td><td>🟡 材料配方+客户验证周期</td></tr>
+      </tbody>
+    </table>
+
+    <h3>🟢 低损耗电子玻纤布</h3>
+    <table>
+      <thead><tr><th>标的</th><th>核心看点</th><th>壁垒</th></tr></thead>
+      <tbody>
+        <tr><td><strong>国际复材</strong></td><td>攻克低损耗原纱生产技术，打破日本日东纺垄断</td><td>🟡 玻璃配方+拉丝工艺</td></tr>
+        <tr><td><strong>宏和科技</strong></td><td>精密超薄玻纤布龙头，Dk/Df一致性达国际水平</td><td>🟡 织机仍依赖日本（需验证国产替代）</td></tr>
+      </tbody>
+    </table>
+
+    <h3>🟢 电子铜箔（HVLP铜箔）</h3>
+    <table>
+      <thead><tr><th>标的</th><th>核心看点</th><th>壁垒</th></tr></thead>
+      <tbody>
+        <tr><td><strong>德福科技</strong></td><td>HVLP（超低轮廓）铜箔实现规模化量产，AI高频PCB关键</td><td>🟡 电镀工艺+表面处理</td></tr>
+        <tr><td><strong>铜冠铜箔</strong></td><td>HVLP铜箔量产，打破日本三井金属/古河电工垄断</td><td>🟡 也是电镀工艺</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <strong>三种材料，一条主线：</strong>AI PCB对信号损耗的要求从M4→M6→M8/M9逐级跃升，<br>
+      倒逼上游树脂、玻纤布、铜箔全面升级。<br>
+      每提升一个材料等级，PCB加工难度和单价同步跳升——<strong>这就是"量价齐升"的物理基础</strong>。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🔄 七、产业跨界演进——PCB→先进封装</h2>
+
+    <p>AI时代最深刻的趋势：<strong>PCB与先进封装的边界正在消失</strong>。</p>
+
+    <table>
+      <thead><tr><th>阶段</th><th>产品形态</th><th>线宽/线距</th><th>工艺</th><th>中国现状</th></tr></thead>
+      <tbody>
+        <tr><td>📌 <strong>传统PCB</strong></td><td>高多层板</td><td>30-50μm</td><td>蚀刻</td><td>✅ 成熟</td></tr>
+        <tr><td>📌 <strong>类载板(mSAP)</strong></td><td>PCB→载板的过渡形态</td><td>15-25μm</td><td>mSAP半加成法</td><td>🟡 突破中</td></tr>
+        <tr><td>📌 <strong>BT载板</strong></td><td>存储/射频芯片封装</td><td>8-12μm</td><td>SAP</td><td style="color:#4ae68a"><strong>✅ 深南/兴森已突破</strong></td></tr>
+        <tr><td>📌 <strong>ABF载板</strong></td><td>CPU/GPU/AI芯片封装</td><td>6-10μm</td><td>SAP+增层</td><td style="color:#ff6b6b"><strong>🔴 日台垄断，大陆空白</strong></td></tr>
+        <tr><td>🚀 <strong>玻璃基板</strong></td><td>下一代封装底座</td><td>2μm级</td><td>TGV玻璃通孔</td><td style="color:#ff6b6b"><strong>🔴 英特尔/三星领先</strong></td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>关键判断：</strong>从PCB到类载板、到BT/ABF载板、再到玻璃基板——这是一条连续的技术升级路径，不是断裂的。能做24层mSAP的厂商，天然有向封装基板延伸的能力。</p>
+
+    <div class="eureka">
+      <strong>PCB和玻璃基板不是竞争，是同一方向的不同阶段。</strong><br>
+      深南、兴森布局封装基板——就是在为下一代（玻璃基板）储备工艺能力。<br>
+      英特尔重金押注玻璃基板本质上也是在押注"PCB→先进封装"的产业融合。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>📋 八、三大梯队——技术与客户分层竞争</h2>
+
+    <p>中国高端PCB企业可分为三大梯队，技术门槛与客户结构决定竞争位势：</p>
+
+    <h3>🥇 第一梯队 · AI服务器PCB核心链（高认证壁垒+高端量产能力）</h3>
+
+    <table>
+      <thead><tr><th>标的</th><th>核心优势</th><th>典型客户</th><th>评级</th></tr></thead>
+      <tbody>
+        <tr><td><strong>深南电路</strong></td><td>PCB+封装基板双龙头。7nm FC-BGA封装基板量产，国内唯一进入英伟达供应链。无锡封装基板厂满产，南通新厂产能爬坡。</td><td>英伟达 · 华为昇腾</td><td style="color:#ff6b6b"><strong>⭐⭐⭐⭐⭐</strong></td></tr>
+        <tr><td><strong>沪电股份</strong></td><td>AI服务器PCB最纯正标的。独家量产78层M9背板，企业通讯板占比超70%，高端产能排单至2026年底。</td><td>英伟达 · 华为</td><td style="color:#ff6b6b"><strong>⭐⭐⭐⭐⭐</strong></td></tr>
+        <tr><td><strong>胜宏科技</strong></td><td>70层+高多层板量产，满足AI服务器"三高"需求。2025年AI服务器PCB交付超20亿，订单同比增长<strong>300%</strong>。</td><td>英伟达 · AMD</td><td style="color:#ff6b6b"><strong>⭐⭐⭐⭐⭐</strong></td></tr>
+        <tr><td><strong>生益科技</strong></td><td>高端覆铜板自研龙头。M8/M9级通过英伟达/AMD认证，性能与台光电持平，价格低20%。</td><td>英伟达 · AMD</td><td style="color:#ff6b6b"><strong>⭐⭐⭐⭐⭐</strong></td></tr>
+      </tbody>
+    </table>
+
+    <h3>🥈 第二梯队 · 高端材料突破（卡脖子关键环节）</h3>
+
+    <table>
+      <thead><tr><th>标的</th><th>核心看点</th><th>绑定客户</th><th>评级</th></tr></thead>
+      <tbody>
+        <tr><td><strong>南亚新材</strong></td><td>M9级超低损耗覆铜板（Df低至0.0009），适配224Gbps高速传输。高端材料绑定国内AI/通信巨头。</td><td>华为 · 中兴</td><td style="color:#7eb8ff"><strong>⭐⭐⭐⭐</strong></td></tr>
+        <tr><td><strong>铜冠铜箔</strong></td><td>HVLP4/5高端铜箔量产，良率98%，打破日韩垄断。进入英伟达、AMD供应链。</td><td>英伟达 · AMD</td><td style="color:#7eb8ff"><strong>⭐⭐⭐⭐</strong></td></tr>
+        <tr><td><strong>德福科技</strong></td><td>HVLP超低轮廓铜箔量产，AI高频PCB必备关键材料。</td><td>紫光展锐 · 华为</td><td>⭐⭐⭐</td></tr>
+        <tr><td><strong>中材科技</strong></td><td>电子级玻纤/特种树脂突破，高端材料国产化关键参与者。</td><td>华为 · 比亚迪</td><td>⭐⭐⭐</td></tr>
+      </tbody>
+    </table>
+
+    <h3>🥉 第三梯队 · 细分领域专精（填补国产空白）</h3>
+
+    <table>
+      <thead><tr><th>标的</th><th>核心看点</th><th>绑定客户</th></tr></thead>
+      <tbody>
+        <tr><td><strong>东材科技</strong></td><td>突破电子级PPO树脂量产——AI高频覆铜板必须原料，最核心卡脖子材料。</td><td>中芯国际 · 比亚迪</td></tr>
+        <tr><td><strong>圣泉集团</strong></td><td>特种酚醛树脂+PPO树脂，高端电子树脂国产替代先锋。</td><td>比亚迪 · 特斯拉</td></tr>
+        <tr><td><strong>强力新材</strong></td><td>光刻胶专用化学品突破，填补PCB/封装光刻胶国产空白。</td><td>中芯国际 · 华天</td></tr>
+        <tr><td><strong>飞凯材料</strong></td><td>电子化学品+光刻胶，汽车电子、高频通信方向专精。</td><td>比亚迪 · 中兴</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note-box" style="border-left:3px solid #4ae68a;background:rgba(74,230,138,0.06);padding:1rem 1.2rem;margin:1.5rem 0;border-radius:6px">
+      <strong>💡 渡的供应链洞察：英链 & 谷歌链</strong><br>
+      <strong>英链</strong>（英伟达链：深南·沪电·胜宏·生益·铜冠）和<strong>谷歌链</strong>的客户，<br>
+      — 利润比非AI客户<strong>高出30-50%</strong>（高端PCB单价是普通5-10倍）<br>
+      — <strong>结账周期快</strong>（英伟达/谷歌付款30-45天 vs 国内客户60-90天）<br>
+      <br>
+      这意味着：第一梯队不仅<strong>赚得多</strong>，而且<strong>现金回笼快</strong>→更快投入产能扩张→进一步拉开差距。<br>
+      第二/三梯队虽然也在突破，但客户以国内厂商为主（华为·中兴·比亚迪），<br>
+      利润率低一档、账期长一截——这是<strong>运营层面的隐形差距</strong>。<br>
+      <span class="source">—— 渡曰 · 无殊润笔</span>
+    </div>
+
+    <div class="highlight-box">
+      <strong>PCB赛道"六家核心组合"：</strong><br>
+      🎯 <strong>深南电路</strong> — PCB+封装基板双龙头，国产替代正主<br>
+      🎯 <strong>沪电股份</strong> — 最纯正AI服务器PCB，78层背板独家量产<br>
+      🎯 <strong>胜宏科技</strong> — 70层+高多层板量产王，AI订单同比+300%<br>
+      🎯 <strong>生益科技</strong> — 上游最强卡位，M8/M9全球第一梯队<br>
+      🎯 <strong>铜冠铜箔</strong> — HVLP4/5高端铜箔突破，良率98%<br>
+      + 🎯 <strong>东材科技</strong> — 卡脖子材料PPO突破，弹性最大<br>
+      <br>
+      六家交叉覆盖从材料→制造→客户的全链条。<br>
+      <span class="source">全球高端PCB前十中，中国大陆+中国台湾合计占8席。鹏鼎控股以12%+全球市占率位居前列，但AI相关度低。</span>
+    </div>
+
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>⚔️ 九、四线对位——PCB + 变压器 + 光棒 + 玻璃基板</h2>
+
+    <p>算力基础设施四大硬件主线齐聚，节奏各不相同：</p>
+
+    <table>
+      <thead><tr><th>对比维度</th><th>⚡ 变压器</th><th>💡 光棒</th><th>🪟 玻璃基板</th><th style="color:#4ae68a">🔌 PCB</th></tr></thead>
+      <tbody>
+        <tr><td><strong>驱动因素</strong></td><td>AI用电</td><td>AI互联</td><td>AI封装</td><td style="color:#4ae68a"><strong>AI承载 + 万物互联</strong></td></tr>
+        <tr><td><strong>全球市场规模</strong></td><td>~500亿</td><td>~150亿</td><td>起步</td><td style="color:#4ae68a"><strong>~700亿美金 🏆 最大</strong></td></tr>
+        <tr><td><strong>国产地位</strong></td><td>特变领先 🏆</td><td>长飞第一 🏆</td><td>❌ 尚在追赶</td><td style="color:#ffc832"><strong>54%产能但高端<5%</strong></td></tr>
+        <tr><td><strong>当前阶段</strong></td><td>🔥 过热期</td><td>🌱 复苏初期</td><td>🌅 爆发前夜</td><td style="color:#4ae68a"><strong>🌱 高端替代起步期</strong></td></tr>
+        <tr><td><strong>投资确定性</strong></td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐</td><td style="color:#4ae68a"><strong>⭐⭐⭐⭐ 最高性价比</strong></td></tr>
+        <tr><td><strong>弹性空间</strong></td><td>3-5年稳健</td><td>5-10年大周期</td><td>🚀 5-10x</td><td style="color:#4ae68a"><strong>3-5年结构性增长</strong></td></tr>
+        <tr><td><strong>与AI相关性</strong></td><td>间接</td><td>直接</td><td>直接</td><td style="color:#4ae68a"><strong>直接 且 不可替代</strong></td></tr>
+        <tr><td><strong>周期特征</strong></td><td>强周期</td><td>周期成长</td><td>纯成长</td><td style="color:#4ae68a"><strong>大周期+成长叠加</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="quote-block" style="border-left-color:#4ae68a;margin-top:2rem">
+      <strong>⚡ 变压器讲的是"电够不够用"——功率能不能送过去。</strong><br>
+      <strong>💡 光棒讲的是"数据能不能传"——带宽够不够宽。</strong><br>
+      <strong>🪟 玻璃基板讲的是"下一代封装长什么样"——重构物理层。</strong><br>
+      <strong style="color:#4ae68a">🔌 PCB讲的是"所有东西怎么连在一起"——从材料到制造到封装，每一层都在升级。</strong>
+      <span class="source">—— 2026年6月 · 无殊判断</span>
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🎯 十、核心判断</h2>
+
+    <div class="highlight-box">
+      <strong>PCB是AI算力硬件系列里"最不性感但最确定"的一环。</strong><br>
+      没有玻璃基板"换赛道"的颠覆，没有光棒550%的爆炸涨幅——<br>
+      但700亿美金的存量市场 + AI驱动的结构性升级 + 清晰的国产替代路径 = <strong>高确定性成长赛道</strong>。
+    </div>
+
+    <p>六条线清醒看到：</p>
+
+    <table>
+      <thead><tr><th></th><th>判断</th><th>解读</th></tr></thead>
+      <tbody>
+        <tr><td>🟢</td><td><strong>确定性最高</strong></td><td>PCB是AI硬件中"不管技术怎么变都绕不开"的环节。玻璃基板封装出来，一样要插在PCB上。</td></tr>
+        <tr><td>🟢</td><td><strong>国产化空间最大</strong></td><td>54%的产量 vs <5%的高端自给率——<strong>十倍替代空间</strong>。深南、沪电、生益正在打破天花板。</td></tr>
+        <tr><td>🟡</td><td><strong>AI服务器升级最确定</strong></td><td>单台价值量5-10倍，出货量翻倍增长。2028年AI PCB市场可达600亿人民币。</td></tr>
+        <tr><td>🟡</td><td><strong>材料端卡脖子正在打破</strong></td><td>东材PPO、生益M8/M9、国际复材低损耗玻纤、德福HVLP铜箔——四大材料突破不是概念，是量产。</td></tr>
+        <tr><td>🟡</td><td><strong>PCB→封装基板演进不可逆</strong></td><td>能做24层mSAP的厂商，天然向类载板→BT载板→ABF载板延伸。这条路已经走了半程。</td></tr>
+        <tr><td>🔴</td><td><strong>行业分化加剧，选错就是深渊</strong></td><td>高端PCB供不应求、利润暴增；普通PCB同质化严重、持续承压。<strong>不是PCB好，是高端PCB好。</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="eureka">
+      <strong>四条主线，一个判断：</strong><br>
+      ⚡ 变压器——最稳<br>
+      💡 光棒——最狠（已涨550%）<br>
+      🪟 玻璃基板——最野（5-10x想象空间）<br>
+      <strong style="color:#4ae68a">🔌 PCB——最确定（最大体量+最清晰的成长路径+最快突破的材料壁垒）</strong><br>
+      <br>
+      四个故事，四种节奏。不是选一个，是<strong>用节奏不同来对冲</strong>。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🏆 十一、中国PCB企业高端竞争优势——从追赶到并跑</h2>
+
+    <p>中国PCB产业正从"低端制造"迈向"高端工程"。六大核心优势正在重塑全球竞争格局：</p>
+
+    <h3>🟢 ① 规模与产业链优势——无可复制的集群效应</h3>
+    <p>中国占据全球约<strong>六成</strong>PCB产能，形成了从上游原材料（铜箔、玻纤布、覆铜板）到中游精密制造，再到下游应用的<strong>完整产业链闭环</strong>。集群效应带来的成本、效率和响应速度优势，难以被其他国家复制。</p>
+    <p><strong>产能扩张</strong>：12家龙头2026年扩产计划超<strong>300亿元</strong>，全部投向高阶HDI、IC载板等高端领域，无低端新增产能。沪电股份、深南电路高端产能排单至2026年底，胜宏科技AI服务器PCB订单同比增长<strong>300%</strong>。</p>
+
+    <h3>🟢 ② 技术突破与高端产品能力</h3>
+    <table>
+      <thead><tr><th>领域</th><th>突破</th><th>代表企业</th></tr></thead>
+      <tbody>
+        <tr><td><strong>AI服务器PCB</strong></td><td>深度嵌入全球AI产业链，英伟达顶级AI服务器核心主板在中国制造。胜宏科技2025年AI服务器PCB交付超20亿。<strong>沪电股份独家量产78层M9背板</strong>，胜宏科技实现70层+高多层板量产，满足AI服务器"三高"需求。</td><td>胜宏科技 · 沪电股份</td></tr>
+        <tr><td><strong>封装基板</strong></td><td>实现<strong>7nm FC-BGA</strong>封装基板量产，打破日台长期垄断。兴森科技ABF载板量产，填补国产空白。</td><td>深南电路 · 兴森科技</td></tr>
+        <tr><td><strong>高端覆铜板</strong></td><td>M8/M9级高速覆铜板通过英伟达、AMD认证，性能与台光电持平，价格低<strong>20%以上</strong>。替代率提升至35%以上。</td><td>生益科技</td></tr>
+        <tr><td><strong>超低损耗材料</strong></td><td>M9级材料Df低至0.0009，适配<strong>224Gbps</strong>高速传输。</td><td>南亚新材</td></tr>
+        <tr><td><strong>高端铜箔</strong></td><td>HVLP4/5级高端铜箔<strong>良率达98%</strong>，进入英伟达、AMD供应链，打破日韩长期垄断。</td><td>铜冠铜箔</td></tr>
+      </tbody>
+    </table>
+
+    <h3>🟢 ③ 成本与效率优势——国产替代的量价齐升</h3>
+    <p>材料国产化是成本优势的核心驱动力：三大核心材料（覆铜板基材、铜箔、电子化学品）国产替代率已从2023年的不足20%提升至<strong>35%-50%</strong>，推动国产高端PCB毛利率提升<strong>5%-10%</strong>。</p>
+    <table>
+      <thead><tr><th>环节</th><th>比海外低</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr><td>高端覆铜板（M8/M9级）</td><td><strong>20%+</strong></td><td>规模化生产 + 产业链配套</td></tr>
+        <tr><td>高端铜箔（HVLP）</td><td><strong>~15%</strong></td><td>国产设备替代 + 电镀工艺突破</td></tr>
+        <tr><td>电子化学品</td><td><strong>~25%</strong></td><td>国产化率快速提升</td></tr>
+        <tr><td><strong>整体毛利率提升</strong></td><td style="color:#4ae68a"><strong>5%-10%</strong></td><td>材料国产替代+良率爬坡+规模效应</td></tr>
+      </tbody>
+    </table>
+    <p>同等性能、更低价格——国产替代正从"能用"走向"好用"，进而走向"必选"。</p>
+
+    <h3>🟢 ④ 政策与市场红利——双轮驱动</h3>
+    <p><strong>政策端：</strong>国家将电子材料国产化列为核心战略，<strong>《高端电子材料国产化专项方案》</strong>提供研发补贴、税收减免，单个项目最高补贴<strong>5000万元</strong>。</p>
+    <p><strong>市场端：</strong>AI算力爆发带动高端PCB需求井喷。2026年中国PCB产值预计达<strong>5200亿元</strong>，全球占比超55%。高端产品订单饱满，排单周期长达<strong>12-20周</strong>。</p>
+
+    <h3>🟢 ⑤ 龙头企业集中度提升——格局重塑</h3>
+    <table>
+      <thead><tr><th>指标</th><th>过往</th><th style="color:#4ae68a">当前</th><th style="color:#ffc832">趋势</th></tr></thead>
+      <tbody>
+        <tr><td>CR12（前12家份额）</td><td>45%</td><td style="color:#4ae68a"><strong>65%</strong></td><td style="color:#ffc832">→ <strong>80%+</strong></td></tr>
+        <tr><td>市场格局</td><td>分散、价格战</td><td style="color:#4ae68a"><strong>龙头主导</strong></td><td style="color:#ffc832">→ 强者恒强</td></tr>
+        <tr><td>定价权</td><td>弱</td><td style="color:#4ae68a"><strong>增强</strong></td><td style="color:#ffc832">→ 进一步集中</td></tr>
+      </tbody>
+    </table>
+    <p>12家龙头企业占据高端市场<strong>80%以上</strong>份额。技术壁垒高、产能充足、客户优质的龙头——盈利能力与第二梯队拉开代差。</p>
+
+    <h3>🟢 ⑥ 算力全景中的PCB——全村的希望</h3>
+    <p>再看全局：算力基础设施六大主线中，PCB是覆盖面最广、与AI关联最深的板块：</p>
+    <table>
+      <thead><tr><th>板块</th><th>中国位置</th></tr></thead>
+      <tbody>
+        <tr><td style="color:#ff6b6b">🔴 玻璃基板</td><td>英特尔/三星走在前面，中国还在追赶</td></tr>
+        <tr><td style="color:#ffc832">🟡 光棒</td><td>长飞全球第一，但仅一家独大</td></tr>
+        <tr><td style="color:#ffc832">🟡 变压器</td><td>特变领先，但供应链全球分布</td></tr>
+        <tr><td style="color:#4ae68a"><strong>🟢 PCB</strong></td><td><strong>六成产能+完整产业链+技术快速突破+政策加持——全方位确定</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="eureka">
+      <strong>PCB是中国AI算力硬件中最"有底气"的一环。</strong><br>
+      不是"能不能追"的问题——<strong>已经在追，而且在几个关键点上已经并跑了</strong>。<br>
+      从M8/M9覆铜板到7nm封装基板，从AI服务器核心主板到全球六成产能——<br>
+      这个"核心底座"，中国没有掉链子。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🔮 十二、未来趋势——从PCB到"类半导体"封装基板</h2>
+
+    <p>中国PCB产业正在经历一场<strong>从"板"到"基板"</strong>的质变：</p>
+
+    <h3>📈 产品升级：从普通PCB到IC载板的跃迁</h3>
+    <table>
+      <thead><tr><th>产品形态</th><th>单价（元/㎡）</th><th>毛利率</th><th>国产自给率</th></tr></thead>
+      <tbody>
+        <tr><td>普通多层PCB</td><td>500-2,000</td><td>15%-20%</td><td>~90%</td></tr>
+        <tr><td>HDI板</td><td>3,000-8,000</td><td>25%-35%</td><td>~60%</td></tr>
+        <tr><td>IC载板（ABF/FC-BGA）</td><td><strong>10,000-50,000</strong></td><td><strong>40%-60%</strong></td><td><strong><5%</strong></td></tr>
+      </tbody>
+    </table>
+    <p>IC载板单价是常规PCB的<strong>10倍以上</strong>。HBM、Chiplet等先进封装技术拉动ABF载板紧缺，国产厂商2026年集中量产FC-BGA，未来3年基板业务增速将持续高于传统PCB。</p>
+
+    <h3>🌍 全球格局重塑：从跟随者到规则制定者</h3>
+    <p>日韩台长期垄断的高端格局正在被打破：</p>
+    <ul>
+      <li>内资头部企业高端PCB市占率由<strong>30%（2025）→ 50%（2028）</strong></li>
+      <li>全球高端PCB前十厂商，中国大陆+中国台湾合计占<strong>8席</strong></li>
+      <li>鹏鼎控股以<strong>12%+</strong>全球市占率位居前列</li>
+    </ul>
+    <p>大陆企业正从"跟随者"转向"规则制定者"——尤其是在AI服务器PCB这一增量市场上，中国企业已经在定义标准。</p>
+
+    <h3>🏭 从PCB→"类半导体"的产业融合</h3>
+    <p>最深的趋势：<strong>PCB越来越不像"板"，越来越像"晶圆"</strong>。</p>
+    <p>mSAP工艺（半加成法）、TGV（玻璃通孔）、增层法——这些原本属于半导体的工艺正在大规模进入PCB制造。能做24层mSAP的厂商，天然向类载板→BT载板→ABF载板→玻璃基板延伸。这不是跳跃，是<strong>一道连续的光谱</strong>。</p>
+    <div class="eureka">
+      <strong>PCB的下一个十年，不是做更好的板——是做更便宜的"半导体底座"。</strong>
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>⚠️ 十三、风险与挑战——卡脖子的最后一公里</h2>
+
+    <p>方向没错，但路上有坑。清醒看到：</p>
+
+    <table>
+      <thead><tr><th>风险</th><th>影响</th><th>国产化现状</th><th>破局可能</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ABF关键树脂依赖进口</strong></td><td>ABF载板核心原料受制于日本味之素，国产化率<strong><5%</strong></td><td style="color:#ff6b6b"><strong>🔴 卡脖子</strong></td><td>东材科技PPO突破是第一步，但距ABF树脂还有距离</td></tr>
+        <tr><td><strong>高端光刻胶空白</strong></td><td>PCB/封装用高端光刻胶依赖日本JSR/TOK，国产化率<strong><5%</strong></td><td style="color:#ff6b6b"><strong>🔴 卡脖子</strong></td><td>强力新材、飞凯材料正在突破，但量产认证需时间</td></tr>
+        <tr><td><strong>104层演进压力</strong></td><td>AI算力需求推动PCB层数向104层演进，对材料超低Df、CTE匹配、工艺精度要求指数级提升</td><td style="color:#ffc832"><strong>🟡 有差距</strong></td><td>78层已量产，104层是下一个3年的主战场</td></tr>
+        <tr><td><strong>技术迭代加速</strong></td><td>AI芯片每1.5年换代，PCB需同步升级。跟不上节奏的企业将被快速淘汰</td><td style="color:#ffc832"><strong>🟡 挑战</strong></td><td>龙头持续研发投入，差距在缩小</td></tr>
+        <tr><td><strong>行业分化加剧</strong></td><td>高端PCB供不应求、利润暴增；普通PCB同质化严重、持续承压</td><td style="color:#4ae68a"><strong>🟢 分化即机会</strong></td><td>选龙头、选高端，不选平庸</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box" style="border-left-color:#ff6b6b">
+      <strong>最大"卡脖子"环节：ABF载板用关键树脂 + 高端光刻胶，国产化率均不足5%。</strong><br>
+      这是未来3-5年中国PCB产业从"并跑"到"领跑"的最后一公里。<br>
+      但也是<strong>弹性最大</strong>的国产替代方向——一旦突破，价值量是现有PCB材料的5-10倍。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>💎 十四、PCB六家核心组合：当前位置全景</h2>
+
+    <p>综合"低位看逻辑（行业景气度）"和"高位看量价（回调结构）"，六家核心组合的当前评级如下：</p>
+
+    <table>
+      <thead><tr><th>标的</th><th>逻辑评分</th><th>价格评分</th><th>综合</th><th>操作建议</th></tr></thead>
+      <tbody>
+        <tr><td><strong>深南电路</strong></td><td style="color:#4ae68a">⭐⭐⭐⭐⭐</td><td style="color:#4ae68a">⭐⭐⭐⭐⭐</td><td style="color:#4ae68a"><strong>双优</strong></td><td>回调缩量即加仓，逻辑最强、价格最稳</td></tr>
+        <tr><td><strong>沪电股份</strong></td><td style="color:#4ae68a">⭐⭐⭐⭐⭐</td><td style="color:#ffc832">⭐⭐⭐</td><td style="color:#ffc832"><strong>逻辑优 · 价格待定</strong></td><td>等缩量到高位量的30%以下，确认支撑再进</td></tr>
+        <tr><td><strong>胜宏科技</strong></td><td style="color:#4ae68a">⭐⭐⭐⭐⭐</td><td style="color:#ff6b6b">⭐⭐</td><td style="color:#ff6b6b"><strong>逻辑强 · 价格差</strong></td><td>回调没调好——等放量下跌后的缩量止跌信号</td></tr>
+        <tr><td><strong>生益科技</strong></td><td style="color:#4ae68a">⭐⭐⭐⭐⭐</td><td style="color:#4ae68a">⭐⭐⭐⭐</td><td style="color:#4ae68a"><strong>优</strong></td><td>估值最低的核心标的，28x覆铜板全球龙头——便宜</td></tr>
+        <tr><td><strong>铜冠铜箔</strong></td><td style="color:#7eb8ff">⭐⭐⭐⭐</td><td style="color:#ffc832">⭐⭐⭐</td><td style="color:#ffc832"><strong>成长标的</strong></td><td>HVLP4/5放量是关键，40x不贵但需放量确认</td></tr>
+        <tr><td><strong>东材科技</strong></td><td style="color:#7eb8ff">⭐⭐⭐⭐</td><td style="color:#ff6b6b">⭐⭐</td><td style="color:#ff6b6b"><strong>弹性最大 · 也是最贵</strong></td><td>50x PPO故事好——但等35-40x再考虑</td></tr>
+      </tbody>
+    </table>
+
+    <div class="eureka">
+      <strong>六张牌，三种打法：</strong><br>
+      🟢 深南 + 生益 — <strong>持仓核心</strong>，回调就是机会，逻辑最硬价格最合理<br>
+      🟡 沪电 + 铜冠 — <strong>观察等待</strong>，逻辑没问题，等量价结构调好再出手<br>
+      🔴 胜宏 + 东材 — <strong>弹性最大但需要耐心</strong>，等回调调到位——真正的大肉在这里
+    </div>
+
+    <div class="article-footer">
+      —— <strong>渡曰</strong> · 无殊梳理 · 2026年6月
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 玻璃基板 ===== -->
+<section id="glass" class="section fade-in">
+  <div class="section-header">
+    <h2>🪟 玻璃基板 · AI芯片封装的下一站</h2>
+    <div class="divider"></div>
+    <p>传统有机基板已到物理天花板——玻璃基板不是改良，是换赛道</p>
+  </div>
+  <div class="article-body">
+
+    <div class="divider-line">···</div>
+
+    <h2>🏗️ 一、有机基板的"三堵墙"——为什么是现在？</h2>
+
+    <p>AI大芯片的尺寸越做越大，功耗越来越高。传统有机基板<strong>撑不住了</strong>。</p>
+
+    <table>
+      <thead><tr><th>瓶颈</th><th>数据</th><th>后果</th></tr></thead>
+      <tbody>
+        <tr><td><strong>翘曲变形</strong></td><td>有机CTE~15ppm vs 硅~3ppm</td><td>大芯片>70×70mm良率&lt;50%</td></tr>
+        <tr><td><strong>散热极限</strong></td><td>导热率~0.3W/m·K</td><td>300W+芯片热堆积→被迫降频</td></tr>
+        <tr><td><strong>布线密度</strong></td><td>线宽极限~8μm</td><td>AI芯片需要2μm级互连</td></tr>
+      </tbody>
+    </table>
+
+    <div class="eureka">
+      <strong>有机基板的物理极限已到。</strong>玻璃基板不是"改良"，是"换赛道"。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>✅ 二、四大核心优势（渡定调）</h2>
+
+    <table>
+      <thead><tr><th>#</th><th>优势</th><th>数据</th><th>意义</th></tr></thead>
+      <tbody>
+        <tr><td>①</td><td><strong>电气性能</strong></td><td>传输损耗降低<strong>50%+</strong></td><td>高频信号更干净，带宽更高</td></tr>
+        <tr><td>②</td><td><strong>热管理</strong></td><td>CTE 3~5ppm 匹配硅~3ppm</td><td>冷热循环寿命跃升，焊点应力消失</td></tr>
+        <tr><td>③</td><td><strong>布线精度</strong></td><td>2μm线宽 · 通孔密度<strong>10倍</strong></td><td>封装密度翻倍，能塞更多I/O</td></tr>
+        <tr><td>④</td><td><strong>封装密度</strong></td><td>同面积多容纳<strong>50%</strong>芯片</td><td>同样的chip面积，算力+50%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <strong>四大优势不是线性提升，是量级跨越。</strong><br>
+      电气性能+50% + 封装密度+50% + 通孔密度10倍 + CTE完美匹配硅 =<br>
+      有机基板做不到，玻璃基板是唯一路径。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🔗 三、产业链及价值链全景</h2>
+
+    <h3>三层架构 · 壁垒逐级递减</h3>
+
+    <table>
+      <thead><tr><th>层级</th><th>做什么</th><th>技术壁垒</th><th>全球主导</th></tr></thead>
+      <tbody>
+        <tr><td>🟢 <strong>上游</strong></td><td>玻璃原材料 + 核心生产设备</td><td style="color:#ff6b6b"><strong>🔴 最高</strong> — 材料科学+配方</td><td>康宁🇺🇸 · AGC🇯🇵 · NEG🇯🇵 · 肖特🇩🇪</td></tr>
+        <tr><td>🟡 <strong>中游</strong></td><td>基板加工 — 玻璃成型·激光打孔·线路构建</td><td style="color:#ffc832"><strong>🟡 高</strong> — 设备+工艺稳定性</td><td>英特尔🇺🇸 · 三星🇰🇷 · LG Innotek🇰🇷</td></tr>
+        <tr><td>🔵 <strong>下游</strong></td><td>AI封装 · 高速光模块 · 显示面板 · 光伏</td><td><strong>🟢 中等</strong> — 应用层</td><td>NVIDIA · AMD · 长电 · 日月光</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <strong>价值链流向：</strong><br>
+      上游（原材料设备）<span style="color:#ff6b6b">━━壁垒最高━━</span>→ 中游（基板加工）<span style="color:#ffc832">━━技术密集━━</span>→ 下游（应用场景）<br>
+      │&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│<br>
+      康宁·AGC 美日锁死&emsp;&emsp;TGV通孔是核心难点&emsp;AI封装+光模块增速最快
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>📋 四、国内标的深度拆解</h2>
+
+    <h3>🟢 上游 · 玻璃原材料与核心生产设备</h3>
+    <p><strong>全球格局：</strong>康宁🇺🇸 · AGC🇯🇵 · NEG🇯🇵 · 肖特🇩🇪 高度垄断。</p>
+    <p>国内能做显示级玻璃基板的企业不少，但<strong>封装级对平整度、热稳定性、表面精度要求远高于显示级</strong>。目前无企业能量产封装级原片——这是卡脖子点之一。</p>
+
+    <table>
+      <thead><tr><th>标的</th><th>代码</th><th>市值</th><th>相关度</th><th>核心看点</th></tr></thead>
+      <tbody>
+        <tr><td><strong>凯盛科技</strong></td><td>600552</td><td>~100亿</td><td>⭐⭐⭐</td><td>超薄电子玻璃（UTG）技术，有潜力向封装级延伸</td></tr>
+        <tr><td><strong>南玻A</strong></td><td>000012</td><td>~150亿</td><td>⭐⭐</td><td>电子玻璃有布局，但非封装级</td></tr>
+        <tr><td><strong>彩虹股份</strong></td><td>600707</td><td>~280亿</td><td>⭐⭐</td><td>显示玻璃基板龙头，非封装方向</td></tr>
+        <tr><td><strong>旗滨集团</strong></td><td>601636</td><td>~200亿</td><td>⭐</td><td>电子玻璃起步阶段</td></tr>
+      </tbody>
+    </table>
+
+    <h3>🟡 中游 · 基板加工制造（最核心环节 ⭐）</h3>
+    <p><strong>核心难点：TGV（玻璃通孔）</strong> — 在玻璃上打出微米级通孔并填满导电材料。激光钻孔设备依赖进口（🇩🇪/🇯🇵主导）。国内能做TGV的企业极少。</p>
+
+    <table>
+      <thead><tr><th>标的</th><th>代码</th><th>市值</th><th>相关度</th><th>核心看点</th></tr></thead>
+      <tbody>
+        <tr><td><strong>兴森科技</strong></td><td>002436</td><td>~200亿</td><td style="color:#4ae68a"><strong>⭐⭐⭐⭐⭐</strong></td><td><strong>最核心标的。</strong>IC封装基板龙头，已布局玻璃基板技术路线。2025年珠海FCBGA项目投产。</td></tr>
+        <tr><td><strong>深南电路</strong></td><td>002916</td><td>~500亿</td><td style="color:#7eb8ff"><strong>⭐⭐⭐⭐</strong></td><td>PCB+封装双龙头，玻璃基板是必然延伸方向</td></tr>
+        <tr><td><strong>生益科技</strong></td><td>600183</td><td>~400亿</td><td>⭐⭐</td><td>覆铜板龙头，间接受益</td></tr>
+        <tr><td><strong>华正新材</strong></td><td>603186</td><td>~60亿</td><td>⭐⭐</td><td>覆铜板/封装材料，体量偏小</td></tr>
+      </tbody>
+    </table>
+
+    <h3>🔵 下游 · AI封装 + 高速光模块（增速最快领域）</h3>
+
+    <table>
+      <thead><tr><th>标的</th><th>代码</th><th>市值</th><th>相关度</th><th>核心看点</th></tr></thead>
+      <tbody>
+        <tr><td><strong>长电科技</strong></td><td>600584</td><td>~700亿</td><td style="color:#7eb8ff"><strong>⭐⭐⭐⭐</strong></td><td>封测龙头全球第三，Chiplet先进封装，玻璃基板是跟踪路线之一</td></tr>
+        <tr><td><strong>通富微电</strong></td><td>002156</td><td>~400亿</td><td>⭐⭐⭐</td><td>AMD核心封测伙伴，受益AI芯片封装爆发</td></tr>
+        <tr><td><strong>华天科技</strong></td><td>002185</td><td>~300亿</td><td>⭐⭐</td><td>封测第二梯队</td></tr>
+      </tbody>
+    </table>
+
+    <h3>🟣 设备/材料配套</h3>
+
+    <table>
+      <thead><tr><th>标的</th><th>代码</th><th>相关度</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td><strong>天承科技</strong></td><td>688603</td><td>⭐⭐⭐</td><td>封装电镀液，TGV工艺必需</td></tr>
+        <tr><td><strong>艾森股份</strong></td><td>688720</td><td>⭐⭐⭐</td><td>封装材料细分</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>📅 五、产能落地时间线</h2>
+
+    <table>
+      <thead><tr><th>时间</th><th>事件</th><th>影响</th></tr></thead>
+      <tbody>
+        <tr><td><strong>2024</strong></td><td>英特尔展示玻璃基板封装样品</td><td>验证技术可行性，行业风向标</td></tr>
+        <tr><td><strong>2025</strong></td><td>三星投资玻璃基板试产线</td><td>🟡 全球格局明朗化</td></tr>
+        <tr><td><strong style="color:#ff6b6b">2026</strong></td><td>英特尔小批量产 · 三星试产 · LG Innotek跟进</td><td style="color:#ff6b6b"><strong>🔥 关键转折年</strong></td></tr>
+        <tr><td><strong style="color:#ffc832">2027-2028</strong></td><td>大规模量产 · 国内企业跟进</td><td style="color:#ffc832"><strong>🔥🔥🔥 产业链爆发期</strong></td></tr>
+        <tr><td><strong>2029+</strong></td><td>渗透率提升，逐步替代高端有机基板</td><td></td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <strong>2026是关键转折年。</strong>英特尔小批量产、三星试产——全球格局在今年确定。国内企业现在不跟，就永远追不上了。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>⚔️ 六、与光棒/变压器的对位</h2>
+
+    <table>
+      <thead><tr><th>对比维度</th><th>⚡ 变压器</th><th>💡 光棒</th><th>🪟 玻璃基板</th></tr></thead>
+      <tbody>
+        <tr><td><strong>驱动因素</strong></td><td>AI用电</td><td>AI互联</td><td style="color:#ff6b6b"><strong>AI芯片封装</strong></td></tr>
+        <tr><td><strong>技术壁垒</strong></td><td>±1100kV全球3家</td><td>光棒<10家能造</td><td style="color:#ff6b6b"><strong>上游美日垄断 · TGV极高</strong></td></tr>
+        <tr><td><strong>全球龙头</strong></td><td>ABB·西门子</td><td>长飞(全球第1)🏆</td><td>康宁·英特尔·三星</td></tr>
+        <tr><td><strong>国产地位</strong></td><td>特变领先 🏆</td><td>长飞第一 🏆</td><td style="color:#ff6b6b"><strong>❌ 尚在追赶，差距大</strong></td></tr>
+        <tr><td><strong>当前阶段</strong></td><td>🔥 过热期</td><td>🌱 复苏初期</td><td style="color:#ffc832"><strong>🌅 爆发前夜</strong></td></tr>
+        <tr><td><strong>投资确定性</strong></td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐ 低但弹性最大</td></tr>
+        <tr><td><strong>弹性空间</strong></td><td>3-5年稳健</td><td>5-10年大周期</td><td style="color:#4ae68a"><strong>🚀 5-10x可能是起点</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="quote-block" style="border-left-color:#4ae68a;margin-top:2rem">
+      <strong>⚡ 变压器的故事讲了大半章。</strong><br>
+      <strong>💡 光棒的故事刚刚翻开第一页，开篇就是550%。</strong><br>
+      <strong style="color:#4ae68a">🪟 玻璃基板的故事甚至还没开场——剧本攥在英特尔和三星手里，中国在等一个入场机会。</strong>
+      <span class="source">—— 2026年6月 · 无殊判断</span>
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🎯 七、核心判断</h2>
+
+    <div class="highlight-box">
+      <strong>光棒550%的暴涨是供需缺口 + 扩产周期长。</strong><br>
+      <strong>玻璃基板的逻辑比光棒更硬——有机基板有物理天花板，不是供需问题，是技术代差。</strong>
+    </div>
+
+    <p>三条线清醒看到：</p>
+
+    <table>
+      <thead><tr><th></th><th>判断</th><th>解读</th></tr></thead>
+      <tbody>
+        <tr><td>🔴</td><td><strong>国内差距比光棒更大</strong></td><td>光棒我们全球第一，玻璃基板还在追赶。上游原片被美日锁死，中游TGV技术待突破。</td></tr>
+        <tr><td>🟡</td><td><strong>产能落地还有1-2年</strong></td><td>2026是论证年，2027-2028才是量产出货。不要用今年的业绩去估值明年的赛道。</td></tr>
+        <tr><td>🟢</td><td><strong>弹性最大但确定性最低</strong></td><td>方向对了，空间可能是变压器数倍。但选错标的、跟错节奏，照样白忙。</td></tr>
+      </tbody>
+    </table>
+
+    <div class="eureka">
+      <strong>玻璃基板 = 光棒的故事 + 更高的壁垒 + 更大的差距 + 更爆的弹性。</strong><br>
+      这不是2026年的投资主线——这是2027-2030年的胜负手。
+    </div>
+
+    <div class="article-footer">
+      —— <strong>渡曰</strong> · 无殊梳理 · 2026年6月
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 股价观察 ===== -->
+<section id="pricewatch" class="section fade-in">
+  <div class="section-header">
+    <h2>📊 股价观察——逻辑落地与价格博弈</h2>
+    <div class="divider"></div>
+    <p>低位看逻辑，高位看量价。行业景气度上涨，适当低估和适当高估都在合理范围合理估值。</p>
+  </div>
+  <div class="article-body">
+
+    <div class="eureka">
+      <strong>九字心法：低位看逻辑，高位看量价。</strong><br>
+      底部区域，逻辑通就敢买——PE高不是问题，看不清才是。<br>
+      高位区间，逻辑还在但量价结构不对——再好的故事也得等回调调好。
+    </div>
+
+    <h2>📌 核心标的股价全景</h2>
+    <p>以下是我们持续跟踪的"算力六家核心组合"与权重标的，按当前价格位置分成三类——<span style="color:#4ae68a"><strong>逻辑兑现中</strong></span>、<span style="color:#ffc832"><strong>回调进行中</strong></span>、<span style="color:#ff6b6b"><strong>尚未企稳</strong></span>。</p>
+
+    <h3>🟢 <span style="color:#4ae68a">逻辑兑现中 · 趋势完整</span></h3>
+    <table>
+      <thead><tr><th>标的</th><th>当前PE</th><th>逻辑强度</th><th>价格状态</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr><td><strong>深南电路</strong></td><td>~35x</td><td style="color:#4ae68a"><strong>⭐⭐⭐⭐⭐</strong></td><td>箱体震荡 · 缩量回踩支撑</td><td><span style="color:#4ae68a">逻辑最强，回调有迹可循</span></td></tr>
+        <tr><td><strong>生益科技</strong></td><td>~28x</td><td style="color:#4ae68a"><strong>⭐⭐⭐⭐⭐</strong></td><td>高位整理 · 量价配合较好</td><td><span style="color:#4ae68a">覆铜板龙头，估值合理偏低</span></td></tr>
+        <tr><td><strong>铜冠铜箔</strong></td><td>~40x</td><td style="color:#7eb8ff"><strong>⭐⭐⭐⭐</strong></td><td>震荡上行 · 趋势仍在</td><td><span style="color:#ffc832">需观察HVLP放量节奏</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>🟡 <span style="color:#ffc832">回调进行中 · 调没调好是关键</span></h3>
+    <table>
+      <thead><tr><th>标的</th><th>当前PE</th><th>逻辑强度</th><th>回调状态</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr><td><strong>沪电股份</strong></td><td>~25x</td><td style="color:#4ae68a"><strong>⭐⭐⭐⭐⭐</strong></td><td>从高位回落~20%，缩量但未到支撑</td><td><span style="color:#ff6b6b">调得不够深，等量缩到位</span></td></tr>
+        <tr><td><strong>胜宏科技</strong></td><td>~30x</td><td style="color:#4ae68a"><strong>⭐⭐⭐⭐⭐</strong></td><td>高位放量回落，反弹乏力</td><td><span style="color:#ff6b6b">回调没调好——放量下跌说明抛压没释放干净</span></td></tr>
+        <tr><td><strong>东材科技</strong></td><td>~50x</td><td style="color:#7eb8ff"><strong>⭐⭐⭐⭐</strong></td><td>高位宽幅震荡·换手率偏高</td><td><span style="color:#ff6b6b">PPO故事好但PE不便宜，等40x以下再看</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>🔴 <span style="color:#ff6b6b">尚未企稳 · 观望为主</span></h3>
+    <table>
+      <thead><tr><th>标的</th><th>当前PE</th><th>逻辑强度</th><th>价格状态</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr><td><strong>南亚新材</strong></td><td>~22x</td><td>⭐⭐⭐</td><td>阴跌趋势，未放量止跌</td><td><span style="color:#ff6b6b">M9认证是利好但股价不认——等放量止跌信号</span></td></tr>
+        <tr><td><strong>圣泉集团</strong></td><td>~18x</td><td>⭐⭐⭐</td><td>低位盘整，无放量突破</td><td><span style="color:#ff6b6b">逻辑偏弱，不急于进场</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="divider-line">···</div>
+
+    <h2>🧠 "回调没调好"——怎么看的？</h2>
+    <p>渡说回调没调好，是极精准的观察。我们拆开看什么叫"调好了"vs"没调好"：</p>
+
+    <table>
+      <thead><tr><th>特征</th><th style="color:#4ae68a">✅ 调好了</th><th style="color:#ff6b6b">❌ 没调好</th></tr></thead>
+      <tbody>
+        <tr><td><strong>量价结构</strong></td><td>缩量回踩，卖盘衰竭</td><td>放量下跌，抛压持续</td></tr>
+        <tr><td><strong>支撑测试</strong></td><td>精准回踩关键均线/前低后反弹</td><td>该撑的地方没撑住，继续阴跌</td></tr>
+        <tr><td><strong>反弹形态</strong></td><td>缩量止跌→放量反弹→温和放量确认趋势</td><td>反弹无力、冲高回落、量能忽大忽小</td></tr>
+        <tr><td><strong>筹码沉淀</strong></td><td>换手率从高位回落至正常水平</td><td>高位换手率持续偏高，散户接盘</td></tr>
+        <tr><td><strong>情绪</strong></td><td>悲观出清、无人问津时</td><td>还有"抄底"声音、各路大V还在喊</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <strong>案例对比：</strong><br>
+      ✅ <strong>深南电路</strong>——从高点回落后缩量横盘，成交量萎缩到高峰的40%以下，就是"调好了"的典型。<br>
+      ❌ <strong>胜宏科技</strong>——高位放量下跌后反弹无力，量没缩到位就反弹，说明筹码没洗干净——这叫"回调没调好"。
+    </div>
+
+    <div class="divider-line">···</div>
+
+    <h2>🔭 变压器 & 光棒标的：简要观察</h2>
+
+    <table>
+      <thead><tr><th>标的</th><th>当前PE</th><th>逻辑</th><th>价格状态</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr><td><strong>特变电工</strong></td><td>~12x</td><td style="color:#4ae68a">⭐⭐⭐⭐</td><td>低位横盘 · 缩量明显</td><td style="color:#4ae68a">最便宜的算力标的——12x电力全链龙头，调到位了</td></tr>
+        <tr><td><strong>金盘科技</strong></td><td>~22x</td><td style="color:#4ae68a">⭐⭐⭐⭐</td><td>高位回落~30%，缩量止跌</td><td style="color:#4ae68a">干变出口龙头，回调已较充分</td></tr>
+        <tr><td><strong>长飞光纤</strong></td><td>~15x</td><td style="color:#7eb8ff">⭐⭐⭐⭐</td><td>底部放量突破后回踩确认</td><td>已涨550%但我们最早——等二次回踩</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>特变电工12x</strong>是整个网站覆盖标的中PE最低的。全球电力设备景气+特高压建设加速——这个价格，逻辑撑得住。</p>
+
+    <div class="divider-line">···</div>
+
+    <h2>🔮 顺络电子（002138.SZ）——炒预期的临界点</h2>
+
+    <table>
+      <thead><tr><th>标的</th><th>当前PE</th><th>逻辑强度</th><th>价格状态</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr><td><strong>顺络电子</strong></td><td>~30x</td><td style="color:#7eb8ff">⭐⭐⭐⭐</td><td>下降趋势，未止跌</td><td style="color:#ff6b6b">炒预期型标的——关键锚点21元，三点合一才动手</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <strong>渡的判断：下降趋势不入场。</strong><br><br>
+      顺络电子是<strong>炒预期型标的</strong>，不是业绩落地型。反观PCB产业链——深南、沪电的业绩已经全面落地，光模块落地更早。<br><br>
+      顺络的MLCC/电感故事讲的是<strong>AI终端需求爆发</strong>（手机、汽车、服务器）——但这个故事还在"预期"阶段，利润还没真兑现。<br><br>
+      <strong>关键锚点21元</strong>——到了这个价位性质会变化，但<strong>不是买入指令</strong>。<br>
+      需要<strong>三点合一</strong>才动手：① 趋势止跌（放量→缩量→企稳）② 大盘共振 ③ PE合理（对应标的自身周期位置）。<br><br>
+      🟢 PCB业绩已全面落地 → 确定性最高<br>
+      🟡 光模块落地更早 → 弹性已消化<br>
+      🔴 顺络电子还在讲故事 → 等预期兑现的信号出现
+    </div>
+
+    <div class="divider-line">···</div>
+
+    <h2>🎯 核心结论</h2>
+
+    <div class="highlight-box">
+      <strong>九个字：低位看逻辑，高位看量价。</strong><br><br>
+      <strong>行业景气度在涨，逻辑没有变——变的是价格和位置。</strong><br>
+      适当低估（特变12x、生益28x）和适当高估（东材50x）都在合理范围——<br>
+      因为景气度上升本身就在"消化高估值"或"修复低估值"。<br><br>
+      <strong>但"回调没调好"意味着：</strong><br>
+      🔴 高位追进去的筹码还没洗干净 → 需要时间换空间<br>
+      🟢 逻辑最强的个股（深南/生益）回调即是机会<br>
+      🟡 弹性最大的题材（胜宏/东材）反而要最耐心——等量缩、等支撑、等"没人喊了"再动手
+    </div>
+
+    <p><strong>最后一句：景气度上涨阶段，最怕的不是买贵，是没买够。</strong> 但"没买够"的前提是——得在调好的位置动手。回调没调好就冲，再好的逻辑也扛不住价格的毒打。</p>
+
+    <div class="article-footer">
+      —— <strong>渡曰</strong> · 无殊润笔 · 2026年6月
+    </div>
+  </div>
+</section>
+
+<!-- ===== 市盈率 ===== -->
+<section id="pe" class="section fade-in">
+  <div class="section-header">
+    <h2>📊 市盈率这件小事</h2>
+    <div class="divider"></div>
+    <p>90%的人都想反了——10元的股票和100元的股票，哪个更危险？</p>
+  </div>
+  <div class="article-body">
+
+    <p>10元的垃圾股能跌到5元，100元的牛股能翻到200元。</p>
+    <p>真正该盯的数字，是<strong>市盈率</strong>。</p>
+    <p>10元的股票和100元的股票，哪个更危险？90%的人想错了。</p>
+
+    <div class="divider-line">···</div>
+
+    <h2>🧠 先搞懂市盈率是什么</h2>
+    <p>把市盈率（PE）当成"理想情况下的<strong>回本年份</strong>"。</p>
+    <p>算法不复杂：</p>
+    <div class="highlight-box">
+      <strong>PE = 公司总市值 ÷ 年度净利润</strong>
+    </div>
+    <p>举个例子：一家公司值100万，一年净赚10万，PE就是<strong>10倍</strong>——你投的钱按这个速度，10年拿回来。</p>
+    <p>如果一年只赚1万，PE就飙到<strong>100倍</strong>，回本要等一个世纪。</p>
+    <p>哪个更划算？一目了然。</p>
+
+    <h2>🪞 PE才是照妖镜，股价不是</h2>
+    <p>现在问题来了——一只卖10元，一只卖100元，到底哪个贵？</p>
+    <p><strong>别盯股价，要看背后的PE。</strong></p>
+    <p>假如10元那只PE是100倍，100元那只PE只有10倍——那反而是100块的更划算。</p>
+    <p>因为<strong>PE才是照妖镜，股价不是</strong>。</p>
+    <p>但九成人都栽进同一个坑：觉得PE越低越好。</p>
+    <div class="eureka"><strong>大错特错。</strong></div>
+    <p>我见过PE只有5倍的股票，买进去一路跌；也见过PE飙到100倍的股票，半年翻了一番。</p>
+    <p>为什么？</p>
+
+    <h2>🔮 选股不是比数字高低，是看成长空间</h2>
+    <p>逻辑链其实很简单：</p>
+    <div class="highlight-box">
+      <strong>一家公司业绩炸裂，净利润翻着跟头涨 → PE不用你操心，自己就往下掉。</strong>
+    </div>
+    <p>因为PE的分子是股价，分母是利润。利润翻倍了，股价没动，PE直接腰斩。</p>
+    <p>反过来——</p>
+    <div class="highlight-box">
+      <strong>市场疯抢一家高增长公司 → 股价起飞 → PE水涨船高。</strong>
+    </div>
+    <p>所以高PE不一定是坏事，低PE不一定是好事。<br>关键看它背后有没有<strong>撑起那个价格的未来</strong>。</p>
+
+    <div class="divider-line">···</div>
+
+    <h2>📊 三种市盈率，你得拆开看</h2>
+    <p>盘面上常挂着三兄弟：</p>
+    <table>
+      <thead><tr><th>类型</th><th>怎么算的</th><th>适合谁</th></tr></thead>
+      <tbody>
+        <tr><td><strong>静态PE</strong></td><td>用去年全年净利润算</td><td>银行、基建——像老黄牛一样踏实</td></tr>
+        <tr><td><strong>动态PE</strong></td><td>拿近一季度净利润×4估算全年</td><td>AI、新能源——窜得快的赛道</td></tr>
+        <tr><td><strong style="color:#7eb8ff">滚动PE（TTM）</strong></td><td>用过去一整年实打实的利润算</td><td><strong>✅ 普通散户盯这个就够了</strong></td></tr>
+      </tbody>
+    </table>
+    <p>滚动PE最实在，用的是已经发生的钱，没那么容易被忽悠。</p>
+
+    <h2>🚫 一条死规矩</h2>
+    <p><strong>不同赛道的PE不能硬拉在一起比。</strong></p>
+    <p>把银行股和科技股放在一起比PE，就像拿冰箱和西瓜比分量——根本不搭边。</p>
+    <p>大概的参考范围：</p>
+    <table>
+      <thead><tr><th>赛道</th><th>PE范围</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>🏦 银行、基建</td><td>5～15倍</td><td>吃老本的行业，增长慢</td></tr>
+        <tr><td>🏭 制造、零售</td><td>20～35倍</td><td>中等增速</td></tr>
+        <tr><td>🤖 AI、芯片</td><td>30～60倍+</td><td>高增长赛道，天花板高</td></tr>
+      </tbody>
+    </table>
+    <p>高增长公司前期烧钱多、利润薄甚至亏本，但市场赌的是它<strong>明天能爆发</strong>。资金愿意给它更高的PE，恰恰说明市场看好它——而不是它贵。</p>
+
+    <h2>⚠️ 有一类公司要瞪大眼睛</h2>
+    <p>钢铁、煤炭这些重资产行业，PE看起来低得诱人。</p>
+    <p>但这里有个坑——</p>
+    <div class="warning-box">
+      <strong>PE已经是扣除了折旧之后的数字。</strong>净利润里已经把设备磨损的钱算进去了。但这类公司赚来的钱，很大一部分还得继续投进设备维修和厂房更新里。真正能落袋为安的自由现金流（FCF），远低于净利润。
+    </div>
+    <p>而且这种公司成长空间有限，一不小心现金流就容易绷断。</p>
+    <p>这时候只盯着PE就是跳坑。你得死死盯住<strong>现金流</strong>和<strong>资产回报率（ROE）</strong>——那才是真正的照妖镜。</p>
+
+    <div class="divider-line">···</div>
+
+    <h2>💡 最后说一句</h2>
+    <p>市盈率这件小事，说小也小——就是一道除法题；说大也大——把股价这件外衣扒了，让你看到公司真实的样子。</p>
+    <div class="eureka">
+      <strong>别让股价骗了你。</strong><br>
+      10元可以很贵，100元可以很便宜。<br>
+      贵的不是价格，是你不值那个价的判断。
+    </div>
+    <p>下次看到一只低价股，先问一句：<br><strong>它的PE是多少？利润在涨还是在跌？</strong></p>
+    <p>把这想清楚了，你就已经跑赢了90%的散户。</p>
+
+    <div class="article-footer">
+      —— <strong>渡曰</strong> · 无殊润笔 · 2026年6月
+    </div>
+  </div>
+</section>
+
+<!-- ===== 微信群 ===== -->
+<section class="section fade-in" id="wechat">
+  <div class="section-header">
+    <h2>💬 微信群 · 算力基础设施洞察</h2>
+    <div class="divider"></div>
+    <p>扫码加入，和渡、无殊一起探讨AI基础设施产业链</p>
+  </div>
+  <div style="max-width:500px;margin:0 auto;text-align:center">
+    <div style="
+      background:linear-gradient(145deg,rgba(7,193,96,0.05),rgba(7,193,96,0.02));
+      border:1px solid rgba(7,193,96,0.2);
+      border-radius:16px;padding:2rem;
+    ">
+      <div style="font-size:3rem;margin-bottom:.75rem">💚</div>
+      <p style="color:#07c160;font-weight:700;font-size:1.05rem;margin-bottom:.5rem">算力基础设施洞察</p>
+      <p style="color:#6b7b95;font-size:.82rem;margin-bottom:1.5rem">
+        变压器 · 光棒 · 三大瓶颈 · 每日深度讨论
+      </p>
+      <img src="https://raw.githubusercontent.com/wushu-wuxing/compute-infrastructure-insights/main/assets/wechat-qr.jpg" alt="微信群二维码"
+           style="width:200px;height:200px;border-radius:12px;object-fit:cover;
+                  margin:0 auto 1rem;display:block;box-shadow:0 4px 20px rgba(7,193,96,0.15)">
+      <p style="color:#5a6a80;font-size:.78rem">
+        或搜索群名 <strong style="color:#07c160">「算力基础设施洞察」</strong> 加入
+      </p>
+    </div>
   </div>
 </section>
 
@@ -538,7 +1694,11 @@ footer{
     <p style="color:#6b7b95;font-size:.85rem;margin-top:1.5rem">
       每一行分析都是口述+查阅公开财报后的判断，不构成投资建议。<br>
       数据来源：新浪财经、东方财富、腾讯行情、公开财报。<br>
-      建站：无殊 · 灵感：渡
+      建站：无殊 · 灵感：渡 · 行业基准对比、微调：烁
+    </p>
+    
+    <p style="margin-top:2rem">
+      <a href="mailto:zangfeng@coze.email" style="color:#4a9eff;text-decoration:none;font-size:.9rem;border:1px solid #4a9eff33;padding:6px 20px;border-radius:20px;transition:.2s" onmouseover="this.style.background='#4a9eff22'" onmouseout="this.style.background='transparent'">📧 zangfeng@coze.email</a>
     </p>
     
   </div>
@@ -550,13 +1710,74 @@ footer{
 </footer>
 
 <script>
-// ===== SCROLL ANIMATION =====
+// ===== SCROLL PROGRESS BAR =====
+const progressBar = document.getElementById('scrollProgress')
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight
+  progressBar.style.transform = 'scaleX(' + Math.min(window.scrollY / h, 1) + ')'
+})
+
+// ===== STAGGERED SCROLL ENTRY =====
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    if(entry.isIntersecting) entry.target.classList.add('visible')
+    if(entry.isIntersecting) {
+      entry.target.classList.add('visible')
+    }
   })
-},{threshold:.1})
+},{threshold:.15})
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el))
+
+// ===== NUMBER COUNTER =====
+function animateCounters() {
+  document.querySelectorAll('.stat-block .number').forEach(el => {
+    const raw = el.textContent.trim()
+    // only animate pure numbers with optional +/- prefix and no units mixed
+    const m = raw.match(/^([+-]?)([0-9][0-9.,]*)([%x+]*)$/)
+    if(!m) return
+    const isPercent = raw.includes('%')
+    const isMultiplier = raw.includes('x')
+    const cleanNum = parseFloat(raw.replace(/[+,%x]/g,'').replace(/,/g,''))
+    if(isNaN(cleanNum)) return
+
+    const suffix = isPercent ? '%' : isMultiplier ? 'x' : ''
+    const formatted = n => {
+      if(isPercent || isMultiplier) return n.toFixed(1) + suffix
+      if(n >= 10000) return Math.round(n/10000)/100 + '万'
+      if(n >= 1000) return Math.round(n)
+      return n.toFixed(1)
+    }
+
+    let startVal = 0
+    const endVal = cleanNum
+    const duration = 1200
+    const startTime = performance.now()
+    const prefix = raw.startsWith('+') ? '+' : ''
+
+    function tick(now) {
+      const elapsed = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      // ease-out quad
+      const eased = 1 - (1 - progress) * (1 - progress)
+      const current = startVal + (endVal - startVal) * eased
+      el.textContent = prefix + formatted(current)
+      if(progress < 1) requestAnimationFrame(tick)
+      else el.textContent = raw // restore original text exactly
+    }
+    requestAnimationFrame(tick)
+  })
+}
+
+// trigger counters when sections become visible
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      animateCounters()
+      counterObserver.disconnect()
+    }
+  })
+},{threshold:.2})
+const firstStat = document.querySelector('.stat-grid')
+if(firstStat) counterObserver.observe(firstStat)
 
 // ===== ACTIVE NAV =====
 const sections = document.querySelectorAll('section[id]')
