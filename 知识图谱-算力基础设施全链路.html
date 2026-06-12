@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>算力基础设施洞察 · 全链路知识图谱</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0e1a; color:#c8d0e0; font-family:-apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif; overflow-x:hidden; }
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0a0e1a}
+::-webkit-scrollbar-thumb{background:#2b5797;border-radius:3px}
+
+.header {
+  text-align:center; padding:3rem 2rem 1rem;
+  background:radial-gradient(ellipse at 50% 0%, rgba(43,87,151,0.1) 0%, transparent 60%);
+}
+.header h1 {
+  font-size:clamp(1.5rem,3vw,2.2rem); font-weight:800;
+  background:linear-gradient(135deg,#e0e8f5 0%,#4a9eff 50%,#7b61ff 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:.5rem;
+}
+.header .subtitle { color:#5a6a80; font-size:.9rem; letter-spacing:2px; }
+.header .note { color:#3a4a5a; font-size:.75rem; margin-top:.5rem; }
+
+/* ===== GRAPH CONTAINER ===== */
+.graph-container {
+  max-width:1100px; margin:0 auto; padding:1rem 2rem 3rem;
+}
+
+/* ===== LAYER ===== */
+.layer {
+  position:relative; margin-bottom:2.5rem;
+}
+.layer-title {
+  font-size:.75rem; color:#4a6a88; letter-spacing:3px; text-transform:uppercase;
+  border-bottom:1px solid rgba(43,87,151,0.12); padding-bottom:.35rem; margin-bottom:1rem;
+}
+
+/* ===== NODES GRID ===== */
+.nodes {
+  display:flex; flex-wrap:wrap; gap:1rem; justify-content:center;
+}
+.node {
+  position:relative; border-radius:12px; padding:1.25rem 1.5rem;
+  border:1px solid rgba(43,87,151,0.15); min-width:140px; flex:1 0 auto;
+  background:linear-gradient(145deg,rgba(20,28,50,0.6),rgba(12,18,35,0.85));
+  transition:.3s; cursor:default;
+}
+.node:hover { border-color:rgba(43,87,151,0.4); transform:translateY(-2px); box-shadow:0 6px 20px rgba(43,87,151,0.08); }
+.node .tag { font-size:.65rem; color:#5a6a80; margin-bottom:.25rem; letter-spacing:1px; }
+.node .name { font-size:.95rem; font-weight:700; color:#e0e8f5; margin-bottom:.2rem; }
+.node .desc { font-size:.78rem; color:#7a8a9a; line-height:1.5; }
+.node .badge { display:inline-block; font-size:.6rem; padding:.1rem .45rem; border-radius:3px; margin-top:.35rem; }
+.node.root {
+  background:linear-gradient(135deg,rgba(43,87,151,0.2),rgba(122,62,200,0.1));
+  border-color:rgba(74,158,255,0.3); min-width:200px;
+}
+.node.root .name { font-size:1.15rem; }
+.node.bottleneck { border-color:rgba(255,107,107,0.2); }
+.node.bottleneck .name { color:#ff6b6b; }
+.node.essay { }
+.node.essay-pcb { border-color:rgba(74,158,255,0.2); }
+.node.essay-fiber { border-color:rgba(255,200,50,0.2); }
+.node.essay-transformer { border-color:rgba(74,234,138,0.2); }
+.node.essay-glass { border-color:rgba(167,139,250,0.2); }
+.node.essay-compare { border-color:rgba(74,158,255,0.15); }
+.node.tool { border-color:rgba(251,146,60,0.15); }
+.node.stock-green { border-left:3px solid #4ae68a; }
+.node.stock-yellow { border-left:3px solid #ffc832; }
+.node.stock-red { border-left:3px solid #ff6b6b; }
+.node.stock-purple { border-left:3px solid #a78bfa; }
+.node.conclusion {
+  background:linear-gradient(135deg,rgba(255,200,50,0.06),rgba(74,158,255,0.04));
+  border-color:rgba(255,200,50,0.15); min-width:260px;
+}
+.node.conclusion .name { color:#ffc832; font-size:1rem; }
+
+.node .stock-price { font-size:.65rem; color:#4a5a6a; display:block; margin-top:.15rem; }
+.node .stock-pe { font-size:.65rem; display:inline-block; margin-top:.15rem; }
+.node .stock-pe.green { color:#4ae68a; }
+.node .stock-pe.yellow { color:#ffc832; }
+.node .stock-pe.red { color:#ff6b6b; }
+
+/* ===== ARROW ===== */
+.arrow-down {
+  text-align:center; color:rgba(43,87,151,0.25); font-size:1.2rem; padding:.15rem 0; letter-spacing:4px;
+}
+
+/* ===== DIVIDER ===== */
+.graph-divider {
+  text-align:center; font-size:1.2rem; color:rgba(43,87,151,0.12); letter-spacing:6px; margin:1rem 0 1.5rem;
+}
+
+/* ===== LEGEND ===== */
+.legend {
+  display:flex; flex-wrap:wrap; gap:.5rem 1.5rem; justify-content:center;
+  padding:1rem; border-top:1px solid rgba(43,87,151,0.08); margin-top:1rem;
+}
+.legend-item { font-size:.7rem; color:#5a6a80; display:flex; align-items:center; gap:.4rem; }
+.legend-dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+.legend-line { width:16px; height:2px; display:inline-block; border-radius:1px; }
+
+/* ===== FOOTER ===== */
+.footer { text-align:center; padding:2rem; color:#3a4a5a; font-size:.7rem; }
+
+/* ===== CONNECTION LINES (CSS pseudo-arrows between layers) ===== */
+.flow-line {
+  position:relative; height:24px; display:flex; align-items:center; justify-content:center;
+}
+.flow-line::before {
+  content:''; width:2px; height:100%; 
+  background:linear-gradient(180deg, rgba(43,87,151,0.3), rgba(43,87,151,0.05));
+  display:block;
+}
+.flow-line .arrow-icon {
+  position:absolute; font-size:.6rem; color:rgba(74,158,255,0.35);
+  animation:flowPulse 2.5s ease-in-out infinite;
+}
+@keyframes flowPulse {
+  0%,100%{opacity:.4;transform:translateY(0)}
+  50%{opacity:1;transform:translateY(2px)}
+}
+
+@media(max-width:640px){
+  .node { min-width:100%; padding:1rem; }
+  .layer-title { font-size:.7rem; }
+  .header h1 { font-size:1.3rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🧠 算力基础设施洞察 · 全链路知识图谱</h1>
+  <p class="subtitle">从算力需求到投资决策 · 七篇一体 · 逻辑闭环</p>
+  <p class="note">⁂ 点击导航栏对应章节跳转主站</p>
+</div>
+
+<div class="graph-container">
+
+  <!-- ===== LAYER 1: ROOT ===== -->
+  <div class="layer">
+    <div class="layer-title">🌐 第一层 · 驱动力</div>
+    <div class="nodes">
+      <div class="node root">
+        <div class="tag">🚀 核心驱动</div>
+        <div class="name">AI 算力需求指数级爆发</div>
+        <div class="desc">GPU 18月翻倍 · 数据中心吞噬电力与通信</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-line"><span class="arrow-icon">▼</span></div>
+
+  <!-- ===== LAYER 2: ALL BOTTLENECKS ===== -->
+  <div class="layer">
+    <div class="layer-title">🧱 第二层 · 算力全链路瓶颈全景</div>
+
+    <div class="layer-title" style="font-size:.7rem;color:#4a9eff;border-bottom-color:rgba(74,158,255,0.12)">🧠 计算瓶颈</div>
+    <div class="nodes">
+      <div class="node bottleneck">
+        <div class="name">🧠 GPU芯片瓶颈</div>
+        <div class="desc">英伟达主导 · 12-18月可扩产<br>CoWoS封装产能持续卡死</div>
+        <span class="badge" style="background:rgba(255,200,50,0.12);color:#ffc832">★★★☆</span>
+      </div>
+      <div class="node bottleneck">
+        <div class="name">🧮 HBM高带宽存储</div>
+        <div class="desc">SK海力士/三星垄断 · 供不应求<br>HBM3E/HBM4产能爬坡慢</div>
+        <span class="badge" style="background:rgba(255,200,50,0.15);color:#ffc832">★★★★</span>
+      </div>
+    </div>
+
+    <div class="layer-title" style="font-size:.7rem;color:#ff6b35;border-bottom-color:rgba(255,107,53,0.12);margin-top:.6rem">⚡ 电力瓶颈</div>
+    <div class="nodes">
+      <div class="node bottleneck">
+        <div class="name">⚡ 变压器瓶颈</div>
+        <div class="desc">全球缺货至2028 · 特高压壁垒高<br>±1100kV换流变全球仅3家</div>
+        <span class="badge" style="background:rgba(255,200,50,0.15);color:#ffc832">★★★★</span>
+      </div>
+      <div class="node bottleneck">
+        <div class="name">🔌 配电配套瓶颈</div>
+        <div class="desc">开关柜/断路器/UPS/母线<br>数据中心电力分配全链吃紧</div>
+        <span class="badge" style="background:rgba(255,200,50,0.12);color:#ffc832">★★★★</span>
+      </div>
+      <div class="node bottleneck">
+        <div class="name">🌡️ 散热/液冷瓶颈</div>
+        <div class="desc">1MW+机柜出现 · 风冷到头<br>液冷渗透率快速爬坡但产能受限</div>
+        <span class="badge" style="background:rgba(255,200,50,0.15);color:#ffc832">★★★★</span>
+      </div>
+    </div>
+
+    <div class="layer-title" style="font-size:.7rem;color:#ff4d8a;border-bottom-color:rgba(255,77,138,0.12);margin-top:.6rem">💡 通信瓶颈</div>
+    <div class="nodes">
+      <div class="node bottleneck">
+        <div class="name">💡 光棒瓶颈</div>
+        <div class="desc">能做纯光棒<10家 · 上游被卡脖子<br>扩产周期18-24月 · 缺到2028 🔥</div>
+        <span class="badge" style="background:rgba(255,107,107,0.15);color:#ff6b6b">★★★★★</span>
+      </div>
+      <div class="node bottleneck">
+        <div class="name">🔄 网络交换芯片瓶颈</div>
+        <div class="desc">800G/1.6T交换机需求暴增<br>Marvell/Broadcom产能受限</div>
+        <span class="badge" style="background:rgba(255,200,50,0.15);color:#ffc832">★★★★</span>
+      </div>
+    </div>
+
+    <div class="layer-title" style="font-size:.7rem;color:#94a3b8;border-bottom-color:rgba(148,163,184,0.12);margin-top:.6rem">🏗️ 物理瓶颈</div>
+    <div class="nodes">
+      <div class="node bottleneck" style="border-color:rgba(148,163,184,0.2)">
+        <div class="name">🏗️ 数据中心建设瓶颈</div>
+        <div class="desc">土地/环评/电力审批/施工周期<br>物理建设速度远追不上算力需求</div>
+        <span class="badge" style="background:rgba(255,200,50,0.12);color:#ffc832">★★★★</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="flow-line"><span class="arrow-icon">▼</span></div>
+
+  <!-- ===== LAYER 3: ESSAYS ===== -->
+  <div class="layer">
+    <div class="layer-title">📜 第三层 · 覆盖赛道（七篇研报）</div>
+    <div class="nodes">
+      <div class="node essay essay-transformer">
+        <div class="name">⚡ 变压器篇</div>
+        <div class="desc">全球缺变压器至2028<br>特变/许继/金盘/西电等11家</div>
+        <span class="badge" style="background:rgba(74,234,138,0.1);color:#4ae68a">防守确定性最高</span>
+      </div>
+      <div class="node essay essay-fiber">
+        <div class="name">💡 光棒篇</div>
+        <div class="desc">光棒550%暴涨 · 9连冠长飞<br>长飞/亨通 · 壁垒最高</div>
+        <span class="badge" style="background:rgba(255,200,50,0.1);color:#ffc832">弹性空间最大</span>
+      </div>
+      <div class="node essay essay-pcb">
+        <div class="name">🔌 PCB篇</div>
+        <div class="desc">AI算力核心底座 · 14章深度<br>深南/沪电/胜宏/生益/铜冠/南亚/东材/圣泉</div>
+        <span class="badge" style="background:rgba(74,158,255,0.12);color:#4a9eff">业绩已全面落地</span>
+      </div>
+      <div class="node essay essay-glass">
+        <div class="name">🪟 玻璃基板篇</div>
+        <div class="desc">先进封装下一站<br>TGV通孔技术突破</div>
+        <span class="badge" style="background:rgba(167,139,250,0.1);color:#a78bfa">前沿前瞻</span>
+      </div>
+    </div>
+    <div class="nodes" style="margin-top:.5rem">
+      <div class="node essay essay-compare" style="flex:0 1 auto">
+        <div class="name">⚔️ 跨行业对比</div>
+        <div class="desc">变压器 vs 光棒 · 维度对决<br>光棒7:2胜出</div>
+      </div>
+      <div class="node essay essay-compare" style="flex:0 1 auto">
+        <div class="name">📊 市盈率这件小事</div>
+        <div class="desc">PE是照妖镜 · 估值方法论<br>不同赛道不能硬比</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-line"><span class="arrow-icon">▼</span></div>
+
+  <!-- ===== LAYER 4: STOCK WATCH ===== -->
+  <div class="layer">
+    <div class="layer-title">📊 第四层 · 股价观察 · 价格位置全息</div>
+
+    <div class="layer-title" style="font-size:.7rem;color:#4ae68a;border-bottom-color:rgba(74,234,138,0.12)">🟢 逻辑兑现中 · 趋势完整</div>
+    <div class="nodes">
+      <div class="node stock-green">
+        <div class="name">深南电路</div>
+        <div class="desc">PCB逻辑最强 · 缩量回踩支撑</div>
+        <span class="stock-pe green">PE ~35x</span>
+        <span class="stock-price">箱体震荡 · 🟢 回调有迹可循</span>
+      </div>
+      <div class="node stock-green">
+        <div class="name">生益科技</div>
+        <div class="desc">覆铜板龙头 · 估值合理偏低</div>
+        <span class="stock-pe green">PE ~28x</span>
+        <span class="stock-price">高位整理 · 🟢 量价配合较好</span>
+      </div>
+      <div class="node stock-green">
+        <div class="name">铜冠铜箔</div>
+        <div class="desc">HVLP铜箔 · 趋势仍在</div>
+        <span class="stock-pe green">PE ~40x</span>
+        <span class="stock-price">震荡上行 · 🟡 需看放量节奏</span>
+      </div>
+    </div>
+
+    <div class="layer-title" style="font-size:.7rem;color:#ffc832;border-bottom-color:rgba(255,200,50,0.12);margin-top:.8rem">🟡 回调进行中 · 调没调好是关键</div>
+    <div class="nodes">
+      <div class="node stock-yellow">
+        <div class="name">沪电股份</div>
+        <div class="desc">高位回落~20% · 缩量但未到支撑</div>
+        <span class="stock-pe yellow">PE ~25x</span>
+        <span class="stock-price">🔴 调得不够深，等量缩</span>
+      </div>
+      <div class="node stock-yellow">
+        <div class="name">胜宏科技</div>
+        <div class="desc">高位放量回落 · 反弹乏力</div>
+        <span class="stock-pe yellow">PE ~30x</span>
+        <span class="stock-price" style="color:#ff6b6b">🔴 回调没调好——抛压未净</span>
+      </div>
+      <div class="node stock-yellow">
+        <div class="name">东材科技</div>
+        <div class="desc">PPO故事好 · 高位宽幅震荡</div>
+        <span class="stock-pe yellow">PE ~50x</span>
+        <span class="stock-price" style="color:#ff6b6b">🔴 等40x以下再看</span>
+      </div>
+    </div>
+
+    <div class="layer-title" style="font-size:.7rem;color:#ff6b6b;border-bottom-color:rgba(255,107,107,0.12);margin-top:.8rem">🔴 尚未企稳 · 观望为主</div>
+    <div class="nodes">
+      <div class="node stock-red">
+        <div class="name">南亚新材</div>
+        <div class="desc">阴跌趋势 · M9认证股价不认</div>
+        <span class="stock-pe red">PE ~22x</span>
+        <span class="stock-price">🔴 等放量止跌信号</span>
+      </div>
+      <div class="node stock-red">
+        <div class="name">圣泉集团</div>
+        <div class="desc">低位盘整 · 逻辑偏弱</div>
+        <span class="stock-pe red">PE ~18x</span>
+        <span class="stock-price">🔴 不急于进场</span>
+      </div>
+    </div>
+
+    <div class="layer-title" style="font-size:.7rem;color:#a78bfa;border-bottom-color:rgba(167,139,250,0.12);margin-top:.8rem">🔮 炒预期标的 · 等待临界点</div>
+    <div class="nodes">
+      <div class="node stock-purple">
+        <div class="name">顺络电子 002138.SZ</div>
+        <div class="desc">MLCC/电感 · AI终端需求爆发预期<br>炒预期型 · 非业绩落地</div>
+        <span class="stock-pe" style="color:#a78bfa">PE ~30x</span>
+        <span class="stock-price">下降趋势 · 🔑 关键锚点<strong style="color:#ffc832">21元</strong></span>
+        <span class="badge" style="background:rgba(167,139,250,0.1);color:#a78bfa;display:block;margin-top:.35rem">三点合一才动手</span>
+      </div>
+    </div>
+
+    <div class="layer-title" style="font-size:.7rem;color:#4ae68a;border-bottom-color:rgba(74,234,138,0.12);margin-top:.8rem">⚡ 变压器 & 光棒标的</div>
+    <div class="nodes">
+      <div class="node stock-green" style="flex:1">
+        <div class="name">特变电工 600089</div>
+        <div class="desc">最便宜的算力标的 · 12x电力全链龙头</div>
+        <span class="stock-pe green">PE ~12x</span>
+        <span class="stock-price">低位横盘缩量 · 🟢 调到位了</span>
+      </div>
+      <div class="node stock-green" style="flex:1">
+        <div class="name">金盘科技 688676</div>
+        <div class="desc">干变出口龙头 · 回调已较充分</div>
+        <span class="stock-pe green">PE ~22x</span>
+        <span class="stock-price">高位回落~30% · 🟢 缩量止跌</span>
+      </div>
+      <div class="node stock-yellow" style="flex:1">
+        <div class="name">长飞光纤 601869</div>
+        <div class="desc">全球光棒之王 · 已涨550%</div>
+        <span class="stock-pe yellow">PE ~15x</span>
+        <span class="stock-price">底部放量突破后回踩 · 🟡 等二次回踩</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-line"><span class="arrow-icon">▼</span></div>
+
+  <!-- ===== LAYER 5: TOOLS & FRAMEWORK ===== -->
+  <div class="layer">
+    <div class="layer-title">🧰 第五层 · 分析工具与方法</div>
+    <div class="nodes">
+      <div class="node tool">
+        <div class="name">九字心法</div>
+        <div class="desc">低位看逻辑，高位看量价</div>
+      </div>
+      <div class="node tool">
+        <div class="name">回调诊断</div>
+        <div class="desc">放量下跌=没调好<br>缩量止跌=筹码洗净</div>
+      </div>
+      <div class="node tool">
+        <div class="name">三点合一</div>
+        <div class="desc">趋势止跌+大盘共振+PE合理</div>
+      </div>
+      <div class="node tool">
+        <div class="name">PE分档</div>
+        <div class="desc">银行5-15x · 制造20-35x<br>AI/芯片30-60x+</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="graph-divider">✦ ✦ ✦</div>
+
+  <!-- ===== LAYER 6: CONCLUSION ===== -->
+  <div class="layer" style="margin-bottom:0">
+    <div class="layer-title">🎯 第六层 · 核心结论</div>
+    <div class="nodes">
+      <div class="node conclusion">
+        <div class="name">📌 最大确定性</div>
+        <div class="desc">PCB业绩已全面落地 → 深南/生益/沪电基本面最牢</div>
+      </div>
+      <div class="node conclusion">
+        <div class="name">🔥 最大弹性</div>
+        <div class="desc">光棒周期刚开始 → 长飞以550%开篇，持续性到2028</div>
+      </div>
+      <div class="node conclusion">
+        <div class="name">🛡️ 最大防守</div>
+        <div class="desc">特变12x是整个覆盖中PE最低 → 逻辑撑得住</div>
+      </div>
+      <div class="node conclusion">
+        <div class="name">🔮 最大悬念</div>
+        <div class="desc">顺络21元是关键锚点 → 等三点合一信号</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="legend">
+  <span class="legend-item"><span class="legend-dot" style="background:#4ae68a"></span> 逻辑兑现中</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#ffc832"></span> 回调进行中</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#ff6b6b"></span> 尚未企稳</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#a78bfa"></span> 炒预期标的</span>
+  <span class="legend-item"><span class="legend-line" style="background:#ff6b6b"></span> 三大瓶颈</span>
+  <span class="legend-item"><span class="legend-line" style="background:#ffc832"></span> 核心结论</span>
+</div>
+
+<div class="footer">
+  渡曰 · 无殊润笔 · 2026年6月<br>
+  从驱动力到价格位置，七篇一体，一口吃透 💪
+</div>
+
+</body>
+</html>
