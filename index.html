@@ -2043,7 +2043,7 @@ window.addEventListener('scroll', onScroll)
 
 // ===== MARKET TRACKER — 实时行情滚动刷新 =====
 const MKT_CODES = ['sh600176','sz000725','sz000100','sz300475','sz002938','sz300857','sz002916','sz300672','sz300408','sz000988','sh601991','sh600121','sh600744']
-const MKT_API_URL = 'http://qt.gtimg.cn/q=' + MKT_CODES.join(',')
+const MKT_API_URL = 'https://qt.gtimg.cn/q=' + MKT_CODES.join(',')
 let mktTimer = null
 let mktPrevPrices = {}
 
@@ -2186,7 +2186,11 @@ function mktInit() {
   if (mktSection) observer.observe(mktSection)
 }
 
-document.addEventListener('DOMContentLoaded', mktInit)
+document.addEventListener('DOMContentLoaded', function() {
+  // 立即拉取首次数据（不管是否可见）
+  setTimeout(mktDoFetch, 500)
+  mktInit()
+})
 
 // 页面可见性变化时恢复轮询
 document.addEventListener('visibilitychange', function() {
