@@ -359,6 +359,81 @@ footer{
   border-top:1px solid rgba(43,87,151,0.1);
 }
 
+/* ===== MARKET TRACKER — 实时行情 ===== */
+.mkt-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+.mkt-status{font-size:.75rem;color:#5a6a80;display:flex;align-items:center;gap:.5rem}
+.mkt-status .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.mkt-status .dot.live{background:#4ae68a;animation:pulse 1.5s infinite}
+.mkt-status .dot.paused{background:#ff6b6b}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.mkt-refresh-btn{
+  font-size:.72rem;padding:.25rem .7rem;border-radius:6px;
+  border:1px solid rgba(74,158,255,0.25);color:#7eb8ff;background:transparent;
+  cursor:pointer;transition:.2s;
+}
+.mkt-refresh-btn:hover{background:rgba(74,158,255,0.1);border-color:#4a9eff}
+.mkt-last-upd{font-size:.7rem;color:#4a5a6a}
+
+/* 实时行情表格覆盖 */
+.mkt-table{width:100%;border-collapse:collapse;font-size:.78rem;margin:1rem 0 1.5rem}
+.mkt-table th{
+  background:rgba(43,87,151,0.12);color:#7eb8ff;
+  padding:.45rem .55rem;text-align:center;font-weight:600;
+  border-bottom:2px solid rgba(43,87,151,0.2);
+}
+.mkt-table td{padding:.4rem .55rem;border-bottom:1px solid rgba(43,87,151,0.08);text-align:center}
+.mkt-table tr:hover td{background:rgba(43,87,151,0.06)}
+.mkt-table .ticker{text-align:left;font-weight:600;color:#e0e8f5}
+.mkt-table .ticker .code{font-size:.65rem;color:#5a6a80;font-weight:400}
+.mkt-table .cat-tag{
+  display:inline-block;font-size:.62rem;padding:.1rem .4rem;border-radius:3px;
+  background:rgba(43,87,151,0.15);color:#7eb8ff;
+}
+.price-up{color:#ff4d4d;font-weight:700}
+.price-dn{color:#4ae68a;font-weight:700}
+.price-eq{color:#c8d0e0}
+.mkt-chg{font-size:.7rem}
+.mkt-pos-bar{
+  display:inline-block;width:50px;height:4px;border-radius:2px;
+  background:rgba(255,255,255,0.06);overflow:hidden;vertical-align:middle;margin-right:4px;
+}
+.mkt-pos-bar .fill{height:100%;border-radius:2px;transition:width .5s}
+.mkt-pos-bar .fill.high{background:linear-gradient(90deg,#ff6b6b,#ff4d4d)}
+.mkt-pos-bar .fill.mid{background:linear-gradient(90deg,#ffc832,#ffaa00)}
+.mkt-pos-bar .fill.low{background:linear-gradient(90deg,#4ae68a,#2ecc71)}
+.mkt-sentiment{font-size:.7rem}
+.mkt-sentiment.bull{color:#ff4d4d}
+.mkt-sentiment.bear{color:#4ae68a}
+.mkt-sentiment.neutral{color:#ffc832}
+
+/* 闪烁动画：数字变化时 */
+@keyframes flashGreen{0%{background:rgba(74,230,138,0.2)}100%{background:transparent}}
+@keyframes flashRed{0%{background:rgba(255,77,77,0.2)}100%{background:transparent}}
+.flash-up{animation:flashRed .6s ease}
+.flash-dn{animation:flashGreen .6s ease}
+
+/* 分类区块标题 */
+.mkt-cat-title{
+  font-size:.92rem;color:#c8d8f0;margin:1.5rem 0 .5rem;
+  padding-bottom:.35rem;border-bottom:1px solid rgba(43,87,151,0.1);
+  display:flex;align-items:center;gap:.4rem;
+}
+.mkt-cat-title .count{font-size:.7rem;color:#5a6a80;font-weight:400}
+
+/* 汇总卡片 */
+.mkt-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:0 0 2rem}
+.mkt-summary .stat-block{padding:.8rem .5rem}
+.mkt-summary .stat-block .number{font-size:1.2rem}
+.mkt-summary .stat-block .label{font-size:.7rem}
+
+/* 移动端适配 */
+@media(max-width:768px){
+  .mkt-table{font-size:.7rem}
+  .mkt-table th,.mkt-table td{padding:.3rem .35rem}
+  .mkt-pos-bar{width:35px}
+  .mkt-summary{grid-template-columns:repeat(2,1fr)}
+}
+
 /* ===== RESPONSIVE ===== */
 @media(max-width:768px){
   nav{padding:0 1rem}
@@ -406,6 +481,7 @@ footer{
     <li><a href="#pcb">PCB</a></li>
     <li><a href="#glass">玻璃基板</a></li>
     <li><a href="#pricewatch">📊股价观察</a></li>
+    <li><a href="#market">📈市场追踪</a></li>
     <li><a href="#pe">市盈率</a></li>
     <li><a href="知识图谱-算力基础设施全链路.html" class="nav-kg-link">🧠 全链路</a></li>
     <li><a href="#about">关于</a></li>
@@ -1529,6 +1605,180 @@ footer{
   </div>
 </section>
 
+<!-- ===== 市场追踪（实时行情） ===== -->
+<section id="market" class="section fade-in">
+  <div class="section-header">
+    <h2>📈 A股市场追踪</h2>
+    <div class="divider"></div>
+    <p>实时追踪13只重点关注标的 · 数据来自腾讯行情 · 30秒自动刷新</p>
+  </div>
+
+  <div class="mkt-header">
+    <div class="mkt-status">
+      <span class="dot live" id="mktDot"></span>
+      <span id="mktStatusText">实时数据 · 自动刷新中</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem">
+      <span class="mkt-last-upd" id="mktLastUpd">等待首次数据...</span>
+      <button class="mkt-refresh-btn" onclick="mktForceRefresh()">⟳ 手动刷新</button>
+    </div>
+  </div>
+
+  <!-- 汇总卡片 -->
+  <div class="mkt-summary" id="mktSummary">
+    <div class="stat-block"><div class="number" id="mktTotal">13</div><div class="label">追踪标的</div></div>
+    <div class="stat-block"><div class="number" id="mktUp">-</div><div class="label">上涨</div></div>
+    <div class="stat-block"><div class="number" id="mktDown">-</div><div class="label">下跌</div></div>
+    <div class="stat-block"><div class="number" id="mktFlat">-</div><div class="label">持平</div></div>
+  </div>
+
+  <!-- 分类1：玻纤 -->
+  <div class="mkt-cat-title">🧵 玻纤<span class="count">1只</span></div>
+  <table class="mkt-table" id="mkt-cat-glass">
+    <thead><tr><th>名称</th><th>现价</th><th>涨跌幅</th><th>昨收</th><th>今开</th><th>60日位置</th><th>判断</th></tr></thead>
+    <tbody>
+      <tr data-code="sh600176">
+        <td class="ticker">中国巨石 <span class="code">600176</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill high" style="width:100%"></span></span><span style="font-size:.65rem;color:#ff6b6b">高位98%</span></td>
+        <td><span class="mkt-sentiment bear">涨停封板，等分歧</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 分类2：面板 -->
+  <div class="mkt-cat-title">🖥️ 面板双雄<span class="count">2只</span></div>
+  <table class="mkt-table" id="mkt-cat-panel">
+    <thead><tr><th>名称</th><th>现价</th><th>涨跌幅</th><th>昨收</th><th>今开</th><th>60日位置</th><th>判断</th></tr></thead>
+    <tbody>
+      <tr data-code="sz000725">
+        <td class="ticker">京东方A <span class="code">000725</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill high" style="width:100%"></span></span><span style="font-size:.65rem;color:#ff6b6b">高位98%</span></td>
+        <td><span class="mkt-sentiment bear">周期顶部，等回调</span></td>
+      </tr>
+      <tr data-code="sz000100">
+        <td class="ticker">TCL科技 <span class="code">000100</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill high" style="width:100%"></span></span><span style="font-size:.65rem;color:#ff6b6b">高位100%</span></td>
+        <td><span class="mkt-sentiment bear">涨太急，等缩量回踩</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 分类3：PCB -->
+  <div class="mkt-cat-title">🔌 PCB三杰<span class="count">3只</span></div>
+  <table class="mkt-table" id="mkt-cat-pcb">
+    <thead><tr><th>名称</th><th>现价</th><th>涨跌幅</th><th>昨收</th><th>今开</th><th>60日位置</th><th>判断</th></tr></thead>
+    <tbody>
+      <tr data-code="sz002916">
+        <td class="ticker">深南电路 <span class="code">002916</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill low" style="width:80%"></span></span><span style="font-size:.65rem;color:#4ae68a">箱体震荡</span></td>
+        <td><span class="mkt-sentiment bull">逻辑最强，回调即机会</span></td>
+      </tr>
+      <tr data-code="sz002938">
+        <td class="ticker">鹏鼎控股 <span class="code">002938</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill high" style="width:85%"></span></span><span style="font-size:.65rem;color:#ffc832">第二梯队85%</span></td>
+        <td><span class="mkt-sentiment neutral">主升趋势，持有或等回踩</span></td>
+      </tr>
+      <tr data-code="sz300857">
+        <td class="ticker">协创数据 <span class="code">300857</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill mid" style="width:60%"></span></span><span style="font-size:.65rem;color:#ffc832">第二梯队60%</span></td>
+        <td><span class="mkt-sentiment neutral">趋势中段，看量能配合</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 分类4：半导体 -->
+  <div class="mkt-cat-title">💻 半导体<span class="count">2只</span></div>
+  <table class="mkt-table" id="mkt-cat-semi">
+    <thead><tr><th>名称</th><th>现价</th><th>涨跌幅</th><th>昨收</th><th>今开</th><th>60日位置</th><th>判断</th></tr></thead>
+    <tbody>
+      <tr data-code="sz300475">
+        <td class="ticker">香农芯创 <span class="code">300475</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill high" style="width:90%"></span></span><span style="font-size:.65rem;color:#ff6b6b">高位90%</span></td>
+        <td><span class="mkt-sentiment bear">涨幅190%等回调</span></td>
+      </tr>
+      <tr data-code="sz300672">
+        <td class="ticker">国科微 <span class="code">300672</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill low" style="width:16%"></span></span><span style="font-size:.65rem;color:#4ae68a">低位16%</span></td>
+        <td><span class="mkt-sentiment bull">第三梯队，相对低位</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 分类5：电子材料 -->
+  <div class="mkt-cat-title">🔬 电子材料<span class="count">2只</span></div>
+  <table class="mkt-table" id="mkt-cat-mat">
+    <thead><tr><th>名称</th><th>现价</th><th>涨跌幅</th><th>昨收</th><th>今开</th><th>60日位置</th><th>判断</th></tr></thead>
+    <tbody>
+      <tr data-code="sz300408">
+        <td class="ticker">三环集团 <span class="code">300408</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill mid" style="width:65%"></span></span><span style="font-size:.65rem;color:#ffc832">第三梯队65%</span></td>
+        <td><span class="mkt-sentiment neutral">MLCC龙头，趋势中段</span></td>
+      </tr>
+      <tr data-code="sz000988">
+        <td class="ticker">华工科技 <span class="code">000988</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill low" style="width:75%"></span></span><span style="font-size:.65rem;color:#4ae68a">第三梯队75%</span></td>
+        <td><span class="mkt-sentiment neutral">光模块/激光，趋势中</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 分类6：电力 -->
+  <div class="mkt-cat-title">⚡ 电力三剑客<span class="count">3只</span></div>
+  <table class="mkt-table" id="mkt-cat-power">
+    <thead><tr><th>名称</th><th>现价</th><th>涨跌幅</th><th>昨收</th><th>今开</th><th>60日位置</th><th>判断</th></tr></thead>
+    <tbody>
+      <tr data-code="sh601991">
+        <td class="ticker">大唐发电 <span class="code">601991</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill mid" style="width:55%"></span></span><span style="font-size:.65rem;color:#ffc832">中位55%</span></td>
+        <td><span class="mkt-sentiment neutral">电力蓝筹，稳健标的</span></td>
+      </tr>
+      <tr data-code="sh600121">
+        <td class="ticker">华电辽能 <span class="code">600121</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill mid" style="width:50%"></span></span><span style="font-size:.65rem;color:#ffc832">中位50%</span></td>
+        <td><span class="mkt-sentiment neutral">区域电力，关注度一般</span></td>
+      </tr>
+      <tr data-code="sh600744">
+        <td class="ticker">华银电力 <span class="code">600744</span></td>
+        <td class="mkt-price">-</td><td class="mkt-chg">-</td>
+        <td class="mkt-yclose">-</td><td class="mkt-open">-</td>
+        <td><span class="mkt-pos-bar"><span class="fill low" style="width:16%"></span></span><span style="font-size:.65rem;color:#4ae68a">低位16%</span></td>
+        <td><span class="mkt-sentiment bull">低位补涨标的，关注</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="quote-block">
+    <strong>📡 实时行情滚动刷新中。</strong>
+    数据来源：腾讯行情接口 · 每30秒自动轮询。<br>
+    60日位置和判断为静态分析（2026.6.17）——当价格位置发生质变时，判断需重新评估。
+    <span class="source" id="mktFooterTs">—— 2026年6月 · 无殊 & 渡</span>
+  </div>
+</section>
+
 <!-- ===== 市盈率 ===== -->
 <section id="pe" class="section fade-in">
   <div class="section-header">
@@ -1790,6 +2040,164 @@ const onScroll = () => {
   navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current))
 }
 window.addEventListener('scroll', onScroll)
+
+// ===== MARKET TRACKER — 实时行情滚动刷新 =====
+const MKT_CODES = ['sh600176','sz000725','sz000100','sz300475','sz002938','sz300857','sz002916','sz300672','sz300408','sz000988','sh601991','sh600121','sh600744']
+const MKT_API_URL = 'http://qt.gtimg.cn/q=' + MKT_CODES.join(',')
+let mktTimer = null
+let mktPrevPrices = {}
+
+function mktParseData() {
+  const results = {}
+  MKT_CODES.forEach(code => {
+    const varName = 'v_' + code
+    if (window[varName] !== undefined) {
+      const raw = window[varName]
+      if (typeof raw === 'string') {
+        const parts = raw.split('~')
+        if (parts.length >= 39) {
+          results[code] = {
+            name: parts[1],
+            code: parts[2],
+            price: parseFloat(parts[3]) || 0,
+            yclose: parseFloat(parts[4]) || 0,
+            open: parseFloat(parts[5]) || 0,
+            volume: parseInt(parts[6]) || 0,
+            high: parseFloat(parts[33]) || 0,
+            low: parseFloat(parts[34]) || 0,
+            change: 0,
+            changePct: 0
+          }
+          if (results[code].yclose > 0) {
+            results[code].change = results[code].price - results[code].yclose
+            results[code].changePct = ((results[code].price - results[code].yclose) / results[code].yclose * 100)
+          }
+        }
+      }
+      // cleanup to avoid stale data
+      delete window[varName]
+    }
+  })
+  return results
+}
+
+function mktUpdateUI(data) {
+  const now = new Date()
+  const ts = now.toLocaleString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' })
+  document.getElementById('mktLastUpd').textContent = '更新于 ' + ts + ' (' + Object.keys(data).length + '/' + MKT_CODES.length + '只)'
+
+  let upCount = 0, dnCount = 0, flatCount = 0
+
+  // 更新汇总
+  Object.values(data).forEach(d => {
+    if (d.change > 0.001) upCount++
+    else if (d.change < -0.001) dnCount++
+    else flatCount++
+  })
+  document.getElementById('mktUp').textContent = upCount
+  document.getElementById('mktDown').textContent = dnCount
+  document.getElementById('mktFlat').textContent = flatCount
+
+  // 更新每行的实时数据
+  document.querySelectorAll('.mkt-table tr[data-code]').forEach(tr => {
+    const code = tr.getAttribute('data-code')
+    const d = data[code]
+    if (!d) return
+
+    const priceEl = tr.querySelector('.mkt-price')
+    const chgEl = tr.querySelector('.mkt-chg')
+    const ycloseEl = tr.querySelector('.mkt-yclose')
+    const openEl = tr.querySelector('.mkt-open')
+
+    if (!priceEl) return
+
+    const prevPrice = mktPrevPrices[code] || 0
+    const price = d.price
+
+    // 格式化价格
+    const priceStr = price.toFixed(2)
+    const chgStr = (d.change > 0 ? '+' : '') + d.change.toFixed(2)
+    const pctStr = (d.changePct > 0 ? '+' : '') + d.changePct.toFixed(2) + '%'
+
+    // 设定价格颜色
+    priceEl.textContent = priceStr
+    priceEl.className = 'mkt-price ' + (d.change > 0 ? 'price-up' : d.change < 0 ? 'price-dn' : 'price-eq')
+
+    chgEl.textContent = chgStr + ' ' + pctStr
+    chgEl.className = 'mkt-chg ' + (d.change > 0 ? 'price-up' : d.change < 0 ? 'price-dn' : 'price-eq')
+
+    if (ycloseEl) ycloseEl.textContent = d.yclose.toFixed(2)
+    if (openEl) openEl.textContent = d.open.toFixed(2)
+
+    // 闪烁动画
+    if (prevPrice > 0 && Math.abs(price - prevPrice) > 0.001) {
+      tr.classList.remove('flash-up', 'flash-dn')
+      void tr.offsetWidth // force reflow
+      tr.classList.add(price > prevPrice ? 'flash-up' : 'flash-dn')
+      setTimeout(() => tr.classList.remove('flash-up', 'flash-dn'), 700)
+    }
+
+    mktPrevPrices[code] = price
+  })
+}
+
+function mktDoFetch() {
+  if (document.getElementById('mktDot')) {
+    document.getElementById('mktDot').className = 'dot live'
+  }
+  // 过滤掉未在DOM中的section——即只在页面有market section时加载
+  if (!document.getElementById('market')) return
+
+  // Using script tag injection to bypass CORS
+  const script = document.createElement('script')
+  script.src = MKT_API_URL + '&_=' + Date.now()
+  script.onload = function() {
+    const data = mktParseData()
+    mktUpdateUI(data)
+    document.head.removeChild(script)
+  }
+  script.onerror = function() {
+    document.getElementById('mktStatusText').textContent = '⚠️ 数据获取失败，等待下次刷新...'
+    document.getElementById('mktDot').className = 'dot paused'
+    document.head.removeChild(script)
+  }
+  document.head.appendChild(script)
+}
+
+function mktForceRefresh() {
+  mktDoFetch()
+}
+
+// 启动自动轮询
+function mktInit() {
+  // 页面初次可见时启动
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        mktDoFetch()
+        if (mktTimer) clearInterval(mktTimer)
+        mktTimer = setInterval(mktDoFetch, 30000)
+        observer.disconnect()
+      }
+    })
+  }, { threshold: 0.1 })
+
+  const mktSection = document.getElementById('market')
+  if (mktSection) observer.observe(mktSection)
+}
+
+document.addEventListener('DOMContentLoaded', mktInit)
+
+// 页面可见性变化时恢复轮询
+document.addEventListener('visibilitychange', function() {
+  if (!document.hidden && !mktTimer) {
+    mktTimer = setInterval(mktDoFetch, 30000)
+    mktDoFetch()
+  } else if (document.hidden && mktTimer) {
+    clearInterval(mktTimer)
+    mktTimer = null
+  }
+})
 </script>
 </body>
 </html>
