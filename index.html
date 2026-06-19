@@ -477,6 +477,27 @@ footer{
 .energy-tag.t6{background:rgba(255,140,0,0.2);color:#ffa500}
 .energy-footer{margin-top:1.5rem;font-size:.72rem;color:#5a6a80;line-height:1.6;padding:1rem;background:rgba(13,17,23,0.3);border-radius:8px;border-left:3px solid #ffa500}
 
+/* ===== ETF配置板块 ===== */
+.etf-desc{font-size:.8rem;color:#7a8a9a;margin-bottom:1.2rem;line-height:1.6;padding:.6rem 0}
+.etf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-bottom:1rem}
+.etf-card{background:rgba(22,27,34,0.4);border:1px solid rgba(43,87,151,0.1);border-radius:10px;padding:.8rem 1rem;transition:border-color .2s}
+.etf-card:hover{border-color:rgba(56,139,253,0.3)}
+.etf-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem}
+.etf-card-name{font-weight:700;font-size:.85rem;color:#e0e8f5}
+.etf-card-code{font-size:.6rem;color:#5a6a80;background:rgba(90,106,128,0.15);padding:.08rem .4rem;border-radius:3px}
+.etf-card-price{font-size:1.05rem;font-weight:700;color:#e0e8f5}
+.etf-card-change{font-size:.7rem;margin-left:.5rem;font-weight:600}
+.etf-card .up{color:#ff4d4d}
+.etf-card .dn{color:#4ae68a}
+.etf-card .eq{color:#8a9ab0}
+.etf-card-info{display:flex;justify-content:space-between;font-size:.65rem;color:#5a6a80;margin-top:.2rem;padding-top:.3rem;border-top:1px solid rgba(43,87,151,0.06)}
+.etf-card-tag{display:inline-block;font-size:.55rem;padding:.08rem .35rem;border-radius:2px;font-weight:600}
+.etf-card-tag.t1{background:rgba(56,139,253,0.2);color:#4a9eff}
+.etf-card-tag.t2{background:rgba(46,204,113,0.2);color:#4ae68a}
+.etf-card-tag.t3{background:rgba(255,170,0,0.2);color:#ffc832}
+.etf-card-tag.t4{background:rgba(255,77,77,0.2);color:#ff6b6b}
+.etf-footer{font-size:.72rem;color:#5a6a80;padding:.8rem 0;line-height:1.6}
+
 /* 移动端适配 */
 @media(max-width:768px){
   .mkt-table{font-size:.7rem}
@@ -574,6 +595,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     <li><a href="#glass">玻璃基板</a></li>
     <li><a href="#pricewatch">📊股价观察</a></li>
     <li><a href="#energy">⚡未来能源</a></li>
+    <li><a href="#etf">📦ETF配置</a></li>
     <li><a href="#market">📈市场追踪</a></li>
     <li><a href="#portfolio">📊实盘</a></li>
     <li><a href="#pe">市盈率</a></li>
@@ -1816,6 +1838,103 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
   </div>
 </section>
 
+<!-- ===== ETF配置（实时行情） ===== -->
+<section id="etf" class="section fade-in">
+  <div class="section-header">
+    <h2>📦 ETF配置</h2>
+    <div class="divider"></div>
+    <p>个股打α + ETF吃β · 一键布局板块 · 实时行情联动 · 30秒自动刷新</p>
+  </div>
+
+  <div class="article-body energy-section">
+    <p class="etf-desc">
+      ETF是板块配置的利器——低费率、分散风险、流动性好。无殊实盘已配置<strong>光伏ETF</strong>作为能源安全主线仓位。
+      以下精选8只ETF覆盖新能源、绿电、电网、能源等方向，供渡参考与追踪。
+    </p>
+
+    <div class="etf-grid">
+      <!-- 光伏ETF -->
+      <div class="etf-card" data-ecode="sh515790">
+        <div class="etf-card-top">
+          <span class="etf-card-name">☀️ 光伏ETF</span>
+          <span class="etf-card-code">515790</span>
+        </div>
+        <div><span class="etf-card-price eq">-</span><span class="etf-card-change eq">-</span></div>
+        <div class="etf-card-info"><span>华泰柏瑞</span><span class="etf-card-tag t1">光伏</span><span id="etf_515790_pe">-</span></div>
+      </div>
+      <!-- 新能源ETF -->
+      <div class="etf-card" data-ecode="sh516160">
+        <div class="etf-card-top">
+          <span class="etf-card-name">🌱 新能源ETF</span>
+          <span class="etf-card-code">516160</span>
+        </div>
+        <div><span class="etf-card-price eq">-</span><span class="etf-card-change eq">-</span></div>
+        <div class="etf-card-info"><span>南方基金</span><span class="etf-card-tag t2">新能源</span><span id="etf_516160_pe">-</span></div>
+      </div>
+      <!-- 电力ETF -->
+      <div class="etf-card" data-ecode="sz159611">
+        <div class="etf-card-top">
+          <span class="etf-card-name">⚡ 电力ETF</span>
+          <span class="etf-card-code">159611</span>
+        </div>
+        <div><span class="etf-card-price eq">-</span><span class="etf-card-change eq">-</span></div>
+        <div class="etf-card-info"><span>广发基金</span><span class="etf-card-tag t3">电力</span><span id="etf_159611_pe">-</span></div>
+      </div>
+      <!-- 能源ETF -->
+      <div class="etf-card" data-ecode="sz159930">
+        <div class="etf-card-top">
+          <span class="etf-card-name">⛽ 能源ETF</span>
+          <span class="etf-card-code">159930</span>
+        </div>
+        <div><span class="etf-card-price eq">-</span><span class="etf-card-change eq">-</span></div>
+        <div class="etf-card-info"><span>汇添富</span><span class="etf-card-tag t3">综合能源</span><span id="etf_159930_pe">-</span></div>
+      </div>
+      <!-- 绿电ETF -->
+      <div class="etf-card" data-ecode="sh562550">
+        <div class="etf-card-top">
+          <span class="etf-card-name">💚 绿电ETF</span>
+          <span class="etf-card-code">562550</span>
+        </div>
+        <div><span class="etf-card-price eq">-</span><span class="etf-card-change eq">-</span></div>
+        <div class="etf-card-info"><span>华夏基金</span><span class="etf-card-tag t2">绿色电力</span><span id="etf_562550_pe">-</span></div>
+      </div>
+      <!-- 碳中和ETF -->
+      <div class="etf-card" data-ecode="sz159790">
+        <div class="etf-card-top">
+          <span class="etf-card-name">🌍 碳中和ETF</span>
+          <span class="etf-card-code">159790</span>
+        </div>
+        <div><span class="etf-card-price eq">-</span><span class="etf-card-change eq">-</span></div>
+        <div class="etf-card-info"><span>华夏基金</span><span class="etf-card-tag t4">碳中和</span><span id="etf_159790_pe">-</span></div>
+      </div>
+      <!-- 煤炭ETF -->
+      <div class="etf-card" data-ecode="sh515220">
+        <div class="etf-card-top">
+          <span class="etf-card-name">🪨 煤炭ETF</span>
+          <span class="etf-card-code">515220</span>
+        </div>
+        <div><span class="etf-card-price eq">-</span><span class="etf-card-change eq">-</span></div>
+        <div class="etf-card-info"><span>国泰基金</span><span class="etf-card-tag t1">传统能源</span><span id="etf_515220_pe">-</span></div>
+      </div>
+      <!-- 新能源车ETF -->
+      <div class="etf-card" data-ecode="sh515030">
+        <div class="etf-card-top">
+          <span class="etf-card-name">🚗 新能源车ETF</span>
+          <span class="etf-card-code">515030</span>
+        </div>
+        <div><span class="etf-card-price eq">-</span><span class="etf-card-change eq">-</span></div>
+        <div class="etf-card-info"><span>华夏基金</span><span class="etf-card-tag t2">新能源车</span><span id="etf_515030_pe">-</span></div>
+      </div>
+    </div>
+
+    <div class="etf-footer">
+      <strong>📌 覆盖ETF：8只</strong> · 涵盖光伏、新能源、电力、绿电、能源、碳中和、煤炭、新能源车八大方向。<br>
+      <strong>实盘仓位：</strong>光伏ETF 515790 已纳入无殊实盘（59,000份≈6%仓位，均价1.017元）。<br>
+      📖 ETF交易免印花税，T+1回转。建议作为板块配置底仓，个股做α、ETF吃β。
+    </div>
+  </div>
+</section>
+
 <!-- ===== 市场追踪（实时行情） ===== -->
 <section id="market" class="section fade-in">
   <div class="section-header">
@@ -2537,6 +2656,98 @@ function energyDoFetch() {
 // 页面可见时拉一次
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(energyDoFetch, 2000)
+})
+
+// ===== ETF配置——实时行情 =====
+const ETF_CODES = ['sh515790','sh516160','sz159611','sz159930','sh562550','sz159790','sh515220','sh515030']
+
+function etfParseData() {
+  const data = {}
+  ETF_CODES.forEach(code => {
+    const v = window['v_' + code]
+    if (typeof v === 'string') {
+      const p = v.split('~')
+      if (p.length >= 40) {
+        const fullName = (p[1] || '').replace(/ETF.*$/, 'ETF')
+        data[code] = {
+          price: parseFloat(p[3]) || 0,
+          yclose: parseFloat(p[4]) || 0,
+          changePct: parseFloat(p[34]) || 0,
+          amount: parseFloat(p[39]) || 0
+        }
+      }
+    }
+    delete window['v_' + code]
+  })
+  return data
+}
+
+function etfUpdateUI(data) {
+  if (!document.getElementById('etf')) return
+  ETF_CODES.forEach(code => {
+    const card = document.querySelector(`.etf-card[data-ecode="${code}"]`)
+    if (!card) return
+    const q = data[code]
+    if (!q) return
+    const priceEl = card.querySelector('.etf-card-price')
+    const changeEl = card.querySelector('.etf-card-change')
+    if (priceEl) {
+      priceEl.textContent = '¥' + q.price.toFixed(3)
+      priceEl.className = 'etf-card-price'
+      priceEl.classList.add(q.price > q.yclose ? 'up' : q.price < q.yclose ? 'dn' : 'eq')
+    }
+    if (changeEl) {
+      const cp = q.changePct
+      changeEl.textContent = (cp >= 0 ? '+' : '') + cp.toFixed(2) + '%'
+      changeEl.className = 'etf-card-change'
+      changeEl.classList.add(cp >= 0 ? 'up' : cp < 0 ? 'dn' : 'eq')
+    }
+    // 成交额
+    const amtEl = card.querySelector('.etf-card-info span:last-child')
+    if (amtEl && q.amount) {
+      const amt = q.amount
+      amtEl.textContent = amt >= 10000 ? (amt/10000).toFixed(2)+'亿' : amt.toFixed(0)+'万'
+    }
+  })
+}
+
+function etfDoFetch() {
+  if (!document.getElementById('etf')) return
+  const script = document.createElement('script')
+  script.src = 'https://qt.gtimg.cn/q=' + ETF_CODES.join(',') + '&_=' + Date.now()
+  script.onload = function() {
+    etfUpdateUI(etfParseData())
+    document.head.removeChild(script)
+  }
+  script.onerror = function() { document.head.removeChild(script) }
+  document.head.appendChild(script)
+}
+
+let etfTimer = null
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(etfDoFetch, 2800)
+  const etfSection = document.getElementById('etf')
+  if (etfSection) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          etfDoFetch()
+          if (etfTimer) clearInterval(etfTimer)
+          etfTimer = setInterval(etfDoFetch, 30000)
+          observer.disconnect()
+        }
+      })
+    }, { threshold: 0.1 })
+    observer.observe(etfSection)
+  }
+})
+document.addEventListener('visibilitychange', function() {
+  if (!document.hidden && !etfTimer && document.getElementById('etf')) {
+    etfTimer = setInterval(etfDoFetch, 30000)
+    etfDoFetch()
+  } else if (document.hidden && etfTimer) {
+    clearInterval(etfTimer); etfTimer = null
+  }
 })
 
 function mktDoFetch() {
