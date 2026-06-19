@@ -445,7 +445,13 @@ footer{
 .pf-card .pf-label{font-size:.65rem;color:#5a6a80;margin-bottom:.2rem}
 .pf-card .pf-value{font-size:1.25rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
 .pf-card .pf-sub{font-size:.7rem;margin-top:.15rem}
+.pf-card .pf-today{font-size:.68rem;margin-top:.25rem;color:#8a9ab0}
+.pf-card .pf-today span{font-weight:600}
 .pf-card.primary{background:linear-gradient(145deg,rgba(56,139,253,0.08),rgba(56,139,253,0.03));border-color:rgba(56,139,253,0.2)}
+.pf-chart-wrap{background:rgba(22,27,34,0.5);border:1px solid rgba(43,87,151,0.08);border-radius:10px;overflow:hidden;margin-bottom:1rem}
+.pf-chart-header{display:flex;justify-content:space-between;align-items:center;padding:.55rem .75rem 0;font-size:.78rem;color:#7eb8ff;font-weight:600}
+.pf-chart-container{width:100%;height:160px}
+.pf-chart{width:100%;height:160px;display:block}
 .pf-table-wrap{overflow-x:auto;border-radius:8px;border:1px solid rgba(43,87,151,0.08)}
 .pf-table{width:100%;border-collapse:collapse;font-size:.78rem}
 .pf-table th{background:rgba(22,27,34,0.8);color:#5a6a80;font-weight:500;padding:.5rem .45rem;text-align:center;white-space:nowrap;border-bottom:1px solid rgba(43,87,151,0.1)}
@@ -1861,6 +1867,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
       <div class="pf-label">总资产</div>
       <div class="pf-value" id="pfTotalAssets">¥1,000,000</div>
       <div class="pf-sub" id="pfTotalPL">+¥0.00 · +0.00%</div>
+      <div class="pf-today" id="pfTodayPL">📆 今日：<span>+¥0.00</span></div>
     </div>
     <div class="pf-card">
       <div class="pf-label">持仓市值</div>
@@ -1873,6 +1880,30 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     <div class="pf-card">
       <div class="pf-label">仓位</div>
       <div class="pf-value" id="pfRatio" style="font-size:1.15rem">0%</div>
+    </div>
+  </div>
+
+  <!-- 资金曲线 -->
+  <div class="pf-chart-wrap">
+    <div class="pf-chart-header">
+      <span>📈 资金曲线</span>
+      <span id="pfChartStats" style="font-size:.7rem;color:#5a6a80"></span>
+    </div>
+    <div class="pf-chart-container">
+      <svg id="pfChart" class="pf-chart" viewBox="0 0 600 160" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="pfChartGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(74,158,255,0.3)"/>
+            <stop offset="100%" stop-color="rgba(74,158,255,0.02)"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="600" height="160" fill="rgba(13,17,23,0.5)" rx="6"/>
+        <path id="pfChartArea" d="" fill="url(#pfChartGrad)"/>
+        <polyline id="pfChartLine" fill="none" stroke="#4a9eff" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <text id="pfChartLabelTop" x="590" y="18" text-anchor="end" fill="#5a6a80" font-size="9"></text>
+        <text id="pfChartLabelMid" x="590" y="82" text-anchor="end" fill="#5a6a80" font-size="9"></text>
+        <text id="pfChartLabelBot" x="590" y="148" text-anchor="end" fill="#5a6a80" font-size="9"></text>
+      </svg>
     </div>
   </div>
 
@@ -2392,9 +2423,10 @@ function pfFetch() {
         const p = v.split('~')
         if (p.length >= 39) {
           data[code] = {
-            price: parseFloat(p[3]) || 0, change: parseFloat(p[32]) || 0,
-            changePct: parseFloat(p[33]) || 0, buyVol: parseInt(p[7]) || 0,
-            sellVol: parseInt(p[8]) || 0, amount: parseFloat(p[38]) || 0
+            price: parseFloat(p[3]) || 0, yclose: parseFloat(p[4]) || 0,
+            change: parseFloat(p[32]) || 0, changePct: parseFloat(p[33]) || 0,
+            buyVol: parseInt(p[7]) || 0, sellVol: parseInt(p[8]) || 0,
+            amount: parseFloat(p[38]) || 0
           }
         }
       }
@@ -2409,7 +2441,7 @@ function pfFetch() {
 
 function pfRender(quotes) {
   const pos = pfData.positions
-  let totalMV = 0
+  let totalMV = 0, totalTodayPL = 0
   pos.forEach(p => {
     const q = quotes[p.code]
     if (q) p.current_price = q.price
@@ -2418,6 +2450,10 @@ function pfRender(quotes) {
     p.market_value = mv; p.pnl = mv - cost
     p.pnl_pct = cost > 0 ? (p.pnl / cost * 100) : 0
     totalMV += mv
+    // 今日盈亏 = (现价 - 昨收) × 持股
+    if (q && q.yclose > 0) {
+      totalTodayPL += (p.current_price - q.yclose) * p.shares
+    }
   })
   const totalAssets = pfData.cash + totalMV
   const totalPL = totalAssets - pfData.capital
@@ -2428,6 +2464,12 @@ function pfRender(quotes) {
   document.getElementById('pfTotalAssets').textContent = '¥' + totalAssets.toLocaleString('zh-CN', {minimumFractionDigits:2})
   document.getElementById('pfTotalPL').textContent = (totalPL >= 0 ? '+' : '') + '¥' + totalPL.toLocaleString('zh-CN', {minimumFractionDigits:2}) + ' · ' + (totalPLPct >= 0 ? '+' : '') + totalPLPct.toFixed(2) + '%'
   document.getElementById('pfTotalPL').style.color = isUp ? '#ff4d4d' : '#4ae68a'
+  // 今日盈亏
+  const todayEl = document.getElementById('pfTodayPL')
+  if (todayEl) {
+    const todaySign = totalTodayPL >= 0 ? '+' : ''
+    todayEl.innerHTML = '📆 今日：<span style="color:' + (totalTodayPL >= 0 ? '#ff4d4d' : '#4ae68a') + '">' + todaySign + '¥' + totalTodayPL.toLocaleString('zh-CN', {minimumFractionDigits:2}) + '</span>'
+  }
   document.getElementById('pfMV').textContent = '¥' + totalMV.toLocaleString('zh-CN', {minimumFractionDigits:2})
   document.getElementById('pfCash').textContent = '¥' + pfData.cash.toLocaleString('zh-CN', {minimumFractionDigits:2})
   document.getElementById('pfRatio').textContent = (totalMV / totalAssets * 100).toFixed(1) + '%'
@@ -2465,6 +2507,54 @@ function pfRender(quotes) {
   // Timestamp
   const now = new Date()
   document.getElementById('pfLastUpd').textContent = '更新于 ' + now.toLocaleString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' })
+
+  // 资金曲线
+  try {
+    let history = JSON.parse(localStorage.getItem('pf_equity') || '[]')
+    const nowTs = Date.now()
+    // 至少间隔10秒才记录，避免重复
+    if (!history.length || nowTs - history[history.length-1].ts > 8000) {
+      history.push({ ts: nowTs, value: totalAssets })
+    }
+    // 最多保留600个点（约5小时）
+    if (history.length > 600) history = history.slice(-600)
+    localStorage.setItem('pf_equity', JSON.stringify(history))
+    // 只在有足够数据时绘制
+    if (history.length >= 2) {
+      const values = history.map(h => h.value)
+      const minV = Math.min(...values), maxV = Math.max(...values)
+      const range = maxV - minV || 1
+      const pad = range * 0.15
+      const yMin = minV - pad, yMax = maxV + pad, yRange = yMax - yMin || 1
+      const w = 600, h = 160
+      // 生成路径
+      let areaD = '', lineD = ''
+      const step = w / (history.length - 1)
+      history.forEach((entry, i) => {
+        const x = i * step
+        const y = h - ((entry.value - yMin) / yRange * h * 0.85 + h * 0.075)
+        if (i === 0) {
+          areaD = 'M' + x + ',' + h + ' L' + x + ',' + y
+          lineD = 'M' + x + ',' + y
+        } else {
+          areaD += ' L' + x + ',' + y
+          lineD += ' L' + x + ',' + y
+        }
+      })
+      areaD += ' L' + (history.length-1)*step + ',' + h + ' Z'
+      document.getElementById('pfChartArea').setAttribute('d', areaD)
+      document.getElementById('pfChartLine').setAttribute('d', lineD)
+      // 标签
+      document.getElementById('pfChartLabelTop').textContent = '¥' + yMax.toLocaleString()
+      document.getElementById('pfChartLabelMid').textContent = '¥' + ((yMin + yMax) / 2).toLocaleString()
+      document.getElementById('pfChartLabelBot').textContent = '¥' + yMin.toLocaleString()
+      // 统计
+      const pts = document.getElementById('pfChartStats')
+      if (pts) pts.textContent = history.length + '个采样点 · 最高¥' + maxV.toLocaleString() + ' · 最低¥' + minV.toLocaleString()
+    }
+  } catch(e) {
+    // localStorage不可用时静默失败
+  }
 }
 
 // 启动
