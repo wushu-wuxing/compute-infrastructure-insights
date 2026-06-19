@@ -447,6 +447,36 @@ footer{
 .mkt-summary .stat-block .number{font-size:1.2rem}
 .mkt-summary .stat-block .label{font-size:.7rem}
 
+/* ===== 未来能源六大方向 ===== */
+.energy-section{max-width:900px;margin:0 auto}
+.energy-intro{margin-bottom:2rem;line-height:1.7}
+.energy-group{margin-bottom:2rem;background:rgba(22,27,34,0.3);border:1px solid rgba(43,87,151,0.08);border-radius:10px;overflow:hidden}
+.energy-group-header{padding:.7rem 1rem;font-size:.95rem;font-weight:700;letter-spacing:.5px}
+.energy-group-header .count{font-size:.7rem;font-weight:400;color:#5a6a80;margin-left:.5rem}
+.energy-group-header.g1{background:linear-gradient(135deg,rgba(56,139,253,0.15),rgba(56,139,253,0.05));color:#4a9eff}
+.energy-group-header.g2{background:linear-gradient(135deg,rgba(46,204,113,0.15),rgba(46,204,113,0.05));color:#4ae68a}
+.energy-group-header.g3{background:linear-gradient(135deg,rgba(255,170,0,0.15),rgba(255,170,0,0.05));color:#ffc832}
+.energy-group-header.g4{background:linear-gradient(135deg,rgba(255,77,77,0.15),rgba(255,77,77,0.05));color:#ff6b6b}
+.energy-group-header.g5{background:linear-gradient(135deg,rgba(126,184,255,0.15),rgba(126,184,255,0.05));color:#7eb8ff}
+.energy-group-header.g6{background:linear-gradient(135deg,rgba(255,140,0,0.2),rgba(255,140,0,0.05));color:#ffa500}
+.energy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1px;background:rgba(43,87,151,0.06)}
+.energy-item{padding:.65rem .85rem;background:rgba(13,17,23,0.4);display:flex;justify-content:space-between;align-items:center;font-size:.78rem}
+.energy-item .name{font-weight:600;color:#e0e8f5}
+.energy-item .code{font-size:.65rem;color:#5a6a80;font-weight:400;margin-left:.35rem}
+.energy-item .price{font-size:.7rem;font-weight:600}
+.energy-item .price.up{color:#ff4d4d}
+.energy-item .price.dn{color:#4ae68a}
+.energy-item .price.eq{color:#8a9ab0}
+.energy-item .pending{font-size:.6rem;color:#5a6a80;background:rgba(90,106,128,0.15);padding:.1rem .35rem;border-radius:3px}
+.energy-tag{display:inline-block;font-size:.55rem;padding:.08rem .3rem;border-radius:2px;margin-left:.35rem;font-weight:600}
+.energy-tag.t1{background:rgba(56,139,253,0.2);color:#4a9eff}
+.energy-tag.t2{background:rgba(46,204,113,0.2);color:#4ae68a}
+.energy-tag.t3{background:rgba(255,170,0,0.2);color:#ffc832}
+.energy-tag.t4{background:rgba(255,77,77,0.2);color:#ff6b6b}
+.energy-tag.t5{background:rgba(126,184,255,0.2);color:#7eb8ff}
+.energy-tag.t6{background:rgba(255,140,0,0.2);color:#ffa500}
+.energy-footer{margin-top:1.5rem;font-size:.72rem;color:#5a6a80;line-height:1.6;padding:1rem;background:rgba(13,17,23,0.3);border-radius:8px;border-left:3px solid #ffa500}
+
 /* 移动端适配 */
 @media(max-width:768px){
   .mkt-table{font-size:.7rem}
@@ -543,6 +573,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     <li><a href="#pcb">PCB</a></li>
     <li><a href="#glass">玻璃基板</a></li>
     <li><a href="#pricewatch">📊股价观察</a></li>
+    <li><a href="#energy">⚡未来能源</a></li>
     <li><a href="#market">📈市场追踪</a></li>
     <li><a href="#portfolio">📊实盘</a></li>
     <li><a href="#pe">市盈率</a></li>
@@ -1668,6 +1699,123 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
   </div>
 </section>
 
+<!-- ===== 未来能源六大方向 ===== -->
+<section id="energy" class="section fade-in">
+  <div class="section-header">
+    <h2>⚡ 未来能源六大方向</h2>
+    <div class="divider"></div>
+    <p>油价暴涨下的能源危机 · 六大方向全面覆盖 · 从传统能源建设到可控核聚变</p>
+  </div>
+  <div class="article-body energy-section">
+
+    <div class="energy-intro">
+      <strong>油价暴涨，能源危机再临。</strong> 未来能源格局正在被重新定义——从传统能源基建到新能源发电，从智能电网到风光储一体化，从氢能突破到可控核聚变，六大方向层层递进。
+    </div>
+
+    <!-- 1. 未来能源建设 -->
+    <div class="energy-group">
+      <div class="energy-group-header g1">🏗️ 一、未来能源建设 <span class="count">4只</span></div>
+      <div class="energy-grid">
+        <div class="energy-item" data-ecode="sh601868"><span class="name">中国能建<span class="code">601868</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601611"><span class="name">中国核建<span class="code">601611</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601669"><span class="name">中国电建<span class="code">601669</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601985"><span class="name">中国核电<span class="code">601985</span></span><span class="price eq">-</span></div>
+      </div>
+    </div>
+
+    <!-- 2. 新能源电力 -->
+    <div class="energy-group">
+      <div class="energy-group-header g2">🌱 二、新能源电力 <span class="count">12只</span></div>
+      <div class="energy-grid">
+        <div class="energy-item" data-ecode="sh600396"><span class="name">华电辽能<span class="code">600396</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601016"><span class="name">节能风电<span class="code">601016</span></span><span class="price eq">-</span></div>
+        <div class="energy-item"><span class="name">绿发电力<span class="pending">代码待查</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh600956"><span class="name">新天绿能<span class="code">600956</span></span><span class="price eq">-</span></div>
+        <div class="energy-item"><span class="name">电投绿能<span class="pending">代码待查</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh600821"><span class="name">金开新能<span class="code">600821</span></span><span class="price eq">-</span></div>
+        <div class="energy-item"><span class="name">华电新能<span class="pending">IPO中</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601991"><span class="name">大唐发电<span class="code">601991</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz001896"><span class="name">豫能控股<span class="code">001896</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh603693"><span class="name">江苏新能<span class="code">603693</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh600900"><span class="name">长江电力<span class="code">600900</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz002015"><span class="name">协鑫能科<span class="code">002015</span></span><span class="price eq">-</span></div>
+      </div>
+    </div>
+
+    <!-- 3. 智能电网 -->
+    <div class="energy-group">
+      <div class="energy-group-header g3">⚡ 三、智能电网 <span class="count">8只</span></div>
+      <div class="energy-grid">
+        <div class="energy-item" data-ecode="sz000533"><span class="name">顺钠股份<span class="code">000533</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz002498"><span class="name">汉缆股份<span class="code">002498</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz003035"><span class="name">南网能源<span class="code">003035</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz002028"><span class="name">思源电气<span class="code">002028</span><span class="energy-tag t1">电器</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh600406"><span class="name">国电南瑞<span class="code">600406</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601179"><span class="name">中国西电<span class="code">601179</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh600089"><span class="name">特变电工<span class="code">600089</span></span><span class="price eq">-</span></div>
+        <div class="energy-item"><span class="name">南网数字<span class="pending">待上市</span></span><span class="price eq">-</span></div>
+      </div>
+    </div>
+
+    <!-- 4. 风光储 -->
+    <div class="energy-group">
+      <div class="energy-group-header g4">☀️ 四、风·光·储 <span class="count">12只</span></div>
+      <div class="energy-grid">
+        <div class="energy-item" data-ecode="sz002506"><span class="name">协鑫集成<span class="code">002506</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz002202"><span class="name">金风科技<span class="code">002202</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601012"><span class="name">隆基绿能<span class="code">601012</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh603778"><span class="name">国晟科技<span class="code">603778</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz002323"><span class="name">雅博股份<span class="code">002323</span></span><span class="price eq">-</span></div>
+        <div class="energy-item"><span class="name">锡华科技<span class="pending">代码待查</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz300274"><span class="name">阳光电源<span class="code">300274</span><span class="energy-tag t4">电能</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz300827"><span class="name">上能电气<span class="code">300827</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz300118"><span class="name">东方日升<span class="code">300118</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz000600"><span class="name">建投能源<span class="code">000600</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601877"><span class="name">正泰电器<span class="code">601877</span><span class="energy-tag t4">电源</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601615"><span class="name">明阳智能<span class="code">601615</span></span><span class="price eq">-</span></div>
+      </div>
+    </div>
+
+    <!-- 5. 氢能源 -->
+    <div class="energy-group">
+      <div class="energy-group-header g5">💨 五、氢能源 <span class="count">8只</span></div>
+      <div class="energy-grid">
+        <div class="energy-item" data-ecode="sz000723"><span class="name">美锦能源<span class="code">000723</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz002639"><span class="name">雪人股份<span class="code">002639</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh600691"><span class="name">潞化科技<span class="code">600691</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh605167"><span class="name">利柏特<span class="code">605167</span><span class="energy-tag t5">特</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh600860"><span class="name">京城股份<span class="code">600860</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh600875"><span class="name">东方电气<span class="code">600875</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz300985"><span class="name">致远新能<span class="code">300985</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz002911"><span class="name">佛燃能源<span class="code">002911</span></span><span class="price eq">-</span></div>
+      </div>
+    </div>
+
+    <!-- 6. 可控核聚变 -->
+    <div class="energy-group">
+      <div class="energy-group-header g6">🔥 六、可控核聚变 <span class="count">8只</span></div>
+      <div class="energy-grid">
+        <div class="energy-item" data-ecode="sh601985"><span class="name">中国核电<span class="code">601985</span><span class="energy-tag t6">★</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601611"><span class="name">中国核建<span class="code">601611</span><span class="energy-tag t6">★</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sz002366"><span class="name">融发核电<span class="code">002366</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh600307"><span class="name">酒钢宏兴<span class="code">600307</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh601399"><span class="name">国机重装<span class="code">601399</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh600105"><span class="name">永鼎股份<span class="code">600105</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh603169"><span class="name">兰石重装<span class="code">603169</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh603011"><span class="name">合锻智能<span class="code">603011</span></span><span class="price eq">-</span></div>
+      </div>
+    </div>
+
+    <div class="energy-footer">
+      <strong>📌 覆盖标的：50只</strong>（含5只代码待确认/IPO中，45只已接入实时行情）· 油价暴涨驱动，能源安全是未来3-5年确定性最高的主线。<br>
+      标注<span class="energy-tag t6">★</span>的核聚变标的同时也出现在第一批（建设侧），说明核电是贯穿全链条的核心。<br>
+      智能电网侧特变电工已纳入实盘追踪池（12x PE，长期底仓级标的）。<br>
+      风光储侧隆基绿能、阳光电源等龙头股价已大幅回调，估值进入历史低位区间。
+    </div>
+
+  </div>
+</section>
+
 <!-- ===== 市场追踪（实时行情） ===== -->
 <section id="market" class="section fade-in">
   <div class="section-header">
@@ -2339,6 +2487,57 @@ function mktUpdateUI(data) {
     mktPrevPrices[code] = price
   })
 }
+
+// ===== 未来能源板块——实时行情 =====
+const ENERGY_CODES = ['sh601868','sh601611','sh601669','sh601985','sh600396','sh601016','sh600956','sh600821','sh601991','sz001896','sh603693','sh600900','sz002015','sz000533','sz002498','sz003035','sz002028','sh600406','sh601179','sh600089','sz002506','sz002202','sh601012','sh603778','sz002323','sz300274','sz300827','sz300118','sz000600','sh601877','sh601615','sz000723','sz002639','sh600691','sh605167','sh600860','sh600875','sz300985','sz002911','sz002366','sh600307','sh601399','sh600105','sh603169','sh603011']
+const ENERGY_API_URL = 'https://qt.gtimg.cn/q=' + ENERGY_CODES.join(',')
+let energyTimer = null
+
+function energyUpdateUI(data) {
+  document.querySelectorAll('.energy-item[data-ecode]').forEach(item => {
+    const code = item.getAttribute('data-ecode')
+    const d = data[code]
+    if (!d) return
+    const priceEl = item.querySelector('.price')
+    if (!priceEl) return
+    const p = (typeof d === 'string') ? parseFloat(d.split('~')[3]) : (d.price || 0)
+    const yclose = (typeof d === 'string') ? parseFloat(d.split('~')[4]) : (d.yclose || 0)
+    if (!p || !yclose) { priceEl.textContent = p.toFixed(2); return }
+    const chg = p - yclose
+    priceEl.textContent = p.toFixed(2)
+    priceEl.className = 'price ' + (chg > 0 ? 'up' : chg < 0 ? 'dn' : 'eq')
+  })
+}
+
+function energyParseData() {
+  const results = {}
+  ENERGY_CODES.forEach(code => {
+    const varName = 'v_' + code
+    if (window[varName] !== undefined) {
+      results[code] = window[varName]
+      delete window[varName]
+    }
+  })
+  return results
+}
+
+function energyDoFetch() {
+  if (!document.getElementById('energy')) return
+  const script = document.createElement('script')
+  script.src = ENERGY_API_URL + '&_=' + Date.now()
+  script.onload = function() {
+    const data = energyParseData()
+    energyUpdateUI(data)
+    document.head.removeChild(script)
+  }
+  script.onerror = function() { document.head.removeChild(script) }
+  document.head.appendChild(script)
+}
+
+// 页面可见时拉一次
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(energyDoFetch, 2000)
+})
 
 function mktDoFetch() {
   if (document.getElementById('mktDot')) {
