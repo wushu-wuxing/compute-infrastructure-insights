@@ -1766,7 +1766,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
         <div class="energy-item" data-ecode="sh601012"><span class="name">隆基绿能<span class="code">601012</span></span><span class="price eq">-</span></div>
         <div class="energy-item" data-ecode="sh603778"><span class="name">国晟科技<span class="code">603778</span></span><span class="price eq">-</span></div>
         <div class="energy-item" data-ecode="sz002323"><span class="name">雅博股份<span class="code">002323</span></span><span class="price eq">-</span></div>
-        <div class="energy-item"><span class="name">锡华科技<span class="pending">待确认</span></span><span class="price eq">-</span></div>
+        <div class="energy-item" data-ecode="sh603248"><span class="name">锡华科技<span class="code">603248</span></span><span class="price eq">-</span></div>
         <div class="energy-item" data-ecode="sz300274"><span class="name">阳光电源<span class="code">300274</span><span class="energy-tag t4">电能</span></span><span class="price eq">-</span></div>
         <div class="energy-item" data-ecode="sz300827"><span class="name">上能电气<span class="code">300827</span></span><span class="price eq">-</span></div>
         <div class="energy-item" data-ecode="sz300118"><span class="name">东方日升<span class="code">300118</span></span><span class="price eq">-</span></div>
@@ -1807,7 +1807,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     </div>
 
     <div class="energy-footer">
-      <strong>📌 覆盖标的：50只</strong>（含3只待上市/待确认，47只已接入实时行情）· 油价暴涨驱动，能源安全是未来3-5年确定性最高的主线。<br>
+      <strong>📌 覆盖标的：50只</strong>（含2只待上市，48只已接入实时行情）· 油价暴涨驱动，能源安全是未来3-5年确定性最高的主线。<br>
       标注<span class="energy-tag t6">★</span>的核聚变标的同时也出现在第一批（建设侧），说明核电是贯穿全链条的核心。<br>
       智能电网侧特变电工已纳入实盘追踪池（12x PE，长期底仓级标的）。<br>
       风光储侧隆基绿能、阳光电源等龙头股价已大幅回调，估值进入历史低位区间。
@@ -2489,7 +2489,7 @@ function mktUpdateUI(data) {
 }
 
 // ===== 未来能源板块——实时行情 =====
-const ENERGY_CODES = ['sh601868','sh601611','sh601669','sh601985','sh600396','sh601016','sz000537','sh600956','sz000875','sh600821','sh601991','sz001896','sh603693','sh600900','sz002015','sz000533','sz002498','sz003035','sz002028','sh600406','sh601179','sh600089','sz002506','sz002202','sh601012','sh603778','sz002323','sz300274','sz300827','sz300118','sz000600','sh601877','sh601615','sz000723','sz002639','sh600691','sh605167','sh600860','sh600875','sz300985','sz002911','sz002366','sh600307','sh601399','sh600105','sh603169','sh603011']
+const ENERGY_CODES = ['sh601868','sh601611','sh601669','sh601985','sh600396','sh601016','sz000537','sh600956','sz000875','sh600821','sh601991','sz001896','sh603693','sh600900','sz002015','sz000533','sz002498','sz003035','sz002028','sh600406','sh601179','sh600089','sz002506','sz002202','sh601012','sh603778','sz002323','sh603248','sz300274','sz300827','sz300118','sz000600','sh601877','sh601615','sz000723','sz002639','sh600691','sh605167','sh600860','sh600875','sz300985','sz002911','sz002366','sh600307','sh601399','sh600105','sh603169','sh603011']
 const ENERGY_API_URL = 'https://qt.gtimg.cn/q=' + ENERGY_CODES.join(',')
 let energyTimer = null
 
