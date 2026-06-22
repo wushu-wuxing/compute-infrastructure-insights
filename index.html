@@ -30,37 +30,38 @@ nav{
   padding:0 2rem;height:60px;
   display:flex;align-items:center;justify-content:space-between;
 }
-nav .logo{font-size:1.15rem;font-weight:700;color:#e0e8f5;letter-spacing:1px}
+nav .logo{font-size:1.15rem;font-weight:700;color:#e0e8f5;letter-spacing:1px;flex-shrink:0}
 nav .logo span{color:#4a9eff}
-nav .nav-links{display:flex;gap:.25rem;list-style:none}
+nav .nav-links{display:flex;gap:.25rem;list-style:none;overflow-x:auto;overflow-y:hidden;flex-shrink:0;scrollbar-width:none;-ms-overflow-style:none}
+nav .nav-links::-webkit-scrollbar{display:none}
 nav .nav-links a{
-  padding:.4rem .85rem;border-radius:6px;font-size:.82rem;
+  padding:.35rem .55rem;border-radius:6px;font-size:.78rem;
   color:#8899b0;transition:.25s;white-space:nowrap;
 }
 nav .nav-links a:hover,
 nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
 .nav-comment-btn{
-  font-size:.78rem;padding:.35rem .85rem;border-radius:8px;
+  font-size:.75rem;padding:.3rem .6rem;border-radius:6px;
   border:1px solid rgba(74,158,255,0.35);
-  color:#7eb8ff;white-space:nowrap;margin-left:.5rem;
+  color:#7eb8ff;white-space:nowrap;margin-left:.3rem;
   transition:.25s;
 }
 .nav-comment-btn:hover{
   background:rgba(74,158,255,0.12);border-color:#4a9eff;color:#b8d8ff;
 }
 .nav-wechat-btn{
-  font-size:.78rem;padding:.35rem .85rem;border-radius:8px;
+  font-size:.75rem;padding:.3rem .6rem;border-radius:6px;
   border:1px solid rgba(7,193,96,0.35);
-  color:#07c160;white-space:nowrap;margin-left:.35rem;
+  color:#07c160;white-space:nowrap;margin-left:.25rem;
   transition:.25s;
 }
 .nav-wechat-btn:hover{
   background:rgba(7,193,96,0.1);border-color:#07c160;color:#4ae68a;
 }
 .nav-kg-link{
-  font-size:.78rem;padding:.35rem .85rem;border-radius:8px;
+  font-size:.75rem;padding:.3rem .6rem;border-radius:6px;
   border:1px solid rgba(167,139,250,0.35);
-  color:#a78bfa;white-space:nowrap;margin-left:.35rem;
+  color:#a78bfa;white-space:nowrap;margin-left:.25rem;
   transition:.25s;
 }
 .nav-kg-link:hover{
@@ -558,7 +559,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
 }
 
 /* ===== RESPONSIVE ===== */
-@media(max-width:768px){
+@media(max-width:1100px){
   nav{padding:0 1rem}
   .menu-toggle{display:block}
   nav .nav-links{
@@ -568,6 +569,8 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
   }
   nav .nav-links.open{display:flex}
   nav .nav-links a{padding:.5rem .75rem;font-size:.85rem}
+}
+@media(max-width:768px){
   .bottleneck-grid{grid-template-columns:1fr;gap:.6rem}
   .bottleneck-card{padding:1rem .75rem}
   .bottleneck-card .icon{font-size:1.8rem}
@@ -607,6 +610,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     <li><a href="#energy">⚡未来能源</a></li>
     <li><a href="#etf">📦ETF配置</a></li>
     <li><a href="#market">📈市场追踪</a></li>
+    <li><a href="#token-export">🔌Token出口</a></li>
     <li><a href="#portfolio">📊实盘</a></li>
     <li><a href="#pe">市盈率</a></li>
     <li><a href="#bio">🧬碳基算力</a></li>
@@ -2139,6 +2143,87 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
   </div>
 </section>
 
+<!-- ===== Token出口：电力→算力→数字出口 ===== -->
+<section id="token-export" class="section fade-in">
+  <div class="section-header">
+    <h2>🔌 Token出口：电力→算力→数字出口</h2>
+    <div class="divider"></div>
+    <p>电卖不出国境线，但Token可以——中国全球第一的发电量，正在找到真正的出口形态</p>
+  </div>
+  <div class="article-body">
+
+    <div class="highlight-box">
+      <strong>核心公式：</strong><br>
+      电力（不可出口）→ 算力中心 → Token（可出口）→ 全球订阅/API付费
+    </div>
+
+    <h3>一、一个反常识的事实</h3>
+    <p>中国是全球发电量第一的大国，年发电量超过9万亿度，比美国+印度+日本加起来还多。但去查海关数据——<strong>电力出口几乎可以忽略不计。</strong></p>
+    <p>为什么？因为电没法储存，没法长途运输。高压线跨个国境都费劲，总不能把三峡大坝的电用充电宝打包发往硅谷。</p>
+    <p>手里攥着全球最大的能源产能，却只能在国境线以内打转——<strong>这就像开了个金矿，但金子太重运不出去。</strong></p>
+    <p>直到 <strong>Token</strong> 这个概念出现，一切才开始变得有意思。</p>
+
+    <h3>二、算力即电力</h3>
+    <p>这是第一层窗户纸。美国人对AI芯片那么疯魔，英伟达市值飙到3万亿美金——他们买的不是芯片，是算力，而算力的底层是<strong>电力</strong>。</p>
+    <p>训练一个大模型，耗电量相当于3000个美国家庭一整年的用电总和。马斯克去年公开吐槽：AI再这么发展下去，美国的电网要先崩为敬。</p>
+    <p>这时候再回头看中国：<strong>有电，有大量的电，有全世界最便宜的工业电价。</strong></p>
+    <p>但问题是——把电卖给谁？直接卖电？电网不连通，协议谈不拢，地缘政治一搅和，10年都搞不定。</p>
+    <p>但如果把电变成算力，再把算力变成Token呢？——<strong>这就是那层窗户纸。</strong></p>
+
+    <div class="insight-box">
+      <strong>渡曰：</strong> 电出不了国境，但Token可以。Token是数字的，是即时的，是点一下鼠标就能穿越太平洋的东西。在北京用1000°电算出来的结果，一秒钟后就能出现在旧金山的屏幕上——没人能拦得住。
+    </div>
+
+    <h3>三、Token是电力的压缩包</h3>
+    <p>以前出口走的是实物路线：原材料 → 工厂装箱 → 轮船 → 货架。中国卡在中间环节，赚的是辛苦钱。</p>
+    <p>Token走的是另一条路：<strong>电力 → 算力 → 模型 → 输出 → 订阅/付费</strong>。</p>
+    <p>在这个链条里：</p>
+    <ul>
+      <li>⚡ 电力是原材料</li>
+      <li>🖥️ 算力是加工厂</li>
+      <li>🔖 Token是最终产品</li>
+    </ul>
+    <p>而且这个产品有个逆天特性：<strong>边际成本趋近于零</strong>。练一次大模型花掉1000万度电，但产出的Token可以无限复制。第一个Token贵如黄金，第100万个Token便宜如尘埃。</p>
+    <p>更妙的是——Token的定价权在模型厂商手里。OpenAI的GPT-4订阅卖20美金/月，毛利率超过80%。这80%里面有一大块是电力的增值，只是增值的方式变了：<strong>从卖电变成了卖电的智力成果。</strong></p>
+    <p>中国现在缺的不是电——缺的是把电变成Token的炼金术。</p>
+
+    <div class="highlight-box">
+      <strong>产业链条映射持仓：</strong><br>
+      ⚡ 电力供给 → <strong>中国核电、特变电工</strong>（基荷电源+输变电设备）<br>
+      🖥️ 算力硬件 → <strong>工业富联、深科技、沪电股份、北方华创</strong>（AI服务器+存储+PCB+设备）<br>
+      ☀️ 绿色电力消纳 → <strong>光伏ETF</strong>（西部算力中心+风光储一体化）
+    </div>
+
+    <h3>四、为什么要两年才想通</h3>
+    <p>路径依赖太可怕。这一代商人被"世界工厂"的叙事腌入味儿了——总觉得出口就是集装箱、码头、报关单。数字产品？那是虚拟经济，是泡沫，是脱实向虚。</p>
+    <p>这种偏见根深蒂固，以至于很多人看不见一个基本事实：<strong>全球贸易的增量70%已经发生在数字领域。</strong></p>
+    <p>另一个障碍是技术迷雾。Token、算力、集群、推理、优化——这些词堆在一起天然拒人千里。但拨开术语的外衣，核心逻辑朴素得很：<strong>人类正在从搬运原子转向搬运比特，而比特的搬运成本是原子的百万分之一。</strong></p>
+    <p>想通这一点，再看中国的能源优势，视角完全不同：</p>
+    <ul>
+      <li>🌬️ 内蒙古的风电</li>
+      <li>🌊 四川的水电</li>
+      <li>☀️ 新疆的光伏</li>
+    </ul>
+    <p>以前愁的是消纳问题——发出来了用不完，弃风弃光心疼得要命。现在呢？直接在当地建算力中心，就地转化，<strong>变废为宝。</strong></p>
+    <p>电还是那些电，但出口形态变了，价值链位置变了，利润空间变了。<strong>这不是弯道超车，这是换道超车。</strong></p>
+
+    <h3>五、中美暗战：电力Token转换链</h3>
+    <p>美国人不是傻子。他们一边喊AI安全，一边卡芯片出口——本质上就是在抢"电力→Token"转换链的控制权。</p>
+    <p>英伟达H100为什么禁售？因为那是当前最高效的<strong>电力压缩器</strong>。没有它，电再便宜转化效率也上不去。</p>
+    <p>但封锁从来都是双刃剑。中国的应对策略很清晰：<strong>堆规模、拼效率、找替代</strong>。华为昇腾、寒武纪、海光——国产芯片的生态在艰难爬坡。与此同时，算法层面的优化也在狂飙——用更少的算力干更多的活儿。</p>
+
+    <div class="insight-box">
+      <strong>渡曰：</strong> 这场战争的终局是什么？可能是一个新的全球分工——美国掌握顶尖模型和生态，中国掌握底层算力和制造，欧洲在边上打监管牌。但别忘了——<strong>电是硬通货，算力是硬通货。</strong> Token的产量最终受制于这两样东西的供给。谁有电，谁就有底气；谁能把电高效地变成Token，谁就能在新一轮全球化里切到最大的蛋糕。
+    </div>
+
+    <div class="quote-block" style="margin-top:1.25rem">
+      <strong>💰 中国拥有全球最大发电量 + 最低工业电价 → Token出口的天然护城河</strong><br>
+      <span class="source">—— 渡曰 · 无殊润笔 · 2026年6月</span>
+    </div>
+
+  </div>
+</section>
+
 <!-- ===== 无殊实盘 ===== -->
 <section id="portfolio" class="section fade-in">
   <div class="section-header">
@@ -2878,15 +2963,15 @@ document.addEventListener('visibilitychange', function() {
 const pfData = {
   capital: 1000000, cash: 314569,
   positions: [
-    { code: 'sz000021', name: '深科技', shares: 2000, avg_cost: 44.04, current_price: 44.04, category: '波段' },
-    { code: 'sz002475', name: '立讯精密', shares: 2000, avg_cost: 69.93, current_price: 69.93, category: '长线' },
-    { code: 'sh601138', name: '工业富联', shares: 300, avg_cost: 78.08, current_price: 78.08, category: '波段' },
-    { code: 'sz002463', name: '沪电股份', shares: 600, avg_cost: 147.90, current_price: 147.90, category: '长线' },
-    { code: 'sz002371', name: '北方华创', shares: 100, avg_cost: 721.04, current_price: 721.04, category: '长线' },
-    { code: 'sz300724', name: '捷佳伟创', shares: 1500, avg_cost: 72.88, current_price: 72.88, category: '长线' },
-    { code: 'sh600089', name: '特变电工', shares: 2500, avg_cost: 23.32, current_price: 23.32, category: '长线' },
-    { code: 'sh601985', name: '中国核电', shares: 5000, avg_cost: 9.12, current_price: 9.12, category: '长线' },
-    { code: 'sh515790', name: '光伏ETF', shares: 59000, avg_cost: 1.017, current_price: 1.017, category: '长线' }
+    { code: 'sz000021', name: '深科技', shares: 2000, avg_cost: 44.04, current_price: 46.46, category: '波段' },
+    { code: 'sz002475', name: '立讯精密', shares: 2000, avg_cost: 69.93, current_price: 68.31, category: '长线' },
+    { code: 'sh601138', name: '工业富联', shares: 300, avg_cost: 78.08, current_price: 77.93, category: '波段' },
+    { code: 'sz002463', name: '沪电股份', shares: 600, avg_cost: 147.90, current_price: 146.24, category: '长线' },
+    { code: 'sz002371', name: '北方华创', shares: 100, avg_cost: 721.04, current_price: 749.59, category: '长线' },
+    { code: 'sz300724', name: '捷佳伟创', shares: 1500, avg_cost: 72.88, current_price: 71.30, category: '长线' },
+    { code: 'sh600089', name: '特变电工', shares: 2500, avg_cost: 23.32, current_price: 23.51, category: '长线' },
+    { code: 'sh601985', name: '中国核电', shares: 5000, avg_cost: 9.12, current_price: 9.04, category: '长线' },
+    { code: 'sh515790', name: '光伏ETF', shares: 59000, avg_cost: 1.017, current_price: 1.019, category: '长线' }
   ],
   trades: [] // loaded from HTML below
 }
