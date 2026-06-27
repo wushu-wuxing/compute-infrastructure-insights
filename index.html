@@ -644,6 +644,8 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
   .stat-block .number{font-size:1.2rem}
   .section{padding:3rem 1rem}
   .hero h1{font-size:1.8rem}
+  .hero .logo-hero{flex-direction:column;text-align:center}
+  .hero .logo-hero .lh-text{text-align:center}
   .hero{padding:5rem 1rem 3rem}
   .comp-table{font-size:.65rem}
   .comp-table th,.comp-table td{padding:.3rem .35rem}
@@ -739,8 +741,25 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
 
 <!-- ===== HERO ===== -->
 <section id="home" class="hero">
-  <h1>算力基础设施洞察</h1>
-  <p class="subtitle">Transformer · Fiber · Power · Communication</p>
+  <div class="logo-hero" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+    <svg width="56" height="56" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(74,158,255,0.1)" stroke-width="1"/>
+      <circle cx="36" cy="36" r="30" fill="none" stroke="url(#heroGrad)" stroke-width="2.5"
+              stroke-dasharray="140 48" stroke-dashoffset="0" stroke-linecap="round"/>
+      <line x1="18" y1="36" x2="30" y2="36" stroke="#4a9eff" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="42" y1="36" x2="54" y2="36" stroke="#4a9eff" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="36" y1="18" x2="36" y2="30" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="36" y1="42" x2="36" y2="54" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="36" cy="36" r="5" fill="rgba(74,158,255,0.08)" stroke="#4a9eff" stroke-width="1.2"/>
+      <circle cx="36" cy="36" r="1.5" fill="rgba(74,158,255,0.5)"/>
+      <defs><linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a9eff"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs>
+    </svg>
+    <div class="lh-text" style="text-align:left">
+      <div style="font-size:1.4rem;font-weight:700;letter-spacing:3px;color:#e0e8f5">算力基础设施洞察</div>
+      <div style="font-size:.75rem;color:#6b7b9a;letter-spacing:3px;margin-top:2px">COMPUTE INFRASTRUCTURE INSIGHTS</div>
+    </div>
+  </div>
+  <p class="subtitle" style="margin-top:0">Transformer · Fiber · Power · Communication</p>
   <p class="tagline">
     当AI的算力需求以指数级增长，<br>
     真正的瓶颈不在GPU——<br>
