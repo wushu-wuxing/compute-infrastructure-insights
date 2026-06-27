@@ -30,7 +30,7 @@ nav{
   padding:0 2rem;height:60px;
   display:flex;align-items:center;justify-content:space-between;
 }
-nav .logo{font-size:1.15rem;font-weight:700;color:#e0e8f5;letter-spacing:1px;flex-shrink:0}
+nav .logo{font-size:1.15rem;font-weight:700;color:#e0e8f5;letter-spacing:1px;flex-shrink:0;display:flex;align-items:center;gap:8px}
 nav .logo span{color:#4a9eff}
 nav .nav-links{display:flex;gap:.25rem;list-style:none;overflow-x:auto;overflow-y:hidden;flex-shrink:0;scrollbar-width:none;-ms-overflow-style:none}
 nav .nav-links::-webkit-scrollbar{display:none}
@@ -68,6 +68,54 @@ nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
   background:rgba(167,139,250,0.1);border-color:#a78bfa;color:#d8c8ff;
 }
 .menu-toggle{display:none;background:none;border:none;color:#c8d0e0;font-size:1.5rem;cursor:pointer}
+
+/* ===== DROPDOWN NAV ===== */
+nav .nav-links .dropbtn{cursor:pointer;display:flex;align-items:center;gap:2px}
+nav .nav-links .dropdown{position:relative}
+nav .nav-links .dropdown-content{
+  display:none;position:absolute;top:100%;left:0;
+  background:rgba(16,22,40,0.95);backdrop-filter:blur(16px);
+  border:1px solid rgba(43,87,151,0.25);border-radius:8px;
+  padding:.35rem;min-width:150px;z-index:999;list-style:none;
+}
+nav .nav-links .dropdown-content a{
+  display:block;padding:.4rem .7rem;border-radius:5px;
+  font-size:.76rem;color:#8899b0;white-space:nowrap;
+}
+nav .nav-links .dropdown-content a:hover{color:#e0e8f5;background:rgba(43,87,151,0.2)}
+nav .nav-links .dropdown:hover .dropdown-content{display:block}
+nav .nav-links .caret{font-size:.6rem;opacity:.5;transition:.25s}
+nav .nav-links .dropdown:hover .caret{transform:rotate(180deg);opacity:.8}
+nav .nav-links .dash{color:var(--border);font-size:.65rem;padding:0 2px;opacity:.3}
+
+/* ===== NAV LOGO ===== */
+nav .logo{display:flex;align-items:center;gap:8px;flex-shrink:0}
+nav .logo .cii-icon{width:24px;height:24px;flex-shrink:0}
+nav .logo .cii-text{font-size:1.05rem;font-weight:700;color:#e0e8f5;letter-spacing:1px}
+nav .logo .cii-text span{color:#4a9eff}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  position:fixed;left:0;top:80px;bottom:0;width:200px;z-index:500;
+  padding:1.2rem .8rem;overflow-y:auto;
+  background:rgba(10,14,26,0.6);border-right:1px solid rgba(43,87,151,0.1);
+  scrollbar-width:thin;scrollbar-color:rgba(43,87,151,0.2) transparent;
+}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(43,87,151,0.2);border-radius:3px}
+.sidebar .sb-title{
+  font-size:.7rem;font-weight:700;color:#6b7b9a;letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:.6rem;padding-bottom:.4rem;
+  border-bottom:1px solid rgba(43,87,151,0.15);
+}
+.sidebar a{
+  display:block;padding:.25rem .5rem;border-radius:4px;
+  font-size:.72rem;color:#6b7b9a;transition:.2s;line-height:1.6;
+}
+.sidebar a:hover{color:#e0e8f5;background:rgba(43,87,151,0.12)}
+.sidebar a.sb-l1{font-weight:600;color:#8899b0;margin-top:.3rem}
+.sidebar a.sb-l2{padding-left:1.2rem;font-size:.68rem}
+@media(max-width:900px){.sidebar{display:none}}
 
 /* ===== HERO ===== */
 .hero{
@@ -108,6 +156,7 @@ nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
 .section{
   max-width:1200px;margin:0 auto;padding:5rem 2rem;
 }
+@media(min-width:901px){.section{padding:5rem 2rem 5rem 210px}}
 .section-header{
   text-align:center;margin-bottom:3.5rem;
 }
@@ -143,6 +192,19 @@ nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
   display:inline-block;font-size:.65rem;padding:.1rem .45rem;border-radius:3px;
   background:rgba(255,200,50,0.15);color:#ffc832;margin-right:.25rem;
 }
+.card-title{
+  font-size:.95rem;font-weight:700;color:#e0e8f5;
+  margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;
+}
+.card-body{padding:0}
+.data-row{
+  display:flex;justify-content:space-between;
+  padding:5px 0;font-size:.82rem;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.data-row:last-child{border-bottom:none}
+.data-row .dl{color:#6b7b9a}
+.data-row .dv{color:#c8d0e0;font-weight:600;text-align:right}
 
 /* ===== DATA TABLES ===== */
 .data-table{
@@ -596,32 +658,84 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
 
 <!-- ===== NAVIGATION ===== -->
 <nav>
-  <div class="logo">⚡<span>算力</span>洞察</div>
+  <div class="logo">
+    <svg class="cii-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" fill="none" stroke="rgba(74,158,255,0.15)" stroke-width="1"/>
+      <circle cx="12" cy="12" r="10" fill="none" stroke="url(#navGrad)" stroke-width="1.8" stroke-dasharray="48 15" stroke-linecap="round"/>
+      <line x1="5" y1="12" x2="9" y2="12" stroke="#4a9eff" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="15" y1="12" x2="19" y2="12" stroke="#4a9eff" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="12" y1="5" x2="12" y2="9" stroke="#38bdf8" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="12" y1="15" x2="12" y2="19" stroke="#38bdf8" stroke-width="1.2" stroke-linecap="round"/>
+      <circle cx="12" cy="12" r="2.5" fill="rgba(74,158,255,0.08)" stroke="#4a9eff" stroke-width=".8"/>
+      <circle cx="12" cy="12" r=".8" fill="rgba(74,158,255,0.5)"/>
+      <defs><linearGradient id="navGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a9eff"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs>
+    </svg>
+    <span class="cii-text"><span>CII</span>算力洞察</span>
+  </div>
   <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
   <ul class="nav-links">
-    <li><a href="#home" class="active">首页</a></li>
-    <li><a href="#transformer">变压器</a></li>
-    <li><a href="#fiber">光棒</a></li>
-    <li><a href="#compare">跨行业对比</a></li>
-    <li><a href="#bottleneck">三大瓶颈</a></li>
-    <li><a href="#pcb">PCB</a></li>
-    <li><a href="#glass">玻璃基板</a></li>
-    <li><a href="#pricewatch">📊股价观察</a></li>
-    <li><a href="#energy">⚡未来能源</a></li>
-    <li><a href="#etf">📦ETF配置</a></li>
-    <li><a href="#market">📈市场追踪</a></li>
-    <li><a href="#token-export">🔌Token出口</a></li>
-    <li><a href="#quantum">⚛️量子计算</a></li>
-    <li><a href="#half">🔬合肥先进光源</a></li>
-    <li><a href="#portfolio">📊实盘</a></li>
-    <li><a href="#pe">市盈率</a></li>
-    <li><a href="#bio">🧬碳基算力</a></li>
-    <li><a href="知识图谱-算力基础设施全链路.html" class="nav-kg-link">🧠 全链路</a></li>
-    <li><a href="#about">关于</a></li>
+    <li><a href="#home" class="active">🏠首页</a></li>
+    <li class="dropdown">
+      <a class="dropbtn">🏭产业深度 <span class="caret">▾</span></a>
+      <ul class="dropdown-content">
+        <li><a href="#transformer">⚡变压器</a></li>
+        <li><a href="#fiber">💡光棒</a></li>
+        <li><a href="#pcb">🔌PCB</a></li>
+        <li><a href="#glass">🔲玻璃基板</a></li>
+        <li><a href="#compare">⚔️跨行业对比</a></li>
+      </ul>
+    </li>
+    <li><a href="#bottleneck">🧠算力瓶颈</a></li>
+    <li class="dropdown">
+      <a class="dropbtn">🚀前沿技术 <span class="caret">▾</span></a>
+      <ul class="dropdown-content">
+        <li><a href="#quantum">⚛️量子计算</a></li>
+        <li><a href="#half">🔬合肥先进光源</a></li>
+        <li><a href="#bio">🧬碳基算力</a></li>
+        <li><a href="#token-export">🔌Token出口</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a class="dropbtn">📊市场组合 <span class="caret">▾</span></a>
+      <ul class="dropdown-content">
+        <li><a href="#energy">⚡未来能源</a></li>
+        <li><a href="#portfolio">📊实盘</a></li>
+        <li><a href="#pe">📈市盈率</a></li>
+        <li><a href="#pricewatch">💹股价观察</a></li>
+        <li><a href="#etf">📦ETF配置</a></li>
+        <li><a href="#market">📉市场追踪</a></li>
+      </ul>
+    </li>
+    <li><a href="#comments">💬评论区</a></li>
+    <li><a href="知识图谱-算力基础设施全链路.html" class="nav-kg-link">🧠全链路</a></li>
+    <li><a href="#about">ℹ️关于</a></li>
+    <li><a href="#wechat" class="nav-wechat-btn">💚微信群</a></li>
   </ul>
-  <a href="#wechat" class="nav-wechat-btn">💚 微信群</a>
-  <a href="#comments" class="nav-comment-btn">💬 评论区</a>
 </nav>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-title">📑 本页索引</div>
+  <a href="#home" class="sb-l1">🏠 首页</a>
+  <a href="#transformer" class="sb-l1">⚡ 变压器</a>
+  <a href="#fiber" class="sb-l1">💡 光棒</a>
+  <a href="#compare" class="sb-l1">⚔️ 跨行业对比</a>
+  <a href="#bottleneck" class="sb-l1">🧠 算力瓶颈</a>
+  <a href="#pcb" class="sb-l1">🔌 PCB</a>
+  <a href="#glass" class="sb-l1">🔲 玻璃基板</a>
+  <a href="#storage" class="sb-l1">🔋 储能</a>
+  <a href="#pricewatch" class="sb-l1">💹 股价观察</a>
+  <a href="#energy" class="sb-l1">⚡ 未来能源</a>
+  <a href="#etf" class="sb-l1">📦 ETF配置</a>
+  <a href="#market" class="sb-l1">📈 市场追踪</a>
+  <a href="#token-export" class="sb-l1">🔌 Token出口</a>
+  <a href="#quantum" class="sb-l1">⚛️ 量子计算</a>
+  <a href="#half" class="sb-l1">🔬 合肥先进光源</a>
+  <a href="#portfolio" class="sb-l1">📊 实盘</a>
+  <a href="#pe" class="sb-l1">📈 市盈率</a>
+  <a href="#bio" class="sb-l1">🧬 碳基算力</a>
+  <a href="#about" class="sb-l1">ℹ️ 关于</a>
+</div>
 
 <!-- ===== HERO ===== -->
 <section id="home" class="hero">
@@ -1605,6 +1719,58 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     <div class="article-footer">
       —— <strong>渡曰</strong> · 无殊梳理 · 2026年6月
     </div>
+  </div>
+</section>
+
+
+<!-- ===== 储能 ===== -->
+<section id="storage" class="section fade-in">
+  <div class="section-header">
+    <h2>🔋 长时储能——液流电池商运突破</h2>
+    <div class="divider"></div>
+    <p>全钒液流电池储能电站首次大规模商运，长时储能从概念走向工程化</p>
+  </div>
+
+  <div class="card-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-title">📐 工程规模</div>
+      <div class="card-body">
+        <div class="data-row"><span class="dl">额定功率</span><span class="dv">20万kW（200MW）</span></div>
+        <div class="data-row"><span class="dl">储能容量</span><span class="dv">100万kWh（1GWh）</span></div>
+        <div class="data-row"><span class="dl">持续放电</span><span class="dv">5小时（覆盖用电尖峰）</span></div>
+        <div class="data-row"><span class="dl">配套光伏</span><span class="dv">100万kW光伏电站</span></div>
+        <div class="data-row"><span class="dl">所在地</span><span class="dv">新疆吉木萨尔</span></div>
+        <div class="data-row"><span class="dl">业主</span><span class="dv">三峡集团</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 运营效益</div>
+      <div class="card-body">
+        <div class="data-row"><span class="dl">弃光率降幅</span><span class="dv" style="color:#34d399">↓10%+</span></div>
+        <div class="data-row"><span class="dl">年均发电</span><span class="dv">17.2亿kWh</span></div>
+        <div class="data-row"><span class="dl">年省标准煤</span><span class="dv">51.9万吨</span></div>
+        <div class="data-row"><span class="dl">年减CO₂</span><span class="dv">142.4万吨</span></div>
+        <div class="data-row"><span class="dl">提前投运</span><span class="dv" style="color:#fbbf24">提前1个月，多发1.3亿度</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔬 技术优势</div>
+      <div class="card-body">
+        <div class="data-row"><span class="dl">安全性</span><span class="dv" style="color:#34d399">不燃不爆</span></div>
+        <div class="data-row"><span class="dl">循环寿命</span><span class="dv">20,000次+ / 几乎不衰减</span></div>
+        <div class="data-row"><span class="dl">扩容逻辑</span><span class="dv">仅增储液罐，电堆不变</span></div>
+        <div class="data-row"><span class="dl">国产化率</span><span class="dv" style="color:#34d399">全链条自主可控</span></div>
+        <div class="data-row"><span class="dl">赛道增速</span><span class="dv">储能钒占比10%→16.3%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>🧠 核心判断：</strong>液流电池不替代锂电池，而是填补"集中式长时储能"的空缺——光伏+液流储能构成的新能源闭环已经跑通。<strong>中国全钒产业链（矿山→电解液→电堆→系统集成）均自主可控</strong>，这是新能源储备战略的先手棋。
+  </div>
+
+  <div class="article-footer">
+    —— 无殊 · 2026年6月27日
   </div>
 </section>
 
