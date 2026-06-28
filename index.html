@@ -2990,8 +2990,36 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
 </section>
 
 <!-- ===== FOOTER ===== -->
-<footer>
-  算力基础设施洞察 · 2026 · 渡 & 无殊
+<footer style="background:#0a0e1a;border-top:1px solid rgba(43,87,151,0.2);padding:2rem 2rem 1.5rem;margin-top:2rem">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;align-items:start">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:.6rem">
+        <svg width="24" height="24" viewBox="0 0 72 72"><circle cx="36" cy="36" r="30" fill="none" stroke="#4a9eff" stroke-width="2.5" stroke-dasharray="140 48" stroke-dashoffset="0" stroke-linecap="round"/><circle cx="36" cy="36" r="14" fill="none" stroke="#38bdf8" stroke-width="2"/><circle cx="36" cy="36" r="4" fill="#38bdf8"/><line x1="36" y1="0" x2="36" y2="66" stroke="#4a9eff" stroke-width="1.5" opacity=".4"/><line x1="0" y1="36" x2="66" y2="36" stroke="#4a9eff" stroke-width="1.5" opacity=".4"/></svg>
+        <span style="color:#e0e8f5;font-weight:700;font-size:.95rem">算力基础设施洞察</span>
+      </div>
+      <p style="color:#5a6a80;font-size:.78rem;line-height:1.6">聚焦AI基础设施产业链——从变压器到光棒，从算力瓶颈到Token出口。低位看逻辑，高位看量价。</p>
+    </div>
+    <div>
+      <div style="color:#8899b0;font-weight:600;font-size:.8rem;margin-bottom:.6rem">快速导航</div>
+      <div style="display:flex;flex-direction:column;gap:.35rem">
+        <a href="#bottleneck" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">🧠 算力瓶颈</a>
+        <a href="#energy" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">⚡ 未来能源</a>
+        <a href="#token-export" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">🔌 Token出口</a>
+        <a href="#market" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">📈 市场追踪</a>
+      </div>
+    </div>
+    <div>
+      <div style="color:#8899b0;font-weight:600;font-size:.8rem;margin-bottom:.6rem">链接</div>
+      <div style="display:flex;flex-direction:column;gap:.35rem">
+        <a href="https://github.com/wushu-wuxing/compute-infrastructure-insights" target="_blank" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">📦 GitHub仓库</a>
+        <a href="#about" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">📬 关于本站</a>
+        <a href="#comments" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">💬 留言</a>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:.8rem auto 0;padding-top:.8rem;border-top:1px solid rgba(255,255,255,0.04);text-align:center;color:#3a4a60;font-size:.72rem">
+    算力基础设施洞察 · 2026 · 渡 &amp; 无殊 · 数据来源：新浪财经/东方财富/腾讯行情 · 不构成投资建议
+  </div>
 </footer>
 
 <script>
@@ -3593,6 +3621,17 @@ document.addEventListener('visibilitychange', function() {
   } else if (document.hidden && pfTimer) {
     clearInterval(pfTimer); pfTimer = null
   }
+})
+</script>
+
+<!-- ===== BACK TO TOP BUTTON ===== -->
+<button id="backToTop" title="返回顶部" style="position:fixed;bottom:2rem;right:2rem;z-index:9999;width:42px;height:42px;border-radius:50%;border:1px solid rgba(74,158,255,0.3);background:rgba(10,14,26,0.8);color:#4a9eff;font-size:1.2rem;cursor:pointer;opacity:0;transform:translateY(20px);transition:all .3s ease;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center"
+onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+const btt = document.getElementById('backToTop')
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 400) { btt.style.opacity = '1'; btt.style.transform = 'translateY(0)' }
+  else { btt.style.opacity = '0'; btt.style.transform = 'translateY(20px)' }
 })
 </script>
 </body>

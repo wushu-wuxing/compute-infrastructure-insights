@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>算力基础设施洞察 · 品牌视觉识别系统</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111627;
+    --surface2: #181e33;
+    --border: #1e2745;
+    --text: #c8d0e0;
+    --text-dim: #6b7b9a;
+    --accent: #4a9eff;
+    --accent2: #7eb8ff;
+    --cyan: #38bdf8;
+    --gold: #f5b342;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: radial-gradient(ellipse at 40% 50%, rgba(74,158,255,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 60% 30%, rgba(56,189,248,0.06) 0%, transparent 50%),
+                var(--bg);
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(74,158,255,0.3), transparent);
+  }
+  .badge {
+    font-size: .75rem;
+    letter-spacing: 3px;
+    color: var(--accent);
+    border: 1px solid rgba(74,158,255,0.2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+  }
+
+  /* ===== LOGO DISPLAY ===== */
+  .logo-display {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 1rem 0 2rem;
+  }
+  .logo-mark {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .logo-mark svg { width: 100%; height: 100%; }
+  .logo-text {
+    text-align: left;
+  }
+  .logo-text .cn {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #e0e8f5 0%, #7eb8ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .logo-text .en {
+    font-size: .85rem;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+  .hero-sub {
+    color: var(--text-dim);
+    font-size: .95rem;
+    max-width: 500px;
+    margin-top: .5rem;
+  }
+
+  /* ===== SECTION ===== */
+  .container { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; }
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    padding-bottom: .5rem;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+  }
+
+  /* ===== LOGO SYSTEM ===== */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  .logo-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    transition: .3s;
+  }
+  .logo-card:hover { border-color: rgba(74,158,255,0.25); }
+  .logo-card .label {
+    font-size: .8rem;
+    color: var(--text-dim);
+  }
+  .logo-card .name {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .logo-card svg { max-width: 100%; }
+  .logo-card.inverted { background: #e8edf5; }
+  .logo-card.inverted .name { color: #1a1d28; }
+
+  /* ===== COLOR PALETTE ===== */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .color-swatch {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .color-bar {
+    height: 80px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    font-size: .8rem;
+    font-weight: 600;
+    font-family: monospace;
+  }
+  .color-info { padding: 10px; }
+  .color-info .cname { font-weight: 600; font-size: .9rem; }
+  .color-info .cusage { font-size: .78rem; color: var(--text-dim); margin-top: 2px; }
+  .color-info .cweight {
+    display: inline-block;
+    font-size: .7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 4px;
+  }
+
+  /* ===== TYPOGRAPHY ===== */
+  .typo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  .typo-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+  }
+  .typo-card .font-name { font-size: .8rem; color: var(--text-dim); }
+  .typo-card .sample-cn { font-size: 1.8rem; margin: .5rem 0; }
+  .typo-card .sample-en { font-size: 1.4rem; margin: .5rem 0; color: var(--accent); }
+  .typo-card .weights { display: flex; gap: 10px; flex-wrap: wrap; }
+  .typo-card .weights span { font-size: .75rem; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border); }
+
+  /* ===== BRAND STORY ===== */
+  .story-box {
+    background: linear-gradient(135deg, rgba(74,158,255,0.06), rgba(56,189,248,0.03));
+    border: 1px solid rgba(74,158,255,0.15);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    line-height: 2;
+    margin-bottom: 2rem;
+  }
+  .story-box .tagline {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: .5rem;
+  }
+  .story-box .highlight { color: var(--cyan); }
+
+  /* ===== APPLICATIONS ===== */
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .app-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .app-card .icon { font-size: 1.8rem; }
+  .app-card .alabel { font-size: .82rem; color: var(--text-dim); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: .8rem;
+  }
+
+  @media(max-width:600px) {
+    .logo-display { flex-direction: column; }
+    .logo-text { text-align: center; }
+    .typo-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="badge">BRAND IDENTITY SYSTEM · 2026</div>
+  <div class="logo-display">
+    <div class="logo-mark">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer fiber-optic ring -->
+        <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(74,158,255,0.12)" stroke-width="1"/>
+        <circle cx="50" cy="50" r="44" fill="none" stroke="url(#ringGrad)" stroke-width="2.5"
+                stroke-dasharray="220 56" stroke-dashoffset="0" stroke-linecap="round"/>
+        <!-- Inner data ring -->
+        <circle cx="50" cy="50" r="34" fill="none" stroke="rgba(56,189,248,0.15)" stroke-width="1"/>
+        <circle cx="50" cy="50" r="34" fill="none" stroke="url(#ringGrad2)" stroke-width="2"
+                stroke-dasharray="140 74" stroke-dashoffset="40" stroke-linecap="round"/>
+        <!-- Circuit trace lines -->
+        <polyline points="28,50 38,50 42,42 58,42 62,50 72,50"
+                  fill="none" stroke="url(#circuitGrad)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="2 4"/>
+        <polyline points="50,28 50,38 42,42 42,58 50,62 50,72"
+                  fill="none" stroke="url(#circuitGrad)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="2 4"/>
+        <!-- Center node chip -->
+        <rect x="43" y="43" width="14" height="14" rx="3" fill="rgba(74,158,255,0.2)" stroke="rgba(74,158,255,0.5)" stroke-width="1.2"/>
+        <rect x="46" y="46" width="8" height="8" rx="1.5" fill="rgba(56,189,248,0.3)"/>
+        <!-- Insight eye / lens -->
+        <circle cx="50" cy="50" r="4" fill="none" stroke="rgba(245,179,66,0.5)" stroke-width="0.8"/>
+        <circle cx="50" cy="50" r="1.5" fill="rgba(245,179,66,0.4)"/>
+        <!-- Data nodes -->
+        <circle cx="28" cy="50" r="3" fill="rgba(74,158,255,0.6)"/>
+        <circle cx="72" cy="50" r="3" fill="rgba(74,158,255,0.6)"/>
+        <circle cx="50" cy="28" r="3" fill="rgba(74,158,255,0.6)"/>
+        <circle cx="50" cy="72" r="3" fill="rgba(74,158,255,0.6)"/>
+        <!-- Gradient defs -->
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4a9eff"/>
+            <stop offset="50%" stop-color="#7eb8ff"/>
+            <stop offset="100%" stop-color="#38bdf8"/>
+          </linearGradient>
+          <linearGradient id="ringGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#7eb8ff" stop-opacity="0.3"/>
+          </linearGradient>
+          <linearGradient id="circuitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4a9eff" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.4"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <div class="cn">算力基础设施洞察</div>
+      <div class="en">COMPUTE INFRASTRUCTURE INSIGHTS</div>
+    </div>
+  </div>
+  <div class="hero-sub">从变压器到量子计算 · 中国算力产业链深度追踪</div>
+</div>
+
+<div class="container">
+
+  <!-- ===== BRAND STORY ===== -->
+  <h2 class="section-title">📖 品牌故事</h2>
+  <div class="story-box">
+    <div class="tagline">「洞察算力，就是洞察未来」</div>
+    <p>
+      算力——它藏在变压器里，流过光纤芯，铸在芯片间，盘旋在量子纠缠中。
+      <strong class="highlight">算力基础设施洞察</strong>不是一家新闻网站，而是一双盯着中国算力产业链的眼睛。
+    </p>
+    <p style="margin-top: .8rem;">
+      我们追踪的不只是股价曲线，更是每一根光棒的拉丝速度、每一台变压器的出厂编号、每一片PCB的层数升级。
+      从新疆戈壁的液流储能到合肥的同步辐射光源，从海树礁的Token出口到韶关的"来数加工"——
+      <strong class="highlight">把中国算力的每一个脚印，记下来。</strong>
+    </p>
+    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(74,158,255,0.1); font-size:.85rem; color:var(--text-dim)">
+      🏷️ 标语候选：<strong style="color:var(--accent)">算力即国运</strong> · <strong style="color:var(--accent2)">看见计算的底层</strong> · <strong style="color:var(--cyan)">从电到光，逐算而行</strong>
+    </div>
+  </div>
+
+  <!-- ===== LOGO SYSTEM ===== -->
+  <h2 class="section-title">🔤 Logo 系统</h2>
+  <div class="logo-grid">
+    <!-- Primary -->
+    <div class="logo-card">
+      <svg viewBox="0 0 200 60" width="200" height="60" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="26" fill="none" stroke="rgba(74,158,255,0.15)" stroke-width="1"/>
+        <circle cx="30" cy="30" r="26" fill="none" stroke="url(#p1)" stroke-width="2" stroke-dasharray="130 34" stroke-linecap="round"/>
+        <polyline points="12,30 20,30 24,24 36,24 40,30 48,30" fill="none" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="30,12 30,20 24,24 24,36 30,40 30,48" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="25" y="25" width="10" height="10" rx="2" fill="rgba(74,158,255,0.2)" stroke="#4a9eff" stroke-width="1"/>
+        <circle cx="30" cy="30" r="2.5" fill="#f5b342" fill-opacity="0.4"/>
+        <text x="52" y="27" font-size="16" font-weight="700" fill="#e0e8f5" font-family="'PingFang SC','Microsoft YaHei',sans-serif">算力基础设施洞察</text>
+        <text x="52" y="45" font-size="8" fill="#6b7b9a" font-family="'Helvetica Neue',Arial,sans-serif">COMPUTE INFRASTRUCTURE INSIGHTS</text>
+        <defs><linearGradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a9eff"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs>
+      </svg>
+      <div class="name">主标志 · Primary</div>
+      <div class="label">全称+图形标 · 官网/名片/头图</div>
+    </div>
+
+    <!-- Abbreviation -->
+    <div class="logo-card">
+      <svg viewBox="0 0 200 60" width="200" height="60" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="26" fill="none" stroke="rgba(74,158,255,0.15)" stroke-width="1"/>
+        <circle cx="30" cy="30" r="26" fill="none" stroke="#4a9eff" stroke-width="2" stroke-dasharray="100 64" stroke-linecap="round"/>
+        <polyline points="14,30 22,30 26,24 34,24 38,30 46,30" fill="none" stroke="#7eb8ff" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="30,14 30,22 26,26 26,34 30,38 30,46" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="25" y="25" width="10" height="10" rx="2" fill="rgba(74,158,255,0.15)" stroke="#4a9eff" stroke-width="1"/>
+        <text x="52" y="32" font-size="18" font-weight="700" fill="#7eb8ff" font-family="'Helvetica Neue',Arial,sans-serif">CII</text>
+        <text x="52" y="47" font-size="8" fill="#6b7b9a" font-family="'PingFang SC','Microsoft YaHei',sans-serif">算力基础设施洞察 缩写</text>
+      </svg>
+      <div class="name">缩写标 · Abbreviation</div>
+      <div class="label">CII · 适合小空间/移动端/头像</div>
+    </div>
+
+    <!-- Icon only -->
+    <div class="logo-card">
+      <svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="38" fill="none" stroke="rgba(74,158,255,0.1)" stroke-width="1"/>
+        <circle cx="40" cy="40" r="38" fill="none" stroke="url(#iconGrad)" stroke-width="2.5" stroke-dasharray="190 49" stroke-linecap="round"/>
+        <circle cx="40" cy="40" r="28" fill="none" stroke="rgba(56,189,248,0.12)" stroke-width="1"/>
+        <circle cx="40" cy="40" r="28" fill="none" stroke="url(#iconGrad2)" stroke-width="1.8" stroke-dasharray="120 56" stroke-dashoffset="30" stroke-linecap="round"/>
+        <polyline points="20,40 30,40 34,32 46,32 50,40 60,40" fill="none" stroke="url(#iconGrad)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="2 3"/>
+        <polyline points="40,20 40,30 34,34 34,46 40,50 40,60" fill="none" stroke="url(#iconGrad2)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="2 3"/>
+        <rect x="34" y="34" width="12" height="12" rx="3" fill="rgba(74,158,255,0.15)" stroke="rgba(74,158,255,0.5)" stroke-width="1.2"/>
+        <circle cx="40" cy="40" r="3" fill="#f5b342" fill-opacity="0.3"/>
+        <circle cx="40" cy="40" r="1.2" fill="#f5b342" fill-opacity="0.5"/>
+        <defs>
+          <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a9eff"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient>
+          <linearGradient id="iconGrad2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#38bdf8" stop-opacity="0.5"/><stop offset="100%" stop-color="#7eb8ff" stop-opacity="0.3"/></linearGradient>
+        </defs>
+      </svg>
+      <div class="name">图标标 · Icon</div>
+      <div class="label">独立图形 · 浏览器图标/水印</div>
+    </div>
+
+    <!-- Light background -->
+    <div class="logo-card inverted">
+      <svg viewBox="0 0 200 60" width="200" height="60" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="26" fill="none" stroke="rgba(74,158,255,0.2)" stroke-width="1"/>
+        <circle cx="30" cy="30" r="26" fill="none" stroke="url(#l1)" stroke-width="2" stroke-dasharray="130 34" stroke-linecap="round"/>
+        <polyline points="12,30 20,30 24,24 36,24 40,30 48,30" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="30,12 30,20 24,24 24,36 30,40 30,48" fill="none" stroke="#0284c7" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="25" y="25" width="10" height="10" rx="2" fill="rgba(37,99,235,0.1)" stroke="#2563eb" stroke-width="1"/>
+        <circle cx="30" cy="30" r="2.5" fill="#d97706" fill-opacity="0.3"/>
+        <text x="52" y="27" font-size="16" font-weight="700" fill="#0f172a" font-family="'PingFang SC','Microsoft YaHei',sans-serif">算力基础设施洞察</text>
+        <text x="52" y="45" font-size="8" fill="#64748b" font-family="'Helvetica Neue',Arial,sans-serif">COMPUTE INFRASTRUCTURE INSIGHTS</text>
+        <defs><linearGradient id="l1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#0284c7"/></linearGradient></defs>
+      </svg>
+      <div class="name">浅色版 · Light</div>
+      <div class="label">白底/浅底色场景使用</div>
+    </div>
+
+    <!-- Monogram -->
+    <div class="logo-card">
+      <svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="72" height="72" rx="16" fill="rgba(74,158,255,0.06)" stroke="rgba(74,158,255,0.15)" stroke-width="1"/>
+        <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(74,158,255,0.08)" stroke-width="1"/>
+        <circle cx="40" cy="40" r="32" fill="none" stroke="#4a9eff" stroke-width="2" stroke-dasharray="160 40" stroke-linecap="round"/>
+        <line x1="28" y1="32" x2="52" y2="32" stroke="#7eb8ff" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="30" y1="40" x2="50" y2="40" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+        <line x1="32" y1="48" x2="48" y2="48" stroke="#4a9eff" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="40" cy="40" r="2" fill="#f5b342" fill-opacity="0.4"/>
+      </svg>
+      <div class="name">字标 · Monogram</div>
+      <div class="label">三线抽象标 · 文创/小尺寸应用</div>
+    </div>
+
+    <!-- Slogan -->
+    <div class="logo-card">
+      <span style="font-size: 1.6rem; font-weight: 700; background: linear-gradient(135deg, #4a9eff, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">算力即国运</span>
+      <div class="name">标语字标 · Wordmark</div>
+      <div class="label">品牌口号视觉化 · 首页/Slogan场景</div>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE ===== -->
+  <h2 class="section-title">🎨 色彩系统</h2>
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="color-bar" style="background:#0a0e1a; color:#7eb8ff;">#0A0E1A</div>
+      <div class="color-info">
+        <div class="cname">极夜黑 · Base</div>
+        <div class="cusage">主背景色，占比70%</div>
+        <span class="cweight" style="background:rgba(74,158,255,0.1);color:#4a9eff;">70%</span>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-bar" style="background:#111627; color:#7eb8ff;">#111627</div>
+      <div class="color-info">
+        <div class="cname">深空蓝 · Surface</div>
+        <div class="cusage">卡片/组件背景</div>
+        <span class="cweight" style="background:rgba(74,158,255,0.1);color:#4a9eff;">15%</span>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-bar" style="background:#4a9eff; color:#fff;">#4A9EFF</div>
+      <div class="color-info">
+        <div class="cname">算力蓝 · Primary</div>
+        <div class="cusage">主色 · 导航/标题/强调</div>
+        <span class="cweight" style="background:rgba(74,158,255,0.1);color:#4a9eff;">8%</span>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-bar" style="background:#38bdf8; color:#0a0e1a;">#38BDF8</div>
+      <div class="color-info">
+        <div class="cname">数据青 · Accent</div>
+        <div class="cusage">辅助色 · 数据/图表/链接</div>
+        <span class="cweight" style="background:rgba(56,189,248,0.1);color:#38bdf8;">5%</span>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-bar" style="background:#f5b342; color:#0a0e1a;">#F5B342</div>
+      <div class="color-info">
+        <div class="cname">洞察金 · Highlight</div>
+        <div class="cusage">点缀色 · 核心发现/洞察标记</div>
+        <span class="cweight" style="background:rgba(245,179,66,0.1);color:#f5b342;">2%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TYPOGRAPHY ===== -->
+  <h2 class="section-title">🔤 字体系统</h2>
+  <div class="typo-grid">
+    <div class="typo-card" style="font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">
+      <div class="font-name">中文 · PingFang SC / Noto Sans SC</div>
+      <div class="sample-cn">算力基础设施洞察</div>
+      <div class="weights">
+        <span style="font-weight:300">细 300</span>
+        <span style="font-weight:400">常规 400</span>
+        <span style="font-weight:600">中黑 600</span>
+        <span style="font-weight:700" style="border-color:#4a9eff">粗体 700</span>
+        <span style="font-weight:900">特粗 900</span>
+      </div>
+    </div>
+    <div class="typo-card" style="font-family:'Helvetica Neue','Inter',Arial,sans-serif">
+      <div class="font-name">英文 · Helvetica Neue / Inter</div>
+      <div class="sample-en" style="color:var(--accent);">Compute Infrastructure Insights</div>
+      <div class="weights">
+        <span style="font-weight:300">Light 300</span>
+        <span style="font-weight:400">Regular 400</span>
+        <span style="font-weight:600">Semibold 600</span>
+        <span style="font-weight:700" style="border-color:#4a9eff">Bold 700</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== APPLICATIONS ===== -->
+  <h2 class="section-title">📱 应用场景</h2>
+  <div class="app-grid">
+    <div class="app-card">
+      <div class="icon">🖥️</div>
+      <div class="alabel">网站导航栏</div>
+      <div style="font-size:.7rem;color:var(--text-dim)">主标志 48px</div>
+    </div>
+    <div class="app-card">
+      <div class="icon">📱</div>
+      <div class="alabel">移动端头像</div>
+      <div style="font-size:.7rem;color:var(--text-dim)">图标标 120×120</div>
+    </div>
+    <div class="app-card">
+      <div class="icon">📧</div>
+      <div class="alabel">文章水印</div>
+      <div style="font-size:.7rem;color:var(--text-dim)">缩写标 CII</div>
+    </div>
+    <div class="app-card">
+      <div class="icon">🏷️</div>
+      <div class="alabel">分享卡片</div>
+      <div style="font-size:.7rem;color:var(--text-dim)">主标志+标语</div>
+    </div>
+    <div class="app-card">
+      <div class="icon">📄</div>
+      <div class="alabel">PDF报告</div>
+      <div style="font-size:.7rem;color:var(--text-dim)">浅色版标志</div>
+    </div>
+    <div class="app-card">
+      <div class="icon">🎁</div>
+      <div class="alabel">品牌周边</div>
+      <div style="font-size:.7rem;color:var(--text-dim)">字标语标</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.5rem">
+    <svg width="20" height="20" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="38" fill="none" stroke="#4a9eff" stroke-width="2" stroke-dasharray="160 40" stroke-linecap="round" stroke-opacity="0.5"/>
+      <polyline points="20,40 30,40 34,32 46,32 50,40 60,40" fill="none" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
+      <rect x="34" y="34" width="12" height="12" rx="3" fill="none" stroke="#4a9eff" stroke-width="1.2"/>
+    </svg>
+    <span style="font-weight:600;color:var(--accent)">CII</span>
+  </div>
+  <div>算力基础设施洞察 · 品牌视觉识别系统 · 2026.06</div>
+</footer>
+
+</body>
+</html>

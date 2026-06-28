@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>算力基础设施洞察 · 品牌VI · 简约版</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111627;
+    --border: #1e2745;
+    --text: #c8d0e0;
+    --dim: #6b7b9a;
+    --blue: #4a9eff;
+    --cyan: #38bdf8;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .hero {
+    min-height: 70vh;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+    padding:4rem 2rem;
+    background: radial-gradient(ellipse at 40% 50%, rgba(74,158,255,0.06) 0%, transparent 60%), var(--bg);
+  }
+  .badge {
+    font-size:.7rem;letter-spacing:3px;color:var(--blue);
+    border:1px solid rgba(74,158,255,0.15);padding:4px 14px;border-radius:20px;margin-bottom:2.5rem;
+  }
+
+  /* LOGO — 极简 */
+  .logo-display {
+    display:flex;align-items:center;gap:1.2rem;margin:0 0 1.5rem;
+  }
+  .logo-mark {
+    width:72px;height:72px;flex-shrink:0;
+  }
+  .logo-mark svg { width:100%;height:100%; }
+  .logo-text {
+    text-align:left;
+  }
+  .logo-text .cn {
+    font-size:2rem;font-weight:700;letter-spacing:4px;
+    color:#e0e8f5;
+  }
+  .logo-text .en {
+    font-size:.75rem;color:var(--dim);letter-spacing:3px;margin-top:4px;text-transform:uppercase;
+  }
+  .hero-sub { color:var(--dim);font-size:.85rem; }
+
+  .container { max-width:960px; margin:0 auto; padding:3rem 1.5rem; }
+  .section-title {
+    font-size:1rem;font-weight:700;margin-bottom:1.2rem;padding-bottom:.4rem;
+    border-bottom:1px solid var(--border);color:var(--blue);letter-spacing:2px;
+  }
+
+  /* 简约logo网格 */
+  .logo-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:1rem;margin-bottom:2rem;
+  }
+  .logo-card {
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:.8rem;
+    transition:.3s;
+  }
+  .logo-card:hover { border-color:rgba(74,158,255,0.2); }
+  .logo-card .name { font-size:.8rem;font-weight:600;color:var(--blue); }
+  .logo-card .label { font-size:.72rem;color:var(--dim); }
+  .logo-card.invert { background:#e8edf5; }
+  .logo-card.invert .name { color:#1a1d28; }
+
+  /* 色板 */
+  .color-grid { display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2rem; }
+  .swatch { border-radius:10px;overflow:hidden;flex:1;min-width:120px; }
+  .swatch-bar { height:64px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-size:.7rem;font-weight:600;font-family:monospace; }
+  .swatch-info { padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-top:0; }
+  .swatch-info .n { font-size:.8rem;font-weight:600; }
+  .swatch-info .u { font-size:.7rem;color:var(--dim); }
+  .swatch-info .w { font-size:.65rem;display:inline-block;padding:1px 6px;border-radius:8px;margin-top:4px; }
+
+  .app-grid { display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2rem; }
+  .app-card {
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:1rem;flex:1;min-width:100px;text-align:center;
+  }
+  .app-card .ic { font-size:1.4rem; }
+  .app-card .l { font-size:.72rem;color:var(--dim);margin-top:4px; }
+
+  footer { text-align:center;padding:1.5rem;border-top:1px solid var(--border);color:var(--dim);font-size:.75rem; }
+
+  .space-40 { height:40px; }
+  @media(max-width:600px) { .logo-display { flex-direction:column; } .logo-text { text-align:center; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">BRAND IDENTITY · 2026</div>
+  <div class="logo-display">
+    <div class="logo-mark">
+      <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+        <!-- 单环光纤 -->
+        <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(74,158,255,0.1)" stroke-width="1"/>
+        <circle cx="36" cy="36" r="30" fill="none" stroke="url(#g1)" stroke-width="2.5"
+                stroke-dasharray="140 48" stroke-dashoffset="0" stroke-linecap="round"/>
+        <!-- 极简十字电路 -->
+        <line x1="18" y1="36" x2="30" y2="36" stroke="#4a9eff" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="42" y1="36" x2="54" y2="36" stroke="#4a9eff" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="36" y1="18" x2="36" y2="30" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="36" y1="42" x2="36" y2="54" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- 核心节点 -->
+        <circle cx="36" cy="36" r="5" fill="rgba(74,158,255,0.12)" stroke="#4a9eff" stroke-width="1.2"/>
+        <circle cx="36" cy="36" r="1.5" fill="rgba(74,158,255,0.6)"/>
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4a9eff"/>
+            <stop offset="100%" stop-color="#38bdf8"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <div class="cn">算力基础设施洞察</div>
+      <div class="en">Compute Infrastructure Insights</div>
+    </div>
+  </div>
+  <div class="hero-sub">算力即国运</div>
+</div>
+
+<div class="container">
+
+  <h2 class="section-title">LOGO 系统</h2>
+  <div class="logo-grid">
+
+    <div class="logo-card">
+      <svg width="200" height="56" viewBox="0 0 200 56" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(74,158,255,0.08)" stroke-width="1"/>
+        <circle cx="28" cy="28" r="24" fill="none" stroke="url(#a1)" stroke-width="2" stroke-dasharray="112 38" stroke-linecap="round"/>
+        <line x1="12" y1="28" x2="22" y2="28" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="34" y1="28" x2="44" y2="28" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="28" y1="12" x2="28" y2="22" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="28" y1="34" x2="28" y2="44" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="28" cy="28" r="4" fill="rgba(74,158,255,0.1)" stroke="#4a9eff" stroke-width="1"/>
+        <text x="54" y="25" font-size="15" font-weight="700" fill="#e0e8f5" font-family="'PingFang SC','Microsoft YaHei',sans-serif">算力基础设施洞察</text>
+        <text x="54" y="42" font-size="7.5" fill="#6b7b9a" font-family="'Helvetica Neue',Arial,sans-serif">COMPUTE INFRASTRUCTURE INSIGHTS</text>
+        <defs><linearGradient id="a1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a9eff"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs>
+      </svg>
+      <div class="name">主标志</div>
+      <div class="label">全称+图形 · 官网/导航</div>
+    </div>
+
+    <div class="logo-card">
+      <svg width="180" height="56" viewBox="0 0 180 56" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(74,158,255,0.08)" stroke-width="1"/>
+        <circle cx="28" cy="28" r="24" fill="none" stroke="#4a9eff" stroke-width="2" stroke-dasharray="90 60" stroke-linecap="round"/>
+        <line x1="14" y1="28" x2="22" y2="28" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="34" y1="28" x2="42" y2="28" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="28" cy="28" r="4" fill="rgba(74,158,255,0.08)" stroke="#4a9eff" stroke-width="1"/>
+        <text x="56" y="31" font-size="20" font-weight="700" fill="#7eb8ff" font-family="'Helvetica Neue',Arial,sans-serif">CII</text>
+      </svg>
+      <div class="name">缩写标</div>
+      <div class="label">CII · 移动端/小空间</div>
+    </div>
+
+    <div class="logo-card">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(74,158,255,0.08)" stroke-width="1"/>
+        <circle cx="32" cy="32" r="28" fill="none" stroke="url(#a2)" stroke-width="2.5" stroke-dasharray="130 46" stroke-linecap="round"/>
+        <line x1="14" y1="32" x2="26" y2="32" stroke="#4a9eff" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="38" y1="32" x2="50" y2="32" stroke="#4a9eff" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="32" y1="14" x2="32" y2="26" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="32" y1="38" x2="32" y2="50" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="32" cy="32" r="5" fill="rgba(74,158,255,0.08)" stroke="#4a9eff" stroke-width="1.2"/>
+        <circle cx="32" cy="32" r="1.5" fill="rgba(74,158,255,0.5)"/>
+        <defs><linearGradient id="a2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a9eff"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs>
+      </svg>
+      <div class="name">图标标</div>
+      <div class="label">纯图形 · 头像/水印</div>
+    </div>
+
+    <div class="logo-card invert">
+      <svg width="200" height="56" viewBox="0 0 200 56" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(37,99,235,0.1)" stroke-width="1"/>
+        <circle cx="28" cy="28" r="24" fill="none" stroke="url(#a3)" stroke-width="2" stroke-dasharray="112 38" stroke-linecap="round"/>
+        <line x1="12" y1="28" x2="22" y2="28" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="34" y1="28" x2="44" y2="28" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="28" y1="12" x2="28" y2="22" stroke="#0284c7" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="28" y1="34" x2="28" y2="44" stroke="#0284c7" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="28" cy="28" r="4" fill="rgba(37,99,235,0.06)" stroke="#2563eb" stroke-width="1"/>
+        <text x="54" y="25" font-size="15" font-weight="700" fill="#0f172a" font-family="'PingFang SC','Microsoft YaHei',sans-serif">算力基础设施洞察</text>
+        <text x="54" y="42" font-size="7.5" fill="#64748b" font-family="'Helvetica Neue',Arial,sans-serif">COMPUTE INFRASTRUCTURE INSIGHTS</text>
+        <defs><linearGradient id="a3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#0284c7"/></linearGradient></defs>
+      </svg>
+      <div class="name">浅色版</div>
+      <div class="label">白底/PDF使用</div>
+    </div>
+
+  </div>
+
+  <h2 class="section-title">色彩</h2>
+  <div class="color-grid">
+    <div class="swatch">
+      <div class="swatch-bar" style="background:#0a0e1a;color:#7eb8ff;">#0A0E1A</div>
+      <div class="swatch-info"><div class="n">极夜黑</div><div class="u">主背景 70%</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-bar" style="background:#111627;color:#7eb8ff;">#111627</div>
+      <div class="swatch-info"><div class="n">深空蓝</div><div class="u">卡片背景 15%</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-bar" style="background:#4a9eff;color:#fff;">#4A9EFF</div>
+      <div class="swatch-info"><div class="n">算力蓝</div><div class="u">品牌主色 10%</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-bar" style="background:#38bdf8;color:#0a0e1a;">#38BDF8</div>
+      <div class="swatch-info"><div class="n">数据青</div><div class="u">辅助色 5%</div></div>
+    </div>
+  </div>
+
+  <h2 class="section-title">应用</h2>
+  <div class="app-grid">
+    <div class="app-card"><div class="ic">🖥️</div><div class="l">导航栏</div></div>
+    <div class="app-card"><div class="ic">📱</div><div class="l">头像</div></div>
+    <div class="app-card"><div class="ic">📄</div><div class="l">报告</div></div>
+    <div class="app-card"><div class="ic">🏷️</div><div class="l">分享卡片</div></div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.4rem">
+    <svg width="16" height="16" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="32" r="28" fill="none" stroke="#4a9eff" stroke-width="2" stroke-dasharray="130 46" stroke-linecap="round" stroke-opacity="0.5"/>
+      <line x1="14" y1="32" x2="26" y2="32" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="38" y1="32" x2="50" y2="32" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="32" cy="32" r="4" fill="none" stroke="#4a9eff" stroke-width="1"/>
+    </svg>
+    <span style="color:var(--blue);font-weight:600;">CII</span>
+  </div>
+  算力基础设施洞察 · VI 2026
+</footer>
+
+</body>
+</html>
