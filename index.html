@@ -1695,7 +1695,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
 
 
 <!-- ===== 玻璃基板 ===== -->
-<section id="glass" class="section fade-in visible" style="opacity:1!important;transform:none!important">
+<section id="glass" class="section fade-in">
   <div class="section-header">
     <h2>🪟 玻璃基板 · AI芯片封装的下一站</h2>
     <div class="divider"></div>
@@ -3926,6 +3926,13 @@ const observer = new IntersectionObserver((entries) => {
   })
 },{threshold:.15})
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el))
+
+// 🔧 安全兜底：如果IntersectionObserver因任何原因未触发，3秒后自动显示所有section
+setTimeout(function(){
+  document.querySelectorAll('.fade-in:not(.visible)').forEach(el => {
+    el.classList.add('visible')
+  })
+}, 3000)
 
 // ===== NUMBER COUNTER =====
 function animateCounters() {
