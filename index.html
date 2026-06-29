@@ -578,6 +578,41 @@ footer{
 .etf-card-tag.t2{background:rgba(46,204,113,0.2);color:#4ae68a}
 .etf-card-tag.t3{background:rgba(255,170,0,0.2);color:#ffc832}
 .etf-card-tag.t4{background:rgba(255,77,77,0.2);color:#ff6b6b}
+
+/* ===== 牛熊双煞 ===== */
+.bb-card{background:rgba(22,27,34,0.5);border:1px solid rgba(43,87,151,0.12);border-radius:12px;overflow:hidden;transition:border-color .2s}
+.bb-card:hover{border-color:rgba(56,139,253,0.25)}
+.bull-card{border-left:3px solid #ff4d4d}
+.bear-card{border-left:3px solid #4ae68a}
+.bb-card-header{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(43,87,151,0.08)}
+.bb-icon{font-size:1.1rem}
+.bb-title{font-weight:700;font-size:.85rem;color:#e0e8f5;flex:1}
+.bb-badge{font-size:.6rem;padding:.1rem .5rem;border-radius:8px;font-weight:700}
+.bull-badge{background:rgba(255,77,77,0.2);color:#ff4d4d}
+.bear-badge{background:rgba(74,230,138,0.2);color:#4ae68a}
+.bb-list{padding:0}
+.bb-loading{color:#5a7a9a;font-size:.8rem;padding:1rem;text-align:center}
+.bb-row{display:flex;align-items:center;padding:.4rem 1rem;border-bottom:1px solid rgba(43,87,151,0.04);transition:background .15s;font-size:.8rem}
+.bb-row:hover{background:rgba(56,139,253,0.04)}
+.bb-rank{width:1.5rem;font-weight:700;color:#5a7a9a;font-size:.7rem}
+.bb-name{flex:1;color:#d0d8e5;font-weight:500}
+.bb-code{font-size:.65rem;color:#4a6a8a;margin-right:.6rem;background:rgba(74,106,138,0.12);padding:.02rem .3rem;border-radius:2px}
+.bb-price{font-size:.7rem;color:#8a9ab0;margin-right:.6rem;width:4rem;text-align:right}
+.bb-pct{font-weight:700;font-size:.78rem;width:3.5rem;text-align:right}
+.bb-pct.up{color:#ff4d4d}
+.bb-pct.dn{color:#4ae68a}
+.bb-tag{font-size:.55rem;padding:.04rem .35rem;border-radius:3px;margin-left:.4rem;font-weight:600;white-space:nowrap}
+.bb-tag.hold{background:rgba(255,200,50,0.2);color:#ffc832;border:1px solid rgba(255,200,50,0.15)}
+.bb-tag.watch{background:rgba(56,139,253,0.15);color:#4a9eff;border:1px solid rgba(56,139,253,0.12)}
+.bb-tag.sector{background:rgba(74,230,138,0.12);color:#4ae68a;border:1px solid rgba(74,230,138,0.1)}
+.bb-sector-row{display:flex;justify-content:space-between;align-items:center;padding:.35rem 0;border-bottom:1px solid rgba(43,87,151,0.04);font-size:.8rem}
+.bb-sector-name{color:#d0d8e5}
+.bb-sector-bar{flex:1;height:4px;background:rgba(43,87,151,0.1);border-radius:2px;margin:0 .6rem;overflow:hidden}
+.bb-sector-fill{height:100%;border-radius:2px;transition:width .5s ease}
+.bb-sector-count{color:#5a7a9a;font-size:.7rem;min-width:2rem;text-align:right}
+.bb-holding-item{padding:.4rem 0;border-bottom:1px solid rgba(43,87,151,0.04);font-size:.8rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.bb-holding-label{color:#8a9ab0;font-size:.7rem;background:rgba(43,87,151,0.08);padding:.02rem .35rem;border-radius:3px}
+.bb-holding-none{color:#5a7a9a;font-size:.8rem;text-align:center;padding:.6rem 0}
 .etf-footer{font-size:.72rem;color:#5a6a80;padding:.8rem 0;line-height:1.6}
 
 /* ===== 碳基算力板块 ===== */
@@ -724,6 +759,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
         <li><a href="#pe">📈市盈率</a></li>
         <li><a href="#pricewatch">💹股价观察</a></li>
         <li><a href="#etf">📦ETF配置</a></li>
+        <li><a href="#bullbear">🐂牛熊双煞</a></li>
         <li><a href="#market">📉市场追踪</a></li>
       </ul>
     </li>
@@ -746,6 +782,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
   <a href="#glass" class="sb-l1">🔲 玻璃基板</a>
   <a href="#storage" class="sb-l1">🔋 储能</a>
   <a href="#pricewatch" class="sb-l1">💹 股价观察</a>
+  <a href="#bullbear" class="sb-l1">🐂 牛熊双煞</a>
   <a href="#energy" class="sb-l1">⚡ 未来能源</a>
   <a href="#etf" class="sb-l1">📦 ETF配置</a>
   <a href="#market" class="sb-l1">📈 市场追踪</a>
@@ -2156,6 +2193,71 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
   </div>
 </section>
 
+<!-- ===== 牛熊双煞 ===== -->
+<section id="bullbear" class="section fade-in">
+  <div class="section-header">
+    <h2>🐂🐻 每日牛熊双煞</h2>
+    <div class="divider"></div>
+    <p>A股每日涨跌幅排行榜 · 持仓关联分析 · 赛道热度扫描</p>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto">
+
+    <!-- 数据面板: bull + bear + 赛道三列 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem" id="bbContainer">
+      <!-- 牛股TOP10 -->
+      <div class="bb-card bull-card" id="bullCard">
+        <div class="bb-card-header">
+          <span class="bb-icon">🐂</span>
+          <span class="bb-title">今日牛股 TOP10</span>
+          <span class="bb-badge bull-badge">涨</span>
+        </div>
+        <div class="bb-list" id="bullList">
+          <div class="bb-loading">加载中...</div>
+        </div>
+      </div>
+      <!-- 熊股TOP10 -->
+      <div class="bb-card bear-card" id="bearCard">
+        <div class="bb-card-header">
+          <span class="bb-icon">🐻</span>
+          <span class="bb-title">今日熊股 TOP10</span>
+          <span class="bb-badge bear-badge">跌</span>
+        </div>
+        <div class="bb-list" id="bearList">
+          <div class="bb-loading">加载中...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 赛道热度 + 持仓关联 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem" id="bbAnalytics">
+      <div class="bb-card" id="sectorCard">
+        <div class="bb-card-header">
+          <span class="bb-icon">🔥</span>
+          <span class="bb-title">赛道热度扫描</span>
+        </div>
+        <div class="bb-list" id="sectorHeat" style="padding:1rem">
+          <div class="bb-loading">扫描中...</div>
+        </div>
+      </div>
+      <div class="bb-card" id="holdingCard">
+        <div class="bb-card-header">
+          <span class="bb-icon">🏷️</span>
+          <span class="bb-title">持仓关联</span>
+        </div>
+        <div class="bb-list" id="holdingImpact" style="padding:1rem">
+          <div class="bb-loading">分析中...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bb-footer" style="margin-top:0.8rem;display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0">
+      <span style="color:#5a7a9a;font-size:.75rem">更新时间：<span id="bbUpdateTime">盘前</span></span>
+      <span style="color:#3a5a7a;font-size:.72rem">📊 数据来源：东方财富 · 交易日15:00后刷新</span>
+    </div>
+  </div>
+</section>
+
 <!-- ===== 市场追踪（实时行情） ===== -->
 <section id="market" class="section fade-in">
   <div class="section-header">
@@ -3024,6 +3126,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
         <a href="#bottleneck" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">🧠 算力瓶颈</a>
         <a href="#energy" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">⚡ 未来能源</a>
         <a href="#token-export" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">🔌 Token出口</a>
+        <a href="#bullbear" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">🐂 牛熊双煞</a>
         <a href="#market" style="color:#5a6a80;font-size:.78rem;text-decoration:none;transition:.2s">📈 市场追踪</a>
       </div>
     </div>
@@ -3640,6 +3743,276 @@ document.addEventListener('visibilitychange', function() {
   } else if (document.hidden && pfTimer) {
     clearInterval(pfTimer); pfTimer = null
   }
+})
+</script>
+
+<!-- ===== 牛熊双煞 ===== -->
+<script>
+// ===== 牛熊双煞：每日涨跌幅排行 + 赛道热度 + 持仓关联 =====
+const BB_HOLDINGS = [
+  {name:'中际旭创',code:'300308',sector:'光模块',type:'watch'},
+  {name:'新易盛',code:'300502',sector:'光模块',type:'watch'},
+  {name:'新联电子',code:'002546',sector:'电力',type:'watch'},
+  {name:'中晶科技',code:'003026',sector:'半导体',type:'watch'},
+  {name:'中国巨石',code:'600176',sector:'玻纤/风电',type:'watch'},
+  {name:'工业富联',code:'601138',sector:'AI算力',type:'hold'},
+  {name:'沪电股份',code:'002463',sector:'PCB',type:'hold'},
+  {name:'深科技',code:'000021',sector:'存储封测',type:'hold'},
+  {name:'格力电器',code:'000651',sector:'家电',type:'hold'},
+  {name:'特变电工',code:'600089',sector:'变压器',type:'hold'},
+  {name:'中国西电',code:'601179',sector:'变压器',type:'hold'},
+  {name:'许继电气',code:'000400',sector:'电力设备',type:'hold'},
+  {name:'长飞光纤',code:'601869',sector:'光纤',type:'hold'},
+  {name:'亨通光电',code:'600487',sector:'光纤',type:'hold'},
+  {name:'中天科技',code:'600522',sector:'光纤',type:'hold'},
+  {name:'沪硅产业',code:'688126',sector:'半导体材料',type:'hold'},
+  {name:'光伏ETF',code:'515790',sector:'光伏',type:'hold'},
+  {name:'绿发电力',code:'000537',sector:'绿电',type:'hold'},
+  {name:'电投绿能',code:'000875',sector:'绿电',type:'hold'},
+  {name:'锡华科技',code:'603248',sector:'机械设备',type:'hold'},
+  {name:'南网数字',code:'301638',sector:'电力数字化',type:'hold'},
+];
+
+const BB_SECTOR_MAP = {
+  '光模块':'通信','PCB':'电子','半导体':'电子','存储封测':'电子','半导体材料':'电子',
+  'AI算力':'计算机','变压器':'电力设备','电力设备':'电力设备','电力':'电力设备','绿电':'电力',
+  '光伏':'电力','玻纤/风电':'建材/新能源','光纤':'通信','家电':'消费','机械设备':'制造','电力数字化':'计算机'
+};
+
+function bbFetch() {
+  const bullEl = document.getElementById('bullList')
+  const bearEl = document.getElementById('bearList')
+  const sectorEl = document.getElementById('sectorHeat')
+  const holdingEl = document.getElementById('holdingImpact')
+  const timeEl = document.getElementById('bbUpdateTime')
+
+  if (!bullEl) return
+
+  bullEl.innerHTML = '<div class="bb-loading">📡 获取全市场数据...</div>'
+  bearEl.innerHTML = '<div class="bb-loading">📡 获取全市场数据...</div>'
+  sectorEl.innerHTML = '<div class="bb-loading">📡 扫描赛道热度...</div>'
+  holdingEl.innerHTML = '<div class="bb-loading">📡 分析持仓关联...</div>'
+
+  // 从东方财富API获取全市场涨跌幅排行
+  // 涨跌幅排序：f3=-1降序(涨幅最高)，f3=1升序(跌幅最深)
+  // 创业板+主板+科创板同时获取
+  const fetchUrl = (sort, label) => {
+    const pn = 1  // 第1页
+    const fs = 'm:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23,m:0+t:81+s:2048' // 主板+创业板+科创板+北交所
+    const fields = 'f2,f3,f4,f12,f14,f8,f15'  // 现价/涨跌幅/涨跌额/代码/名称/换手率/成交额
+    const url = 'https://push2.eastmoney.com/api/qt/clist/get?cb=jQuery&pn=' + pn + '&pz=100&po=' + sort + '&np=1&fltt=2&invt=2&fid=f3&fs=' + encodeURIComponent(fs) + '&fields=' + fields
+    return url
+  }
+
+  // 获取涨幅榜
+  fetch(fetchUrl(-1, 'bull'))
+    .then(r => r.text())
+    .then(text => {
+      // 提取JSON
+      const m = text.match(/jQuery\(([\s\S]+)\)/)
+      if (!m) { throw new Error('parse fail') }
+      const data = JSON.parse(m[1])
+      const items = (data.data && data.data.diff) || []
+      if (!items.length) { throw new Error('no data') }
+      renderBull(items.slice(0, 10))
+    })
+    .catch(() => {
+      bullEl.innerHTML = '<div class="bb-loading" style="color:#ff6b6b">⚠️ 数据获取失败，非交易时段或接口异常</div>'
+    })
+
+  // 获取跌幅榜
+  fetch(fetchUrl(1, 'bear'))
+    .then(r => r.text())
+    .then(text => {
+      const m = text.match(/jQuery\(([\s\S]+)\)/)
+      if (!m) { throw new Error('parse fail') }
+      const data = JSON.parse(m[1])
+      const items = (data.data && data.data.diff) || []
+      if (!items.length) { throw new Error('no data') }
+      renderBear(items.slice(0, 10))
+      // 分析赛道热度和持仓关联
+      const allItems = items
+      // 再用涨幅榜的数据分析
+      fetch(fetchUrl(-1, 'bull_all'))
+        .then(r => r.text())
+        .then(text2 => {
+          const m2 = text2.match(/jQuery\(([\s\S]+)\)/)
+          if (!m2) return
+          const data2 = JSON.parse(m2[1])
+          const allRising = (data2.data && data2.data.diff) || []
+          analyzeAll(allRising, allItems)
+        })
+        .catch(() => {})
+    })
+    .catch(() => {
+      bearEl.innerHTML = '<div class="bb-loading" style="color:#ff6b6b">⚠️ 数据获取失败</div>'
+    })
+
+  // 更新时间
+  const now = new Date()
+  const t = now.toLocaleString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' })
+  if (timeEl) timeEl.textContent = t
+}
+
+function renderBull(items) {
+  const el = document.getElementById('bullList')
+  let html = ''
+  items.forEach((item, i) => {
+    const pct = item.f3 || 0
+    const price = item.f2 || 0
+    const code = (item.f12 || '').toString()
+    const name = item.f14 || '--'
+    const tag = findTag(code, name)
+    html += '<div class="bb-row">'
+      + '<span class="bb-rank">#' + (i + 1) + '</span>'
+      + '<span class="bb-name">' + name + '<span class="bb-code">' + code + '</span></span>'
+      + '<span class="bb-price">¥' + price.toFixed(2) + '</span>'
+      + '<span class="bb-pct up">' + (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%</span>'
+      + tag
+      + '</div>'
+  })
+  if (!items.length) html = '<div class="bb-loading">暂无数据</div>'
+  el.innerHTML = html
+}
+
+function renderBear(items) {
+  const el = document.getElementById('bearList')
+  let html = ''
+  items.forEach((item, i) => {
+    const pct = item.f3 || 0
+    const price = item.f2 || 0
+    const code = (item.f12 || '').toString()
+    const name = item.f14 || '--'
+    const tag = findTag(code, name)
+    html += '<div class="bb-row">'
+      + '<span class="bb-rank">#' + (i + 1) + '</span>'
+      + '<span class="bb-name">' + name + '<span class="bb-code">' + code + '</span></span>'
+      + '<span class="bb-price">¥' + price.toFixed(2) + '</span>'
+      + '<span class="bb-pct dn">' + (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%</span>'
+      + tag
+      + '</div>'
+  })
+  if (!items.length) html = '<div class="bb-loading">暂无数据</div>'
+  el.innerHTML = html
+}
+
+function findTag(code, name) {
+  const holding = BB_HOLDINGS.find(h => h.code === code || name.includes(h.name))
+  if (!holding) return ''
+  const cls = holding.type === 'hold' ? 'hold' : 'watch'
+  const lbl = holding.type === 'hold' ? '📌持仓' : '👀观察'
+  return '<span class="bb-tag ' + cls + '">' + lbl + '</span>'
+}
+
+function analyzeAll(risingItems, fallingItems) {
+  // 赛道热度：统计涨幅榜和跌幅榜中各赛道出现的次数
+  const sectorCount = {}
+  const allItems = [...risingItems, ...fallingItems]
+
+  allItems.forEach(item => {
+    const name = item.f14 || ''
+    const code = (item.f12 || '').toString()
+    let sector = '其他'
+    for (const h of BB_HOLDINGS) {
+      if (code === h.code || name.includes(h.name)) {
+        sector = h.sector
+        break
+      }
+    }
+    // 尝试从名字推测赛道
+    if (sector === '其他') {
+      if (/光模块|光通信|光迅/.test(name)) sector = '光模块'
+      else if (/PCB|电路板|沪电/.test(name)) sector = 'PCB'
+      else if (/半导体|芯片|晶圆|中芯|华虹|长电/.test(name)) sector = '半导体'
+      else if (/光伏|阳光|隆基|通威/.test(name)) sector = '光伏'
+      else if (/变压器|特变|西电|许继/.test(name)) sector = '变压器'
+      else if (/光纤|光缆|长飞|亨通/.test(name)) sector = '光纤'
+      else if (/AI|算力|服务器|工业富联/.test(name)) sector = 'AI算力'
+      else if (/储能|宁德|亿纬/.test(name)) sector = '储能'
+      else if (/风电|明阳|金风/.test(name)) sector = '风电'
+      else if (/新能源车|比亚迪/.test(name)) sector = '新能源车'
+      else if (/存储|封测|深科技/.test(name)) sector = '存储封测'
+      else if (/电力|绿电|华能|国电/.test(name)) sector = '电力'
+      else if (/银行|招商|工商/.test(name)) sector = '银行'
+      else if (/白酒|茅台|五粮液/.test(name)) sector = '消费'
+    }
+    if (!sectorCount[sector]) sectorCount[sector] = { total: 0, rising: 0, falling: 0 }
+    sectorCount[sector].total++
+    if (risingItems.includes(item)) sectorCount[sector].rising++
+    else sectorCount[sector].falling++
+  })
+
+  // 渲染赛道热度
+  renderSectorHeat(sectorCount)
+
+  // 持仓关联分析
+  renderHoldingImpact(risingItems, fallingItems)
+}
+
+function renderSectorHeat(sectorCount) {
+  const el = document.getElementById('sectorHeat')
+  const sorted = Object.entries(sectorCount)
+    .filter(([_, v]) => v.total >= 2)  // 至少出现2次
+    .sort((a, b) => b[1].total - a[1].total)
+    .slice(0, 10)
+
+  if (!sorted.length) {
+    el.innerHTML = '<div class="bb-loading">📊 赛道数据不足</div>'
+    return
+  }
+
+  const maxTotal = sorted[0][1].total
+  let html = ''
+  sorted.forEach(([sector, data]) => {
+    const pct = data.rising / data.total
+    const barPct = (data.total / maxTotal * 100).toFixed(0)
+    const barColor = pct > 0.6 ? '#ff4d4d' : pct > 0.4 ? '#ffa500' : '#4ae68a'
+    const trend = pct > 0.55 ? '🔥偏强' : pct < 0.45 ? '❄️偏弱' : '➡️均衡'
+    html += '<div class="bb-sector-row">'
+      + '<span class="bb-sector-name">' + sector + '</span>'
+      + '<div class="bb-sector-bar"><div class="bb-sector-fill" style="width:' + barPct + '%;background:' + barColor + '"></div></div>'
+      + '<span class="bb-sector-count">' + data.total + '只 ' + trend + '</span>'
+      + '</div>'
+  })
+  el.innerHTML = html
+}
+
+function renderHoldingImpact(risingItems, fallingItems) {
+  const el = document.getElementById('holdingImpact')
+
+  // 检查持仓和观察列表中的股票在上榜情况
+  const impacts = BB_HOLDINGS.map(h => {
+    const rising = risingItems.find(i => (i.f12 || '').toString() === h.code || (i.f14 || '').includes(h.name))
+    const falling = fallingItems.find(i => (i.f12 || '').toString() === h.code || (i.f14 || '').includes(h.name))
+    return { ...h, rising, falling }
+  }).filter(h => h.rising || h.falling)
+
+  if (!impacts.length) {
+    el.innerHTML = '<div class="bb-loading">✅ 无持仓/观察标的上榜</div>'
+    return
+  }
+
+  let html = ''
+  impacts.forEach(h => {
+    const item = h.rising || h.falling
+    const pct = item.f3 || 0
+    const isUp = !!h.rising
+    const typeLabel = h.type === 'hold' ? '📌持仓' : '👀观察'
+    const pctClass = isUp ? 'up' : 'dn'
+    html += '<div class="bb-holding-item">'
+      + '<span class="bb-holding-label" style="background:' + (h.type === 'hold' ? 'rgba(255,200,50,0.12)' : 'rgba(56,139,253,0.12)') + ';color:' + (h.type === 'hold' ? '#ffc832' : '#4a9eff') + '">' + typeLabel + '</span>'
+      + '<span style="color:#d0d8e5">' + h.name + '</span>'
+      + '<span style="color:#5a7a9a;font-size:.7rem">(' + h.code + ')</span>'
+      + '<span class="bb-pct ' + pctClass + '">' + (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%</span>'
+      + '<span style="color:#5a7a9a;font-size:.65rem">' + (isUp ? '🐂入榜' : '🐻入榜') + '</span>'
+      + '</div>'
+  })
+  el.innerHTML = html
+}
+
+// 页面加载时启动
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(bbFetch, 900)
 })
 </script>
 
