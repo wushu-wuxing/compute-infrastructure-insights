@@ -757,6 +757,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
         <li><a href="#energy">⚡未来能源</a></li>
         <li><a href="#portfolio">📊实盘</a></li>
         <li><a href="#pe">📈市盈率</a></li>
+        <li><a href="#valuation">📐估值锚点</a></li>
         <li><a href="#pricewatch">💹股价观察</a></li>
         <li><a href="#etf">📦ETF配置</a></li>
         <li><a href="#bullbear">🐂牛熊双煞</a></li>
@@ -791,6 +792,7 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
   <a href="#half" class="sb-l1">🔬 合肥先进光源</a>
   <a href="#portfolio" class="sb-l1">📊 实盘</a>
   <a href="#pe" class="sb-l1">📈 市盈率</a>
+  <a href="#valuation" class="sb-l1">📐 估值锚点</a>
   <a href="#bio" class="sb-l1">🧬 碳基算力</a>
   <a href="#about" class="sb-l1">ℹ️ 关于</a>
 </div>
@@ -1612,150 +1614,220 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
 
     <div class="divider-line">···</div>
 
+    <!-- ========== 一、有机基板的"三堵墙" ========== -->
     <h2>🏗️ 一、有机基板的"三堵墙"——为什么是现在？</h2>
 
-    <p>AI大芯片的尺寸越做越大，功耗越来越高。传统有机基板<strong>撑不住了</strong>。</p>
+    <p>AI大芯片的尺寸越做越大（NVIDIA Blackwell 已达 ~1600mm²），功耗越来越高（单芯片 700W+，GB200 NVL72 机柜功耗 140kW）。传统有机基板<strong>已经撑不住了</strong>。</p>
 
     <table>
       <thead><tr><th>瓶颈</th><th>数据</th><th>后果</th></tr></thead>
       <tbody>
-        <tr><td><strong>翘曲变形</strong></td><td>有机CTE~15ppm vs 硅~3ppm</td><td>大芯片>70×70mm良率&lt;50%</td></tr>
-        <tr><td><strong>散热极限</strong></td><td>导热率~0.3W/m·K</td><td>300W+芯片热堆积→被迫降频</td></tr>
-        <tr><td><strong>布线密度</strong></td><td>线宽极限~8μm</td><td>AI芯片需要2μm级互连</td></tr>
+        <tr><td><strong>翘曲变形</strong></td><td>有机CTE~15–17ppm vs 硅~3ppm，CTE失配5x+</td><td>大芯片>70×70mm良率&lt;50%；70×70mm以上封装几乎不可能</td></tr>
+        <tr><td><strong>散热极限</strong></td><td>导热率~0.25–0.3W/m·K（玻纤增强树脂）</td><td>300W+芯片热堆积→被迫降频；GB200 700W需液冷协同</td></tr>
+        <tr><td><strong>布线密度</strong></td><td>有机mSAP线宽极限~6–8μm，2μm不可行</td><td>AI芯片需2μm级互连满足1000+ I/O密度，有机基板物理上做不了</td></tr>
+        <tr><td><strong>信号损耗</strong></td><td>Dk偏高+表面粗糙度大→传输损耗高</td><td>112G/224G SerDes信号完整性恶化，误码率上升</td></tr>
       </tbody>
     </table>
 
+    <div class="note-box" style="background:rgba(255,107,107,0.08);border-left:3px solid #ff6b6b;padding:1rem;margin:1rem 0;border-radius:8px">
+      <p><strong>关键数据点：</strong>英特尔工程师在ECTC 2023上展示数据：700mm²以上的大芯片封装，有机基板良率已降至30%以下。而下一代AI芯片（2026–2027）的封装面积将突破1200mm²——有机基板<strong>物理上不可行</strong>。</p>
+    </div>
+
     <div class="eureka">
-      <strong>有机基板的物理极限已到。</strong>玻璃基板不是"改良"，是"换赛道"。
+      <strong>有机基板的物理极限已到。</strong>玻璃基板不是"改良"，是"换赛道"。这波不是供需周期，是技术代际跃迁。
     </div>
 
     <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
 
-    <h2>✅ 二、四大核心优势（渡定调）</h2>
+    <!-- ========== 二、核心优势 ========== -->
+    <h2>✅ 二、五大核心优势（渡定调·更新版）</h2>
 
     <table>
       <thead><tr><th>#</th><th>优势</th><th>数据</th><th>意义</th></tr></thead>
       <tbody>
-        <tr><td>①</td><td><strong>电气性能</strong></td><td>传输损耗降低<strong>50%+</strong></td><td>高频信号更干净，带宽更高</td></tr>
-        <tr><td>②</td><td><strong>热管理</strong></td><td>CTE 3~5ppm 匹配硅~3ppm</td><td>冷热循环寿命跃升，焊点应力消失</td></tr>
-        <tr><td>③</td><td><strong>布线精度</strong></td><td>2μm线宽 · 通孔密度<strong>10倍</strong></td><td>封装密度翻倍，能塞更多I/O</td></tr>
-        <tr><td>④</td><td><strong>封装密度</strong></td><td>同面积多容纳<strong>50%</strong>芯片</td><td>同样的chip面积，算力+50%</td></tr>
+        <tr><td>①</td><td><strong>电气性能</strong></td><td>传输损耗降低<strong>50%+</strong>；Dk低至~5（有机~3.5–4.5但粗糙度大）</td><td>高频信号更干净，224G SerDes可行，带宽翻倍</td></tr>
+        <tr><td>②</td><td><strong>热管理</strong></td><td>CTE 3–5ppm 完美匹配硅~3ppm；导热率~1.2W/m·K（4x有机）</td><td>冷热循环寿命跃升，焊点应力消失，散热瓶颈解除</td></tr>
+        <tr><td>③</td><td><strong>布线精度</strong></td><td>2μm线宽/线距 · 通孔密度<strong>10倍</strong>（有机~8μm极限）</td><td>封装密度翻倍，能塞更多I/O，支持Chiplet互联</td></tr>
+        <tr><td>④</td><td><strong>封装面积</strong></td><td>同面积多容纳<strong>50%</strong>芯片；最大封装面积可达有机的1.5x</td><td>同样的chip面积，算力+50%；大芯片封装不再是问题</td></tr>
+        <tr><td>⑤</td><td><strong>平坦度+尺寸稳定性</strong></td><td>玻璃表面粗糙度&lt;1nm，热膨胀各向同性</td><td>多层堆叠时层间对准精度提升，良率大幅改善</td></tr>
       </tbody>
     </table>
 
     <div class="highlight-box">
-      <strong>四大优势不是线性提升，是量级跨越。</strong><br>
-      电气性能+50% + 封装密度+50% + 通孔密度10倍 + CTE完美匹配硅 =<br>
-      有机基板做不到，玻璃基板是唯一路径。
+      <strong>五大优势不是线性提升，是量级跨越。</strong><br>
+      电气性能+50% + 封装密度+50% + 通孔密度10x + CTE完美匹配硅 + 导热率4x =<br>
+      有机基板做不到，玻璃基板是<strong>唯一路径</strong>。不是"可选项"，是"必选项"。
     </div>
 
     <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
 
-    <h2>🔗 三、产业链及价值链全景</h2>
+    <!-- ========== 三、产业链及价值链全景 ========== -->
+    <h2>🔗 三、产业链及价值链全景（深度版）</h2>
 
     <h3>三层架构 · 壁垒逐级递减</h3>
 
     <table>
-      <thead><tr><th>层级</th><th>做什么</th><th>技术壁垒</th><th>全球主导</th></tr></thead>
+      <thead><tr><th>层级</th><th>做什么</th><th>技术壁垒</th><th>全球主导</th><th>价值占比（估计）</th></tr></thead>
       <tbody>
-        <tr><td>🟢 <strong>上游</strong></td><td>玻璃原材料 + 核心生产设备</td><td style="color:#ff6b6b"><strong>🔴 最高</strong> — 材料科学+配方</td><td>康宁🇺🇸 · AGC🇯🇵 · NEG🇯🇵 · 肖特🇩🇪</td></tr>
-        <tr><td>🟡 <strong>中游</strong></td><td>基板加工 — 玻璃成型·激光打孔·线路构建</td><td style="color:#ffc832"><strong>🟡 高</strong> — 设备+工艺稳定性</td><td>英特尔🇺🇸 · 三星🇰🇷 · LG Innotek🇰🇷</td></tr>
-        <tr><td>🔵 <strong>下游</strong></td><td>AI封装 · 高速光模块 · 显示面板 · 光伏</td><td><strong>🟢 中等</strong> — 应用层</td><td>NVIDIA · AMD · 长电 · 日月光</td></tr>
+        <tr><td>🟢 <strong>上游</strong></td><td>玻璃原片 + 核心生产设备（激光钻机、镀膜设备）</td><td style="color:#ff6b6b"><strong>🔴 最高</strong> — 材料科学+玻璃配方+设备精度</td><td>康宁🇺🇸 · AGC🇯🇵 · NEG🇯🇵 · 肖特🇩🇪；LPKF🇩🇪 · Via Mechanics🇯🇵</td><td>~30–35%</td></tr>
+        <tr><td>🟡 <strong>中游</strong></td><td>基板加工：玻璃成型·激光打孔·线路构建·测试</td><td style="color:#ffc832"><strong>🟡 高</strong> — TGV工艺+设备稳定性+良率爬坡</td><td>英特尔🇺🇸 · 三星🇰🇷 · LG Innotek🇰🇷 · 欣兴🇹🇼 · 景硕🇹🇼</td><td>~40–45%</td></tr>
+        <tr><td>🔵 <strong>下游</strong></td><td>AI封装、高速光模块、显示面板、光伏、MEMS</td><td><strong>🟢 中等</strong> — 应用验证+系统集成</td><td>NVIDIA · AMD · 台积电 · 长电 · 日月光 · 博通</td><td>~20–30%</td></tr>
       </tbody>
     </table>
 
     <div class="highlight-box">
       <strong>价值链流向：</strong><br>
-      上游（原材料设备）<span style="color:#ff6b6b">━━壁垒最高━━</span>→ 中游（基板加工）<span style="color:#ffc832">━━技术密集━━</span>→ 下游（应用场景）<br>
-      │&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│<br>
-      康宁·AGC 美日锁死&emsp;&emsp;TGV通孔是核心难点&emsp;AI封装+光模块增速最快
+      上游（原材料+设备）<span style="color:#ff6b6b">━━壁垒最高 · 30–35%价值━━</span>→ 中游（基板加工TGV）<span style="color:#ffc832">━━技术密集 · 40–45%价值━━</span>→ 下游（AI封装应用）<br>
+      │&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│<br>
+      康宁·AGC 美日锁死&emsp;&emsp;&emsp;TGV通孔是核心难点（壁垒最高）&emsp;AI封装+光模块增速最快
+    </div>
+
+    <h3>关键供应链环节拆解</h3>
+    <div class="card-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin:1.5rem 0">
+      <div class="card">
+        <div class="card-title">🟢 上游 · 玻璃原片</div>
+        <div class="card-body">
+          <div class="data-row"><span class="dl">全球产能</span><span class="dv">康宁+AGC+NEG+肖特占全球&gt;90%</span></div>
+          <div class="data-row"><span class="dl">封装级要求</span><span class="dv">平整度&lt;0.5μm/英寸；无气泡；厚度公差±5μm</span></div>
+          <div class="data-row"><span class="dl">价格</span><span class="dv">封装级原片~$200–500/㎡（显示级~$50/㎡）</span></div>
+          <div class="data-row"><span class="dl">国内突破</span><span class="dv" style="color:#ffc832">❌ 暂无企业能量产封装级</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🟡 中游 · TGV通孔加工</div>
+        <div class="card-body">
+          <div class="data-row"><span class="dl">核心设备</span><span class="dv">激光钻孔机：LPKF🇩🇪 · Via Mechanics🇯🇵</span></div>
+          <div class="data-row"><span class="dl">孔径要求</span><span class="dv">10–50μm，深宽比&gt;10:1</span></div>
+          <div class="data-row"><span class="dl">当前良率</span><span class="dv" style="color:#ffc832">~70–80%（量产需90%+）</span></div>
+          <div class="data-row"><span class="dl">国内进展</span><span class="dv">三叠纪(Triple-Tech) · 苏州晶方半导体</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔵 下游 · AI封装需求</div>
+        <div class="card-body">
+          <div class="data-row"><span class="dl">主力需求</span><span class="dv">NVIDIA · AMD · AWS · Google TPU · Microsoft</span></div>
+          <div class="data-row"><span class="dl">封装形式</span><span class="dv">2.5D/3D CoWoS-like + 玻璃interposer</span></div>
+          <div class="data-row"><span class="dl">2026需求</span><span class="dv">~$5–8亿（以玻璃基板计）</span></div>
+          <div class="data-row"><span class="dl">增速</span><span class="dv" style="color:#4ae68a">CAGR >100%（2025→2030）</span></div>
+        </div>
+      </div>
     </div>
 
     <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
 
-    <h2>📋 四、国内标的深度拆解</h2>
+    <!-- ========== 四、国内标的深度拆解 ========== -->
+    <h2>📋 四、国内标的深度拆解（大幅补深版）</h2>
+
+    <div class="note-box" style="background:rgba(255,200,50,0.08);border-left:3px solid #ffc832;padding:1rem;margin:1rem 0;border-radius:8px">
+      <p><strong>⚠️ 重要前提：</strong>目前国内尚无任何企业能量产封装级玻璃基板原片或完成TGV大规模量产。以下标的基于<strong>技术储备、研发方向、产业链位置</strong>的潜在关联度排序。多数标的<strong>尚未</strong>直接产生玻璃基板收入。</p>
+    </div>
 
     <h3>🟢 上游 · 玻璃原材料与核心生产设备</h3>
-    <p><strong>全球格局：</strong>康宁🇺🇸 · AGC🇯🇵 · NEG🇯🇵 · 肖特🇩🇪 高度垄断。</p>
-    <p>国内能做显示级玻璃基板的企业不少，但<strong>封装级对平整度、热稳定性、表面精度要求远高于显示级</strong>。目前无企业能量产封装级原片——这是卡脖子点之一。</p>
+    <p><strong>全球格局：</strong>康宁🇺🇸 · AGC🇯🇵 · NEG🇯🇵 · 肖特🇩🇪 高度垄断，四家合计占全球电子级玻璃基板市场 &gt;90%。封装级要求远超显示级：平整度&lt;0.5μm/英寸、无内部气泡、热稳定温度&gt;500°C。</p>
+    <p>国内能做显示级玻璃基板的企业不少，但<strong>封装级对平整度、热稳定性、表面精度要求远高于显示级</strong>。目前无企业能量产封装级原片——<strong>这是卡脖子点之一</strong>。康宁在中国设厂（合肥），但产品以显示级为主。</p>
 
     <table>
-      <thead><tr><th>标的</th><th>代码</th><th>市值</th><th>相关度</th><th>核心看点</th></tr></thead>
+      <thead><tr><th>标的</th><th>代码</th><th>市值</th><th>相关度</th><th>核心看点</th><th>风险提示</th></tr></thead>
       <tbody>
-        <tr><td><strong>凯盛科技</strong></td><td>600552</td><td>~100亿</td><td>⭐⭐⭐</td><td>超薄电子玻璃（UTG）技术，有潜力向封装级延伸</td></tr>
-        <tr><td><strong>南玻A</strong></td><td>000012</td><td>~150亿</td><td>⭐⭐</td><td>电子玻璃有布局，但非封装级</td></tr>
-        <tr><td><strong>彩虹股份</strong></td><td>600707</td><td>~280亿</td><td>⭐⭐</td><td>显示玻璃基板龙头，非封装方向</td></tr>
-        <tr><td><strong>旗滨集团</strong></td><td>601636</td><td>~200亿</td><td>⭐</td><td>电子玻璃起步阶段</td></tr>
+        <tr><td><strong>凯盛科技</strong></td><td>600552</td><td>~100亿</td><td>⭐⭐⭐</td><td>超薄电子玻璃（UTG）技术，有潜力向封装级延伸；蚌埠院技术支撑</td><td>封装级研发尚在早期</td></tr>
+        <tr><td><strong>南玻A</strong></td><td>000012</td><td>~150亿</td><td>⭐⭐</td><td>电子玻璃有布局，但非封装方向</td><td>关联度较弱</td></tr>
+        <tr><td><strong>彩虹股份</strong></td><td>600707</td><td>~280亿</td><td>⭐⭐</td><td>显示玻璃基板龙头，有相关工艺积淀</td><td>暂未向封装级拓展信号</td></tr>
+        <tr><td><strong>旗滨集团</strong></td><td>601636</td><td>~200亿</td><td>⭐</td><td>电子玻璃起步阶段</td><td>关联度最低，仅作为玻璃板块联动</td></tr>
       </tbody>
     </table>
 
-    <h3>🟡 中游 · 基板加工制造（最核心环节 ⭐）</h3>
-    <p><strong>核心难点：TGV（玻璃通孔）</strong> — 在玻璃上打出微米级通孔并填满导电材料。激光钻孔设备依赖进口（🇩🇪/🇯🇵主导）。国内能做TGV的企业极少。</p>
+    <h3>🟡 中游 · 基板加工制造（最核心环节 ⭐⭐⭐⭐⭐）</h3>
+    <p><strong>核心难点：TGV（玻璃通孔）</strong> —— 在玻璃上打出微米级通孔并填满导电材料。激光钻孔设备依赖进口（LPKF🇩🇪/Via Mechanics🇯🇵主导）。国内能做TGV的企业极少，能规模化的接近零。</p>
+    <p><strong>TGV工艺路线对比：</strong></p>
+    <table>
+      <thead><tr><th>工艺</th><th>原理</th><th>孔径</th><th>深宽比</th><th>优势</th><th>劣势</th><th>代表企业</th></tr></thead>
+      <tbody>
+        <tr><td><strong>飞秒激光诱导刻蚀</strong></td><td>飞秒激光聚焦→改性→HF湿法刻蚀</td><td>10–30μm</td><td>&gt;15:1</td><td>无热损伤，精度高，可量产</td><td>设备贵，速率慢</td><td>LPKF · 三叠纪</td></tr>
+        <tr><td><strong>紫外纳秒激光钻孔</strong></td><td>UV纳秒激光直接烧蚀</td><td>20–50μm</td><td>&lt;10:1</td><td>速度快，成本低</td><td>热影响区大，边缘粗糙</td><td>Via Mechanics · 大族激光</td></tr>
+        <tr><td><strong>光敏玻璃光刻</strong></td><td>光敏玻璃→UV曝光→热处理→湿法显影</td><td>50–200μm</td><td>&lt;5:1</td><td>可批量成型，通孔一致性高</td><td>需要专用光敏玻璃</td><td>康宁 · Life Science</td></tr>
+        <tr><td><strong>等离子体刻蚀</strong></td><td>ICP-RIE深硅刻蚀技术</td><td>5–20μm</td><td>&gt;20:1</td><td>精度最高，侧壁光滑</td><td>刻蚀速率慢，成本高</td><td>学术前沿</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>国内TGV进展：</strong></p>
+    <ul style="padding-left:1.5rem;margin-bottom:1rem;line-height:2">
+      <li><strong>三叠纪（Triple-Tech）</strong>（非上市）—— 国内TGV技术最领先企业，飞秒激光诱导刻蚀工艺，已实现小批量样品交付，10μm通孔深宽比&gt;10:1</li>
+      <li><strong>苏州晶方半导体</strong> —— TSV/CIS封测龙头，已布局TGV技术储备，但尚未放量</li>
+      <li><strong>大族激光</strong>（002008）—— 激光设备龙头，可提供UV激光钻孔设备，但TGV高精度设备仍在研发</li>
+    </ul>
 
     <table>
-      <thead><tr><th>标的</th><th>代码</th><th>市值</th><th>相关度</th><th>核心看点</th></tr></thead>
+      <thead><tr><th>标的</th><th>代码</th><th>市值</th><th>相关度</th><th>核心看点</th><th>风险提示</th></tr></thead>
       <tbody>
-        <tr><td><strong>兴森科技</strong></td><td>002436</td><td>~200亿</td><td style="color:#4ae68a"><strong>⭐⭐⭐⭐⭐</strong></td><td><strong>最核心标的。</strong>IC封装基板龙头，已布局玻璃基板技术路线。2025年珠海FCBGA项目投产。</td></tr>
-        <tr><td><strong>深南电路</strong></td><td>002916</td><td>~500亿</td><td style="color:#7eb8ff"><strong>⭐⭐⭐⭐</strong></td><td>PCB+封装双龙头，玻璃基板是必然延伸方向</td></tr>
-        <tr><td><strong>生益科技</strong></td><td>600183</td><td>~400亿</td><td>⭐⭐</td><td>覆铜板龙头，间接受益</td></tr>
-        <tr><td><strong>华正新材</strong></td><td>603186</td><td>~60亿</td><td>⭐⭐</td><td>覆铜板/封装材料，体量偏小</td></tr>
+        <tr><td><strong>兴森科技</strong></td><td>002436</td><td>~200亿</td><td style="color:#4ae68a"><strong>⭐⭐⭐⭐⭐</strong></td><td><strong>最核心标的。</strong>IC封装基板龙头，已布局玻璃基板技术路线。珠海FCBGA项目2025投产，后续可向玻璃基板延伸</td><td>仍以有机基板为主，玻璃基板占比极低</td></tr>
+        <tr><td><strong>深南电路</strong></td><td>002916</td><td>~500亿</td><td style="color:#7eb8ff"><strong>⭐⭐⭐⭐</strong></td><td>PCB+封装双龙头，玻璃基板是必然延伸方向；技术储备丰富</td><td>尚未公告具体玻璃基板量产时间表</td></tr>
+        <tr><td><strong>生益科技</strong></td><td>600183</td><td>~400亿</td><td>⭐⭐</td><td>覆铜板龙头，间接受益玻璃基板带来的高端封装材料需求</td><td>间接逻辑，非直接受益</td></tr>
+        <tr><td><strong>华正新材</strong></td><td>603186</td><td>~60亿</td><td>⭐⭐</td><td>覆铜板/封装材料，体量偏小，弹性大</td><td>体量小，不确定性高</td></tr>
+        <tr><td><strong>大族激光</strong></td><td>002008</td><td>~350亿</td><td>⭐⭐</td><td>激光设备龙头，TGV钻孔设备潜在供应商</td><td>TGV设备收入占比可忽略</td></tr>
       </tbody>
     </table>
 
     <h3>🔵 下游 · AI封装 + 高速光模块（增速最快领域）</h3>
 
     <table>
-      <thead><tr><th>标的</th><th>代码</th><th>市值</th><th>相关度</th><th>核心看点</th></tr></thead>
+      <thead><tr><th>标的</th><th>代码</th><th>市值</th><th>相关度</th><th>核心看点</th><th>风险提示</th></tr></thead>
       <tbody>
-        <tr><td><strong>长电科技</strong></td><td>600584</td><td>~700亿</td><td style="color:#7eb8ff"><strong>⭐⭐⭐⭐</strong></td><td>封测龙头全球第三，Chiplet先进封装，玻璃基板是跟踪路线之一</td></tr>
-        <tr><td><strong>通富微电</strong></td><td>002156</td><td>~400亿</td><td>⭐⭐⭐</td><td>AMD核心封测伙伴，受益AI芯片封装爆发</td></tr>
-        <tr><td><strong>华天科技</strong></td><td>002185</td><td>~300亿</td><td>⭐⭐</td><td>封测第二梯队</td></tr>
+        <tr><td><strong>长电科技</strong></td><td>600584</td><td>~700亿</td><td style="color:#7eb8ff"><strong>⭐⭐⭐⭐</strong></td><td>封测龙头全球第三，Chiplet先进封装，玻璃基板是跟踪路线之一；与多个玻璃基板厂商有合作探索</td><td>玻璃基板封装尚未形成收入</td></tr>
+        <tr><td><strong>通富微电</strong></td><td>002156</td><td>~400亿</td><td>⭐⭐⭐</td><td>AMD核心封测伙伴，受益AI芯片封装爆发；AMD是玻璃基板封装积极推动方</td><td>AMD路线图有不确性</td></tr>
+        <tr><td><strong>华天科技</strong></td><td>002185</td><td>~300亿</td><td>⭐⭐</td><td>封测第二梯队，有封装基板技术储备</td><td>下游验证尚需时间</td></tr>
       </tbody>
     </table>
 
     <h3>🟣 设备/材料配套</h3>
 
     <table>
-      <thead><tr><th>标的</th><th>代码</th><th>相关度</th><th>备注</th></tr></thead>
+      <thead><tr><th>标的</th><th>代码</th><th>相关度</th><th>核心看点</th></tr></thead>
       <tbody>
-        <tr><td><strong>天承科技</strong></td><td>688603</td><td>⭐⭐⭐</td><td>封装电镀液，TGV工艺必需</td></tr>
-        <tr><td><strong>艾森股份</strong></td><td>688720</td><td>⭐⭐⭐</td><td>封装材料细分</td></tr>
+        <tr><td><strong>天承科技</strong></td><td>688603</td><td>⭐⭐⭐</td><td>封装电镀液，TGV工艺铜填充必需；国内少数能切入先进封装电镀液的企业</td></tr>
+        <tr><td><strong>艾森股份</strong></td><td>688720</td><td>⭐⭐⭐</td><td>封装材料细分（光刻胶、电镀液），TGV相关湿化学品</td></tr>
+        <tr><td><strong>安集科技</strong></td><td>688019</td><td>⭐⭐</td><td>CMP抛光液龙头，TGV平坦化工艺可能用到</td></tr>
       </tbody>
     </table>
 
     <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
 
-    <h2>📅 五、产能落地时间线</h2>
+    <!-- ========== 五、产能落地时间线 ========== -->
+    <h2>📅 五、产能落地时间线（增强版）</h2>
 
     <table>
       <thead><tr><th>时间</th><th>事件</th><th>影响</th></tr></thead>
       <tbody>
-        <tr><td><strong>2024</strong></td><td>英特尔展示玻璃基板封装样品</td><td>验证技术可行性，行业风向标</td></tr>
-        <tr><td><strong>2025</strong></td><td>三星投资玻璃基板试产线</td><td>🟡 全球格局明朗化</td></tr>
-        <tr><td><strong style="color:#ff6b6b">2026</strong></td><td>英特尔小批量产 · 三星试产 · LG Innotek跟进</td><td style="color:#ff6b6b"><strong>🔥 关键转折年</strong></td></tr>
-        <tr><td><strong style="color:#ffc832">2027-2028</strong></td><td>大规模量产 · 国内企业跟进</td><td style="color:#ffc832"><strong>🔥🔥🔥 产业链爆发期</strong></td></tr>
-        <tr><td><strong>2029+</strong></td><td>渗透率提升，逐步替代高端有机基板</td><td></td></tr>
+        <tr><td><strong>2023.09</strong></td><td>英特尔展示12英寸玻璃基板封装测试芯片</td><td>首次向业界证明玻璃基板封装技术的可行性</td></tr>
+        <tr><td><strong>2024</strong></td><td>英特尔向主要客户（云厂商、超算）交付样品</td><td>🚀 客户验证启动，行业风向标确立</td></tr>
+        <tr><td><strong>2025</strong></td><td>英特尔亚利桑那厂试产线 · 三星投资玻璃基板试产线 · LG Innotek跟进</td><td>🟡 全球格局明朗化，三巨头同时入局</td></tr>
+        <tr><td><strong style="color:#ff6b6b">2026</strong></td><td>英特尔小批量产 · 三星试产 · LG Innotek完成试产线 · 针对高端HPC/AI芯片定向供应</td><td style="color:#ff6b6b"><strong>🔥 关键转折年：从"能不能做"到"能不能用好"</strong></td></tr>
+        <tr><td><strong style="color:#ffc832">2027</strong></td><td>英特尔大规模商用（首发高端HPC/AI芯片） · 三星/LG量产 · 国内企业开始布局</td><td style="color:#ffc832"><strong>🔥🔥🔥 全球量产元年</strong></td></tr>
+        <tr><td><strong style="color:#ffc832">2028</strong></td><td>渗透率突破10% · 台系日月光/欣兴跟进 · 玻璃基板成为高端封装标配</td><td style="color:#ffc832"><strong>🔥🔥🔥 产业链爆发期</strong></td></tr>
+        <tr><td><strong>2029–2030</strong></td><td>渗透率~25% · 逐步替代高端有机基板 · 国内企业加速追赶</td><td>300亿+市场规模形成</td></tr>
       </tbody>
     </table>
 
     <div class="highlight-box">
-      <strong>2026是关键转折年。</strong>英特尔小批量产、三星试产——全球格局在今年确定。国内企业现在不跟，就永远追不上了。
+      <strong>2026是关键转折年。</strong>英特尔小批量产、三星试产——全球格局在今年确定。国内企业现在不跟，就永远追不上了。<br>
+      <strong>特别关注：</strong>2026年下半年英特尔将公布首批量产客户名单，这是最重要的催化剂。
     </div>
 
     <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
 
+    <!-- ========== 六、与光棒/变压器的对位 ========== -->
     <h2>⚔️ 六、与光棒/变压器的对位</h2>
 
     <table>
       <thead><tr><th>对比维度</th><th>⚡ 变压器</th><th>💡 光棒</th><th>🪟 玻璃基板</th></tr></thead>
       <tbody>
         <tr><td><strong>驱动因素</strong></td><td>AI用电</td><td>AI互联</td><td style="color:#ff6b6b"><strong>AI芯片封装</strong></td></tr>
-        <tr><td><strong>技术壁垒</strong></td><td>±1100kV全球3家</td><td>光棒<10家能造</td><td style="color:#ff6b6b"><strong>上游美日垄断 · TGV极高</strong></td></tr>
-        <tr><td><strong>全球龙头</strong></td><td>ABB·西门子</td><td>长飞(全球第1)🏆</td><td>康宁·英特尔·三星</td></tr>
+        <tr><td><strong>技术壁垒</strong></td><td>±1100kV全球3家</td><td>光棒&lt;10家能造</td><td style="color:#ff6b6b"><strong>上游美日垄断 · TGV极高 · 国内差距最大</strong></td></tr>
+        <tr><td><strong>全球龙头</strong></td><td>ABB·西门子·日立</td><td>长飞(全球第1)🏆 · 康宁</td><td>康宁·英特尔·三星</td></tr>
         <tr><td><strong>国产地位</strong></td><td>特变领先 🏆</td><td>长飞第一 🏆</td><td style="color:#ff6b6b"><strong>❌ 尚在追赶，差距大</strong></td></tr>
         <tr><td><strong>当前阶段</strong></td><td>🔥 过热期</td><td>🌱 复苏初期</td><td style="color:#ffc832"><strong>🌅 爆发前夜</strong></td></tr>
         <tr><td><strong>投资确定性</strong></td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐ 低但弹性最大</td></tr>
         <tr><td><strong>弹性空间</strong></td><td>3-5年稳健</td><td>5-10年大周期</td><td style="color:#4ae68a"><strong>🚀 5-10x可能是起点</strong></td></tr>
+        <tr><td><strong>市场规模（2030）</strong></td><td>$200亿+</td><td>$80亿+</td><td style="color:#4ae68a"><strong>$150亿+（保守）</strong></td></tr>
       </tbody>
     </table>
 
@@ -1768,11 +1840,13 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
 
     <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
 
-    <h2>🎯 七、核心判断</h2>
+    <!-- ========== 七、核心判断 ========== -->
+    <h2>🎯 七、核心判断（渡定调）</h2>
 
     <div class="highlight-box">
       <strong>光棒550%的暴涨是供需缺口 + 扩产周期长。</strong><br>
-      <strong>玻璃基板的逻辑比光棒更硬——有机基板有物理天花板，不是供需问题，是技术代差。</strong>
+      <strong>玻璃基板的逻辑比光棒更硬——有机基板有物理天花板，不是供需问题，是技术代差。</strong><br>
+      <strong>玻璃基板有可能成为下一个"光棒时刻"，但时间窗口在2027–2029，不是2026。</strong>
     </div>
 
     <p>三条线清醒看到：</p>
@@ -1780,15 +1854,265 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     <table>
       <thead><tr><th></th><th>判断</th><th>解读</th></tr></thead>
       <tbody>
-        <tr><td>🔴</td><td><strong>国内差距比光棒更大</strong></td><td>光棒我们全球第一，玻璃基板还在追赶。上游原片被美日锁死，中游TGV技术待突破。</td></tr>
-        <tr><td>🟡</td><td><strong>产能落地还有1-2年</strong></td><td>2026是论证年，2027-2028才是量产出货。不要用今年的业绩去估值明年的赛道。</td></tr>
-        <tr><td>🟢</td><td><strong>弹性最大但确定性最低</strong></td><td>方向对了，空间可能是变压器数倍。但选错标的、跟错节奏，照样白忙。</td></tr>
+        <tr><td>🔴</td><td><strong>国内差距比光棒更大</strong></td><td>光棒我们全球第一，玻璃基板还在追赶。上游原片被美日锁死，中游TGV技术待突破。光棒要追的是长飞自己创造的纪录，玻璃基板要追的是康宁+英特尔联合的壁垒。</td></tr>
+        <tr><td>🟡</td><td><strong>产能落地还有1–2年</strong></td><td>2026是论证年，2027–2028才是量产出货。不要用今年的业绩去估值明年的赛道。耐心是玻璃基板投资的第一信仰。</td></tr>
+        <tr><td>🟢</td><td><strong>弹性最大但确定性最低</strong></td><td>方向对了，空间可能是变压器数倍。但选错标的、跟错节奏，照样白忙。建议作为"卫星仓位"配置（总仓位≤10%）。</td></tr>
       </tbody>
     </table>
 
     <div class="eureka">
-      <strong>玻璃基板 = 光棒的故事 + 更高的壁垒 + 更大的差距 + 更爆的弹性。</strong><br>
-      这不是2026年的投资主线——这是2027-2030年的胜负手。
+      <strong>玻璃基板 = 光棒的故事 × 更高的壁垒 × 更大的差距 × 更爆的弹性。</strong><br>
+      这不是2026年的投资主线——这是2027–2030年的胜负手。<br>
+      现在要做的是：<strong>跟踪、等待、在正确的时间扣扳机。</strong>
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <!-- ========== 八、市场空间测算 ========== -->
+    <h2>📊 八、市场空间测算（TAM）</h2>
+
+    <h3>玻璃基板封装市场：3年10倍，7年30倍</h3>
+
+    <table>
+      <thead><tr><th>指标</th><th>2024</th><th>2025</th><th>2026</th><th>2027</th><th>2028</th><th>2029</th><th>2030</th></tr></thead>
+      <tbody>
+        <tr><td><strong>市场规模（$亿）</strong></td><td>&lt;1</td><td>~5</td><td>~12–15</td><td>~30</td><td>~60</td><td>~100</td><td><strong style="color:#4ae68a">~150+</strong></td></tr>
+        <tr><td><strong>YOY增长</strong></td><td>—</td><td>5x</td><td>~2–3x</td><td>~2x</td><td>~2x</td><td>~1.7x</td><td>~1.5x</td></tr>
+        <tr><td><strong>AI芯片封装板总市场</strong></td><td>~80亿</td><td>~100亿</td><td>~120亿</td><td>~150亿</td><td>~200亿</td><td>~260亿</td><td>~350亿</td></tr>
+        <tr><td><strong>玻璃基板渗透率</strong></td><td>&lt;1%</td><td>~5%</td><td>~10%</td><td>~20%</td><td>~30%</td><td>~38%</td><td><strong>~43%</strong></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.85rem;color:#8899b0;text-align:right">数据来源：Yole Group, IDTechEx, Prismark 综合估算 · 无殊研究整理</p>
+
+    <div class="highlight-box">
+      <strong>$150亿为什么是保守估计？</strong><br>
+      ① 有机基板在2μm以下线宽/线距<strong>物理上不可行</strong>——AI芯片持续缩小制程意味着玻璃基板是唯一选择<br>
+      ② 大芯片(&gt;600mm²)封装必须用玻璃基板——NVIDIA Rubin (2026) 面积~1600mm²<br>
+      ③ 玻璃基板可封装面积达到有机基板的<strong>1.5倍</strong>，单芯片I/O密度400+ I/O/mm²<br>
+      ④ 英特尔/三星/LG三家在2026–2028年合计投资超$50亿产能建设——大厂押注是最大的置信信号<br>
+      ⑤ 如果渗透率提前达到30%（2028年），市场将逼近$200亿
+    </div>
+
+    <div class="card-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin:1.5rem 0">
+      <div class="card">
+        <div class="card-title">📈 乐观情景（渗透率加速）</div>
+        <div class="card-body">
+          <div class="data-row"><span class="dl">2030市场规模</span><span class="dv" style="color:#4ae68a"><strong>$250亿+</strong></span></div>
+          <div class="data-row"><span class="dl">假设</span><span class="dv">英特尔路线图提前+国内突破TGV</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 基准情景</div>
+        <div class="card-body">
+          <div class="data-row"><span class="dl">2030市场规模</span><span class="dv" style="color:#fbbf24"><strong>$150亿</strong></span></div>
+          <div class="data-row"><span class="dl">假设</span><span class="dv">英特尔/三星按计划量产，国内2028跟进</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📉 悲观情景</div>
+        <div class="card-body">
+          <div class="data-row"><span class="dl">2030市场规模</span><span class="dv" style="color:#ff6b6b"><strong>$80亿</strong></span></div>
+          <div class="data-row"><span class="dl">假设</span><span class="dv">TGV良率爬坡慢+有机基板超预期改进</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eureka">
+      <strong>即使按悲观情景$80亿，玻璃基板2025–2030仍有16倍增长空间。</strong><br>
+      而基准情景的$150亿意味着：这是一条3年10倍、7年30倍的超级赛道。<br>
+      相比之下，变压器赛道同期CAGR只有~15–20%。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <!-- ========== 九、技术深度：TGV（玻璃通孔） ========== -->
+    <h2>🔬 九、技术深度：TGV（玻璃通孔）——为什么是最难环节？</h2>
+
+    <p>TGV（Through Glass Via）是玻璃基板封装<strong>皇冠上的明珠</strong>。在玻璃上打出微米级通孔、填满导电材料、保证电气连接可靠——这个环节决定了玻璃基板能不能从实验室走向工厂。</p>
+
+    <h3>TGV的核心挑战</h3>
+
+    <table>
+      <thead><tr><th>挑战</th><th>难度</th><th>具体问题</th></tr></thead>
+      <tbody>
+        <tr><td><strong>高精度钻孔</strong></td><td style="color:#ff6b6b">🔴 极高</td><td>孔径10–50μm，深宽比&gt;10:1，位置精度±2μm。玻璃是脆性材料，微裂纹控制极难</td></tr>
+        <tr><td><strong>侧壁粗糙度</strong></td><td style="color:#ff6b6b">🔴 极高</td><td>粗糙度需&lt;0.5μm以确保后续金属化附着力，激光加工易产生毛刺</td></tr>
+        <tr><td><strong>导电填充</strong></td><td style="color:#ffc832">🟡 高</td><td>铜浆/电镀铜填充需完全无空洞、热膨胀匹配玻璃（–热应力导致开裂）</td></tr>
+        <tr><td><strong>良率控制</strong></td><td style="color:#ff6b6b">🔴 极高</td><td>当前良率仅70–80%，大规模量产需90%+。一个通孔缺陷=整个芯片报废</td></tr>
+        <tr><td><strong>检测难度</strong></td><td style="color:#ffc832">🟡 高</td><td>微米级通孔内部缺陷难以通过常规AOI检出，需X-ray+超声联合检测</td></tr>
+      </tbody>
+    </table>
+
+    <h3>四大TGV工艺路线对比</h3>
+
+    <table>
+      <thead><tr><th>工艺</th><th>原理</th><th>孔径</th><th>深宽比</th><th>设备来源</th><th>量产成熟度</th></tr></thead>
+      <tbody>
+        <tr><td><strong>飞秒激光诱导刻蚀</strong></td><td>飞秒激光→玻璃改性→HF湿法刻蚀</td><td>10–30μm</td><td>&gt;15:1</td><td>LPKF🇩🇪（主流）</td><td style="color:#ffc832">🟡 小批量，良率~75%</td></tr>
+        <tr><td><strong>UV纳秒激光钻孔</strong></td><td>UV激光直接烧蚀</td><td>20–50μm</td><td>&lt;10:1</td><td>Via Mechanics🇯🇵 · 大族激光🇨🇳</td><td style="color:#ffc832">🟡 工程验证</td></tr>
+        <tr><td><strong>光敏玻璃光刻法</strong></td><td>光敏玻璃→UV曝光→热处理→湿法显影</td><td>50–200μm</td><td>&lt;5:1</td><td>康宁🇺🇸（独家）</td><td style="color:#4ae68a">🟢 批量可用，但孔径偏大</td></tr>
+        <tr><td><strong>等离子体刻蚀（ICP-RIE）</strong></td><td>感应耦合等离子体干法刻蚀</td><td>5–20μm</td><td>&gt;20:1</td><td>日立🇯🇵 · 泛林🇺🇸</td><td style="color:#ff6b6b">🔴 学术/研发阶段</td></tr>
+      </tbody>
+    </table>
+
+    <h3>国内TGV进展全景</h3>
+
+    <table>
+      <thead><tr><th>企业/机构</th><th>工艺路线</th><th>进展</th><th>阶段</th></tr></thead>
+      <tbody>
+        <tr><td><strong>三叠纪（Triple-Tech）</strong></td><td>飞秒激光诱导刻蚀</td><td>10μm通孔深宽比&gt;10:1，已交付样品</td><td style="color:#ffc832">🟡 小批量试产</td></tr>
+        <tr><td><strong>苏州晶方半导体</strong></td><td>TSV→TGV延伸</td><td>技术储备中，CIS封装相关</td><td style="color:#ffc832">🟡 研发阶段</td></tr>
+        <tr><td><strong>大族激光</strong></td><td>UV纳秒激光</td><td>提供PCB/FPC激光钻孔设备，TGV专项研发中</td><td style="color:#7eb8ff">🔵 早期研发</td></tr>
+        <tr><td><strong>中科院光电所</strong></td><td>飞秒激光+等离子体</td><td>学术成果：5μm通孔深宽比20:1</td><td style="color:#7eb8ff">🔵 学术阶段</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note-box" style="background:rgba(255,200,50,0.08);border-left:3px solid #ffc832;padding:1rem;margin:1rem 0;border-radius:8px">
+      <p><strong>关键判断：</strong>TGV良率从70%到90%的提升，可能是玻璃基板产业<strong>最大的瓶颈</strong>。英特尔预计2026年底良率达到85%，2027年突破90%。在这之前，玻璃基板成本将远高于有机基板（预计初期3–5x），只有高端AI/HPC芯片能承受。</p>
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <!-- ========== 十、英特尔路线图详解 ========== -->
+    <h2>🏢 十、英特尔路线图详解——为什么英特尔如此重视？</h2>
+
+    <p>英特尔是这场玻璃基板革命的<strong>最大推手</strong>。作为IDM厂商，英特尔同时做芯片设计+封装+制造，在玻璃基板上的投入远超台积电和三星——这背后有深刻的战略考量。</p>
+
+    <h3>英特尔玻璃基板里程碑</h3>
+
+    <table>
+      <thead><tr><th>时间</th><th>里程碑</th><th>意义</th></tr></thead>
+      <tbody>
+        <tr><td><strong>2023年9月</strong></td><td>在ECTC上展示12英寸玻璃基板封装测试芯片</td><td>全球首次证明玻璃基板封装的工程可行性</td></tr>
+        <tr><td><strong>2024年</strong></td><td>向主要客户（云厂商、超算中心）交付样品验证</td><td>客户反馈驱动工艺迭代，技术成熟度提升</td></tr>
+        <tr><td><strong>2025年</strong></td><td>亚利桑那州Chandler工厂建试产线</td><td>从实验室走向中试，评估量产经济性</td></tr>
+        <tr><td><strong style="color:#ff6b6b">2026年</strong></td><td>小批量产，针对高端HPC/AI芯片定向供应</td><td style="color:#ff6b6b"><strong>🔥 商业化元年</strong></td></tr>
+        <tr><td><strong style="color:#ffc832">2027–2028</strong></td><td>大规模商用，首发于高端HPC/AI芯片封装</td><td style="color:#ffc832"><strong>🔥🔥🔥 量产出货，收入确认</strong></td></tr>
+      </tbody>
+    </table>
+
+    <h3>为什么英特尔如此重视？」</h3>
+
+    <div class="card-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin:1.5rem 0">
+      <div class="card">
+        <div class="card-title">📐 封装面积1.5x</div>
+        <div class="card-body">
+          <p>玻璃基板可支持的封装面积是有机基板的<strong>1.5倍</strong>。对于英特尔而言，这意味着可以封装更大的芯片、更多的计算核——摩尔定律放缓后的新路径。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔌 I/O密度400+ /mm²</div>
+        <div class="card-body">
+          <p>玻璃基板支持单芯片封装<strong>400+ I/O/mm²</strong>（有机基板~100–150/mm²）。这对HPC/AI所需的超高带宽互联至关重要。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔥 散热优势</div>
+        <div class="card-body">
+          <p>玻璃导热率~1.2W/m·K vs 有机~0.3W/m·K。英特尔未来AI芯片功耗将突破1000W，玻璃基板是唯一热管理方案。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🎯 战略卡位</div>
+        <div class="card-body">
+          <p>英特尔落后台积电在先进制程（Intel 4/3 vs N3/N2），但<strong>封装是差异化战场</strong>。玻璃基板让英特尔在封装技术上建立领先——这是"借道超车"。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <strong>英特尔在玻璃基板上的领先优势：2–3年。</strong><br>
+      英特尔从2019年开始研发玻璃基板，投入超$20亿。台积电2025年才开始公开布局。<strong>2–3年的先发优势在半导体行业是巨大的</strong>——这足够英特尔在客户生态中建立转换成本。<br>
+      <strong>关键观察点：</strong>2026年英特尔公布的量产客户名单。如果包含AWS/Google/Microsoft，玻璃基板赛道将正式进入主流视野。
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <!-- ========== 十一、投资节奏框架 ========== -->
+    <h2>📈 十一、投资节奏框架——三个阶段，三种打法</h2>
+
+    <table>
+      <thead><tr><th>阶段</th><th>时间</th><th>特征</th><th>市场状态</th><th>投资策略</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:#ff6b6b">阶段① · 主题投资期</strong></td><td>2024–2025</td><td>炒概念 · 弹性大但波动剧烈 · 跟风蔓延</td><td>概念股翻倍再腰斩，真龙头还没走出来</td><td style="color:#ffc832">🟡 不追高 · 小仓位布局 · 研究先行</td></tr>
+        <tr><td><strong style="color:#ffc832">阶段② · 兑现验证期</strong></td><td>2026–2027</td><td>谁能真正做出TGV+拿到订单？业绩开始体现</td><td>分化开始——真龙头涨，蹭概念跌</td><td style="color:#4ae68a">🟢 核心加仓 · 聚焦中游加工+上游设备</td></tr>
+        <tr><td><strong style="color:#4ae68a">阶段③ · 业绩爆发期</strong></td><td>2028–2030</td><td>产业链放量 · 业绩转化 · 渗透率加速突破</td><td>戴维斯双击——估值+业绩双升</td><td style="color:#4ae68a"><strong>🟢 重仓持有 · 产业链全线受益</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="quote-block" style="border-left-color:#ffc832;margin-top:2rem">
+      <strong>🎯 当前坐标：2026年6月 → 阶段①②过渡期</strong><br>
+      主题投资期的余温已过，兑现验证期刚刚开始。<br>
+      2026年下半年英特尔客户名单公布，将是阶段①→阶段②的<strong>关键转折催化剂</strong>。<br>
+      现在的核心任务：<strong>选对标的，等待时机，不要在该重仓的时候犹豫，也不要在该观望的时候冲动。</strong>
+    </div>
+
+    <h3>每个阶段的"最佳实践"</h3>
+
+    <table>
+      <thead><tr><th>阶段</th><th>选什么</th><th>买什么</th><th>什么时候卖</th></tr></thead>
+      <tbody>
+        <tr><td><strong>① 主题投资期</strong></td><td>找"概念最正"的——市场先炒想象空间</td><td>小仓位（≤5%）试探，涨了不加仓</td><td>情绪高点走人，别等业绩验证</td></tr>
+        <tr><td><strong>② 兑现验证期</strong></td><td>找"真有技术"的——TGV突破+订单确认</td><td>逐步加仓到15–20%，容忍波动</td><td>逻辑证伪时离场，逻辑验证时持有</td></tr>
+        <tr><td><strong>③ 业绩爆发期</strong></td><td>找"弹性最大"的——业绩增速决定涨幅</td><td>重仓（20–30%），持有到PE扩张结束</td><td>渗透率见顶逻辑破坏前分批出</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note-box" style="background:rgba(255,107,107,0.08);border-left:3px solid #ff6b6b;padding:1rem;margin:1rem 0;border-radius:8px">
+      <p><strong>⚠️ 阶段①→②过渡期最大风险：</strong>如果在2026年下半年英特尔/三星公布量产数据后"利好出尽"，市场可能先砸一波再涨——<strong>耐心比勇气更重要</strong>。</p>
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <!-- ========== 十二、持仓关联 ========== -->
+    <h2>🔗 十二、持仓关联——与现有组合的交叉分析</h2>
+
+    <p>以下分析将玻璃基板赛道与现有"算力六家核心组合"一一对比，梳理相关性、协同性和仓位管理思路。</p>
+
+    <table>
+      <thead><tr><th>标的</th><th>代码</th><th>现有持仓</th><th>与玻璃基板相关性</th><th>逻辑交叉点</th><th>操作建议</th></tr></thead>
+      <tbody>
+        <tr><td><strong>深南电路</strong></td><td>002916</td><td>🟢 持仓核心</td><td style="color:#4ae68a"><strong>⭐⭐⭐⭐ 强正相关</strong></td><td>PCB+封装双龙头，玻璃基板是技术延伸方向；已有研发储备</td><td>玻璃基板逻辑是深南的<strong>期权价值</strong>——不影响核心估值判断，但如果玻璃基板走通，深南是最大受益者</td></tr>
+        <tr><td><strong>兴森科技</strong></td><td>002436</td><td>🟡 观察</td><td style="color:#4ae68a"><strong>⭐⭐⭐⭐⭐ 最直接</strong></td><td>IC封装基板龙头，布局玻璃基板技术路线；珠海FCBGA项目柔性转产潜力</td><td>玻璃基板是兴森<strong>最核心的弹性看涨期权</strong>，如果TGV突破，兴森可能是A股涨幅最大</td></tr>
+        <tr><td><strong>生益科技</strong></td><td>600183</td><td>🟢 持仓核心</td><td>⭐⭐ 弱相关</td><td>覆铜板龙头，间接受益有机→玻璃基板带来的封装材料需求升级</td><td>间接逻辑，不构成增持理由；但玻璃基板逻辑不损伤生益核心逻辑</td></tr>
+        <tr><td><strong>沪电股份</strong></td><td>002463</td><td>🟡 观察等待</td><td>⭐⭐ 弱相关</td><td>高端PCB龙头，但玻璃基板影响PCB产业，可能需要关注</td><td>玻璃基板可能对高端PCB形成一定替代压力（远期）</td></tr>
+        <tr><td><strong>胜宏科技</strong></td><td>300476</td><td>🟡 观察等待</td><td>⭐⭐ 弱相关</td><td>AI PCB龙头，间接受益封装基板升级</td><td>玻璃基板逻辑偏弱，保持现有观察节奏</td></tr>
+        <tr><td><strong>东材科技</strong></td><td>601208</td><td>🔴 弹性观察</td><td>⭐ 极弱</td><td>PPO材料龙头，但玻璃基板对树脂材料需求是反向</td><td>玻璃基板对东材逻辑形成<strong>替代风险</strong>——需关注</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <strong>玻璃基板对现有组合的影响：</strong><br>
+      🟢 <strong>增厚逻辑</strong>：深南电路 + 兴森科技 —— 玻璃基板成为它们的"第二增长曲线"<br>
+      🟡 <strong>中性/观察</strong>：生益科技 · 沪电股份 · 胜宏科技 —— 影响有限，关注即可<br>
+      🔴 <strong>潜在替代风险</strong>：东材科技 —— 玻璃基板如果大规模替代有机基板，PPO/树脂类材料需求增长逻辑将受到挑战
+    </div>
+
+    <div class="note-box" style="background:rgba(74,230,138,0.08);border-left:3px solid #4ae68a;padding:1rem;margin:1rem 0;border-radius:8px">
+      <p><strong>仓位管理建议：</strong>玻璃基板作为"卫星仓位"（建议≤10%总仓位），以<strong>兴森科技+深南电路</strong>为核心配置，TGV技术突破后逐步加仓。<strong>不推荐</strong>单纯为了玻璃基板概念买入生益/沪电/胜宏——它们的核心逻辑不在此。</p>
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <!-- ========== 七（重述）、核心判断 ========== -->
+    <h2>🎯 终章：核心判断——玻璃基板的投资地图</h2>
+
+    <div class="highlight-box">
+      <strong>总结一句话：玻璃基板 ≠ 2026年的投资主线。</strong><br>
+      <strong>玻璃基板 = 2027–2030年的胜负手。</strong><br>
+      <br>
+      🏗️ 技术已经走通？—— ✅ 英特尔已验证，样品交付中<br>
+      📈 市场够大吗？—— ✅ $150亿+（2030），30倍增长<br>
+      🔒 壁垒够高吗？—— ✅ 上游美日锁死，中游TGV极难<br>
+      🇨🇳 国内能追上吗？—— ❓ 3–5年差距，能否缩短是关键<br>
+      💰 现在能赚钱吗？—— ❌ 不能，2026年纯投入期
+    </div>
+
+    <div class="eureka">
+      <strong>玻璃基板 = 光棒的故事 × 更高的壁垒 × 更大的差距 × 更爆的弹性。</strong><br>
+      这不是2026年的投资主线——这是2027–2030年的胜负手。<br>
+      现在要做的是：<strong>跟踪、等待、在正确的时间扣扳机。</strong><br>
+      <span style="font-size:0.9rem;display:block;margin-top:0.5rem">—— 无殊 · 2026年6月</span>
     </div>
 
     <div class="article-footer">
@@ -2987,6 +3311,280 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
   </div>
 </section>
 
+<!-- ===== 估值锚点 ===== -->
+<section id="valuation" class="section fade-in">
+  <div class="section-header">
+    <h2>📐 估值锚点 · 每只股票值多少钱</h2>
+    <div class="divider"></div>
+    <p>不为股价绑架——PE历史分位 + 行业对标 + 具体买卖区间 = 真锚点</p>
+  </div>
+  <div class="article-body">
+
+    <div class="note-box" style="margin-bottom:1.5rem">
+      <strong>💡 方法论框架</strong><br>
+      ① 取TTM滚动市盈率 → ② 对应当前股价 → ③ 参照行业平均PE区间 → ④ 结合成长性(PEG) → ⑤ 锚定合理估值中枢<br>
+      <strong>买点 = 合理中枢以下-15%~-30%（安全边际）</strong><br>
+      <strong>卖点 = 合理中枢以上+30%~+50%（泡沫兑现）</strong><br>
+      <span style="color:#5a6a80;font-size:0.85rem">注意：周期股(化工/有色)用PB估值更准，氢能/创新药等亏损股用PS估值</span>
+    </div>
+
+    <h2>🏛️ 核心持仓 · 估值锚点</h2>
+    <p>基于2026年6月29日实时行情数据</p>
+
+    <table>
+      <thead><tr><th>标的</th><th>代码</th><th>现价</th><th>行业</th><th>合理PE</th><th>PEG</th><th>合理区间</th><th style="color:#4ae68a">买点</th><th style="color:#ff6b6b">卖点</th><th>锚定性</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>深科技</strong></td><td>000021</td><td>57.34</td>
+          <td>存储封测</td>
+          <td>22-28x</td>
+          <td>0.8</td>
+          <td>48-62</td>
+          <td style="color:#4ae68a"><strong>&lt;48</strong></td>
+          <td style="color:#ff6b6b">&gt;72</td>
+          <td><span style="color:#ffc832">🟡 合理偏高</span></td>
+        </tr>
+        <tr>
+          <td><strong>工业富联</strong></td><td>601138</td><td>68.57</td>
+          <td>AI服务器制造</td>
+          <td>28-35x</td>
+          <td>1.1</td>
+          <td>63-78</td>
+          <td style="color:#4ae68a"><strong>&lt;58</strong></td>
+          <td style="color:#ff6b6b">&gt;90</td>
+          <td><span style="color:#ffc832">🟡 68止损线守卫</span></td>
+        </tr>
+        <tr>
+          <td><strong>中际旭创</strong></td><td>300308</td><td>1178.10</td>
+          <td>光模块</td>
+          <td>40-55x</td>
+          <td>1.2</td>
+          <td>1000-1400</td>
+          <td style="color:#4ae68a"><strong>&lt;1000</strong></td>
+          <td style="color:#ff6b6b">&gt;1600</td>
+          <td><span style="color:#4ae68a">🟢 与业绩同步</span></td>
+        </tr>
+        <tr>
+          <td><strong>新易盛</strong></td><td>300502</td><td>536.35</td>
+          <td>光模块</td>
+          <td>45-60x</td>
+          <td>1.3</td>
+          <td>480-640</td>
+          <td style="color:#4ae68a"><strong>&lt;450</strong></td>
+          <td style="color:#ff6b6b">&gt;750</td>
+          <td><span style="color:#4ae68a">🟢 合理</span></td>
+        </tr>
+        <tr>
+          <td><strong>国科微</strong></td><td>300672</td><td>278.43</td>
+          <td>存储芯片</td>
+          <td>45-65x</td>
+          <td>1.5</td>
+          <td>250-350</td>
+          <td style="color:#4ae68a"><strong>&lt;230</strong></td>
+          <td style="color:#ff6b6b">&gt;400</td>
+          <td><span style="color:#ffc832">🟡 波动大需盯</span></td>
+        </tr>
+        <tr>
+          <td><strong>协创数据</strong></td><td>300857</td><td>321.26</td>
+          <td>数据存储</td>
+          <td>35-50x</td>
+          <td>1.0</td>
+          <td>280-400</td>
+          <td style="color:#4ae68a"><strong>&lt;260</strong></td>
+          <td style="color:#ff6b6b">&gt;450</td>
+          <td><span style="color:#ffc832">🟡 需等季报验证</span></td>
+        </tr>
+        <tr>
+          <td><strong>三环集团</strong></td><td>300408</td><td>163.98</td>
+          <td>MLCC/陶瓷</td>
+          <td>25-35x</td>
+          <td>0.9</td>
+          <td>150-210</td>
+          <td style="color:#4ae68a"><strong>&lt;140</strong></td>
+          <td style="color:#ff6b6b">&gt;230</td>
+          <td><span style="color:#4ae68a">🟢 业绩高增长支撑</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>👁️ 观察池 · 估值锚点</h2>
+
+    <table>
+      <thead><tr><th>标的</th><th>代码</th><th>现价</th><th>行业</th><th>估值方法</th><th>合理区间</th><th style="color:#4ae68a">买点</th><th style="color:#ff6b6b">卖点</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>雪人集团</strong></td><td>002639</td><td>14.06</td>
+          <td>氢能装备</td><td>PS 5-8x</td><td>11-17</td>
+          <td style="color:#4ae68a"><strong>&lt;11</strong></td>
+          <td style="color:#ff6b6b">&gt;20</td>
+          <td>🟢 涨停连板是观察锚</td>
+        </tr>
+        <tr>
+          <td><strong>恒逸石化</strong></td><td>000703</td><td>15.00</td>
+          <td>PTA/化工</td><td>PB 0.8-1.0x</td><td>13-17</td>
+          <td style="color:#4ae68a"><strong>&lt;13.5</strong></td>
+          <td style="color:#ff6b6b">&gt;18</td>
+          <td style="color:#ff6b6b">🔴 周期底部待确认</td>
+        </tr>
+        <tr>
+          <td><strong>新安股份</strong></td><td>600596</td><td>16.02</td>
+          <td>草甘膦</td><td>PB 1.0-1.3x</td><td>14-18</td>
+          <td style="color:#4ae68a"><strong>&lt;13</strong></td>
+          <td style="color:#ff6b6b">&gt;20</td>
+          <td style="color:#ff6b6b">🔴 跌停封单轻微，关注放量</td>
+        </tr>
+        <tr>
+          <td><strong>中国巨石</strong></td><td>600176</td><td>67.55</td>
+          <td>玻纤</td><td>PE 15-22x</td><td>55-80</td>
+          <td style="color:#4ae68a"><strong>&lt;55</strong></td>
+          <td style="color:#ff6b6b">&gt;85</td>
+          <td>🟢 周期复苏确认</td>
+        </tr>
+        <tr>
+          <td><strong>新联电子</strong></td><td>002546</td><td>7.40</td>
+          <td>电力设备</td><td>PE 18-28x</td><td>6.5-10</td>
+          <td style="color:#4ae68a"><strong>&lt;6.5</strong></td>
+          <td style="color:#ff6b6b">&gt;10.5</td>
+          <td>🟢 7.29支撑已验证</td>
+        </tr>
+        <tr>
+          <td><strong>美锦能源</strong></td><td>000723</td><td>3.45</td>
+          <td>氢能/焦煤</td><td>PS 1.5-2.5x</td><td>3.0-5.0</td>
+          <td style="color:#4ae68a"><strong>&lt;3.0</strong></td>
+          <td style="color:#ff6b6b">&gt;5.5</td>
+          <td style="color:#ff6b6b">🔴 亏损股，需等扭亏信号</td>
+        </tr>
+        <tr>
+          <td><strong>亿华通</strong></td><td>688339</td><td>18.41</td>
+          <td>氢能燃料</td><td>PS 3-6x</td><td>15-25</td>
+          <td style="color:#4ae68a"><strong>&lt;15</strong></td>
+          <td style="color:#ff6b6b">&gt;30</td>
+          <td style="color:#ffc832">🟡 随氢能板块联动</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🔗 产业链关联标的 · 估值锚点</h2>
+
+    <table>
+      <thead><tr><th>标的</th><th>代码</th><th>现价</th><th>产业链</th><th>合理PE</th><th>合理区间</th><th style="color:#4ae68a">买点</th><th style="color:#ff6b6b">卖点</th><th>锚定性</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>深南电路</strong></td><td>002916</td><td>412.44</td>
+          <td>PCB+封装基板</td><td>30-45x</td><td>350-520</td>
+          <td style="color:#4ae68a"><strong>&lt;350</strong></td>
+          <td style="color:#ff6b6b">&gt;580</td>
+          <td><span style="color:#ffc832">🟡 当前偏高</span></td>
+        </tr>
+        <tr>
+          <td><strong>沪电股份</strong></td><td>002463</td><td>137.67</td>
+          <td>AI服务器PCB</td><td>30-45x</td><td>120-180</td>
+          <td style="color:#4ae68a"><strong>&lt;115</strong></td>
+          <td style="color:#ff6b6b">&gt;200</td>
+          <td><span style="color:#ffc832">🟡 随AI板块波动</span></td>
+        </tr>
+        <tr>
+          <td><strong>兴森科技</strong></td><td>002436</td><td>47.63</td>
+          <td>封装基板</td><td>40-60x</td><td>40-60</td>
+          <td style="color:#4ae68a"><strong>&lt;38</strong></td>
+          <td style="color:#ff6b6b">&gt;70</td>
+          <td><span style="color:#ff6b6b">🔴 今天-8%破位</span></td>
+        </tr>
+        <tr>
+          <td><strong>生益科技</strong></td><td>600183</td><td>166.45</td>
+          <td>覆铜板</td><td>25-38x</td><td>150-230</td>
+          <td style="color:#4ae68a"><strong>&lt;140</strong></td>
+          <td style="color:#ff6b6b">&gt;250</td>
+          <td><span style="color:#4ae68a">🟢 高端材料龙头</span></td>
+        </tr>
+        <tr>
+          <td><strong>长电科技</strong></td><td>600584</td><td>95.92</td>
+          <td>封测</td><td>28-40x</td><td>85-125</td>
+          <td style="color:#4ae68a"><strong>&lt;80</strong></td>
+          <td style="color:#ff6b6b">&gt;140</td>
+          <td><span style="color:#4ae68a">🟢 封测龙头折价</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🔥 今日异动信号（6月29日）</h2>
+
+    <div class="card-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem">
+      <div class="card" style="border-left:3px solid #ff6b6b">
+        <div class="card-title">🔴 深跌 · 关注介入机会</div>
+        <div class="card-body">
+          <div class="data-row"><span class="dl">恒逸石化</span><span class="dv" style="color:#ff6b6b">-10.02% ↓ 封死</span></div>
+          <div class="data-row"><span class="dl">新安股份</span><span class="dv" style="color:#ff6b6b">-10.00% ↓ 封死</span></div>
+          <div class="data-row"><span class="dl">兴森科技</span><span class="dv" style="color:#ff6b6b">-8.07% 破位</span></div>
+          <div class="data-row"><span class="dl">水晶光电</span><span class="dv" style="color:#ff6b6b">-9.99% ↓ 封死</span></div>
+          <div class="note-box" style="margin-top:0.5rem;font-size:0.85rem">
+            <strong>⏳ 等放量止跌后再考虑——不要接飞刀</strong>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="border-left:3px solid #4ae68a">
+        <div class="card-title">🟢 强势 · 持有或止盈</div>
+        <div class="card-body">
+          <div class="data-row"><span class="dl">雪人集团</span><span class="dv" style="color:#4ae68a">+10.02% ↑ 封板</span></div>
+          <div class="data-row"><span class="dl">旗滨集团</span><span class="dv" style="color:#4ae68a">+9.97% ↑ 封板</span></div>
+          <div class="data-row"><span class="dl">深科技</span><span class="dv" style="color:#4ae68a">+7.16% 高位震荡</span></div>
+          <div class="data-row"><span class="dl">三环集团</span><span class="dv" style="color:#4ae68a">+2.46% 主升结构</span></div>
+          <div class="note-box" style="margin-top:0.5rem;font-size:0.85rem">
+            <strong>⚡ 雪人连板确认氢能主线气质</strong>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="border-left:3px solid #ffc832">
+        <div class="card-title">🟡 承压 · 关注止损</div>
+        <div class="card-body">
+          <div class="data-row"><span class="dl">工业富联</span><span class="dv" style="color:#ffc832">-2.35% 68.57</span></div>
+          <div class="data-row"><span class="dl">中际旭创</span><span class="dv" style="color:#ff6b6b">-6.04% 光模块调整</span></div>
+          <div class="data-row"><span class="dl">新易盛</span><span class="dv" style="color:#ff6b6b">-5.24% 跟跌</span></div>
+          <div class="data-row"><span class="dl">沪电股份</span><span class="dv" style="color:#ff6b6b">-6.52% 调整</span></div>
+          <div class="note-box" style="margin-top:0.5rem;font-size:0.85rem">
+            <strong>⚠️ 工业富联68元是严格止损线</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider" style="font-size:1.2rem;margin:2rem 0">✦ ✦ ✦</div>
+
+    <h2>🧭 估值浓度表——赛道比价</h2>
+
+    <p>不同赛道PE不能硬比，但可看各自在历史分位中的位置：</p>
+
+    <table>
+      <thead><tr><th>赛道</th><th>当前PE中位数</th><th>历史PE区间</th><th>当前分位</th><th>结论</th></tr></thead>
+      <tbody>
+        <tr><td><strong>🔌 AI服务器PCB</strong></td><td>32-40x</td><td>20-50x</td><td>70%分位</td><td style="color:#ffc832">🟡 偏高但业绩支撑</td></tr>
+        <tr><td><strong>💡 光模块</strong></td><td>45-55x</td><td>25-65x</td><td>65%分位</td><td style="color:#ffc832">🟡 业绩增速对冲估值</td></tr>
+        <tr><td><strong>💾 存储封测</strong></td><td>22-28x</td><td>15-35x</td><td>55%分位</td><td style="color:#4ae68a">🟢 合理偏低</td></tr>
+        <tr><td><strong>🧪 MLCC/陶瓷</strong></td><td>28-35x</td><td>20-45x</td><td>50%分位</td><td style="color:#4ae68a">🟢 合理</td></tr>
+        <tr><td><strong>🧊 氢能设备</strong></td><td>亏损/PS</td><td>—</td><td>—</td><td style="color:#ffc832">🟡 主题投资阶段</td></tr>
+        <tr><td><strong>🧬 化工周期</strong></td><td>10-18x</td><td>6-30x</td><td>30%分位</td><td style="color:#4ae68a">🟢 周期底部区间</td></tr>
+        <tr><td><strong>🔩 封测</strong></td><td>30-40x</td><td>20-50x</td><td>55%分位</td><td style="color:#4ae68a">🟢 合理</td></tr>
+      </tbody>
+    </table>
+
+    <div class="eureka" style="margin-top:1.5rem">
+      <strong>估值锚点的价值不是预测涨跌——是让你在喧嚣中知道自己站在哪里。</strong><br>
+      涨了知道该不该卖，跌了知道该不该买。<br>
+      锚定了，心就定了。
+    </div>
+
+    <div class="article-footer">
+      —— <strong>渡曰</strong> · 无殊锚定 · 2026年6月29日
+    </div>
+  </div>
+</section>
+
 <!-- ===== 碳基算力——未来洞察 ===== -->
 <section id="bio" class="section fade-in">
   <div class="section-header">
@@ -3771,6 +4369,7 @@ const BB_HOLDINGS = [
   {name:'电投绿能',code:'000875',sector:'绿电',type:'hold'},
   {name:'锡华科技',code:'603248',sector:'机械设备',type:'hold'},
   {name:'南网数字',code:'301638',sector:'电力数字化',type:'hold'},
+  {name:'恒逸石化',code:'000703',sector:'化工/PTA',type:'watch'},
 ];
 
 const BB_SECTOR_MAP = {
