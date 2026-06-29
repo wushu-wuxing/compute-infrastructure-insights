@@ -8,12 +8,14 @@
 <style>
 /* ===== RESET ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
+html{
+  scroll-behavior:smooth;font-size:16px;
+  scroll-snap-type:y mandatory;
+}
 body{
   font-family:'PingFang SC','Noto Serif SC','Source Han Serif SC','STSong','SimSun',serif;
   background:#0a0810;color:#d8ccbe;
   overflow-x:hidden;
-  min-height:100vh;
 }
 a{color:#c8a04a;text-decoration:none;transition:.35s}
 a:hover{color:#e8c870}
@@ -141,15 +143,16 @@ a:hover{color:#e8c870}
 /* ===== SECTIONS ===== */
 .section{
   min-height:100vh;
+  scroll-snap-align:start;
   display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:6rem 2rem 8rem;
+  align-items:center;
+  padding:5rem 2rem 4rem;
   position:relative;
   opacity:0;
-  transform:translateY(30px);
-  transition:opacity .8s ease,transform .8s ease;
+  transform:translateY(20px);
+  transition:opacity .7s ease,transform .7s ease;
 }
-.section.visible{opacity:1;transform:translateY(0)}
+.section.revealed{opacity:1;transform:translateY(0)}
 .section-inner{max-width:680px;width:100%}
 
 /* ===== CHAPTER LABEL ===== */
@@ -312,7 +315,7 @@ a:hover{color:#e8c870}
   .entry-door .title-text{font-size:1.6rem;letter-spacing:4px}
   .chapter-title{font-size:2rem;letter-spacing:4px}
   .card-grid{grid-template-columns:1fr}
-  .section{padding:4rem 1.2rem 6rem}
+  .section{padding:3.5rem 1.2rem 3rem}
   .chapter-nav{bottom:1rem;padding:.4rem .8rem;gap:.35rem}
   .nav-dot{width:6px;height:6px}
   .nav-dot.active{width:18px}
@@ -858,78 +861,85 @@ function enter(){
   door.classList.add('hidden');
   setTimeout(()=>{
     door.style.display='none';
-    initScroll();
+    // First section already revealed by IntersectionObserver
   },1200);
 }
 
-// ===== SCROLL-BASED REVEAL =====
+// ===== SCROLL-BASED REVEAL with IntersectionObserver =====
 const sections=document.querySelectorAll('.section');
 let currentIdx=0;
-let isScrolling=false;
 
-function revealSection(idx){
-  sections.forEach((s,i)=>{
-    if(i===idx)s.classList.add('visible');
-    else s.classList.remove('visible');
-  });
-  document.querySelectorAll('.nav-dot').forEach((d,i)=>{
-    d.classList.toggle('active',i===idx);
-  });
-  currentIdx=idx;
-}
+// First section revealed immediately (no animation delay)
+sections[0].classList.add('revealed');
 
-function initScroll(){
-  // reveal first section
-  revealSection(0);
-
-  // keyboard
-  document.addEventListener('keydown',e=>{
-    if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key===' '){
-      e.preventDefault();
-      nextSection();
-    }
-    if(e.key==='ArrowUp'||e.key==='ArrowLeft'){
-      e.preventDefault();
-      prevSection();
+// IntersectionObserver: reveal sections as they enter viewport
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('revealed');
+      const idx=parseInt(entry.target.dataset.index);
+      // update nav dots
+      document.querySelectorAll('.nav-dot').forEach((d,i)=>{
+        d.classList.toggle('active',i===idx);
+      });
+      currentIdx=idx;
     }
   });
+},{threshold:.3});
 
-  // wheel
-  let wheelTimeout;
-  document.addEventListener('wheel',e=>{
-    if(isScrolling)return;
-    clearTimeout(wheelTimeout);
-    wheelTimeout=setTimeout(()=>{
-      if(e.deltaY>0)nextSection();
-      else prevSection();
-    },80);
-  },{passive:true});
+sections.forEach(s=>observer.observe(s));
 
-  // touch
-  let touchStart=0;
-  document.addEventListener('touchstart',e=>{
-    touchStart=e.changedTouches[0].screenY;
-  },{passive:true});
-  document.addEventListener('touchend',e=>{
-    const diff=touchStart-e.changedTouches[0].screenY;
-    if(Math.abs(diff)<30)return;
-    if(diff>0)nextSection();
-    else prevSection();
-  },{passive:true});
+// keyboard navigation
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key===' '){
+    e.preventDefault();
+    if(currentIdx<sections.length-1) scrollToSection(currentIdx+1);
+  }
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft'){
+    e.preventDefault();
+    if(currentIdx>0) scrollToSection(currentIdx-1);
+  }
+});
+
+// touch swipe
+let touchStart=0;
+document.addEventListener('touchstart',e=>{
+  touchStart=e.changedTouches[0].screenY;
+},{passive:true});
+document.addEventListener('touchend',e=>{
+  const diff=touchStart-e.changedTouches[0].screenY;
+  if(Math.abs(diff)<40)return;
+  if(diff>0&&currentIdx<sections.length-1) scrollToSection(currentIdx+1);
+  else if(diff<0&&currentIdx>0) scrollToSection(currentIdx-1);
+},{passive:true});
+
+function scrollToSection(idx){
+  if(!sections[idx])return;
+  sections[idx].scrollIntoView({behavior:'smooth'});
 }
 
 function goTo(idx){
-  if(isScrolling)return;
-  revealSection(Math.max(0,Math.min(idx,sections.length-1)));
-}
+  scrollToSection(idx);
+};
 
-function nextSection(){
-  if(currentIdx<sections.length-1)revealSection(currentIdx+1);
-}
-
-function prevSection(){
-  if(currentIdx>0)revealSection(currentIdx-1);
-}
+// re-check nav dots on manual scroll
+let scrollCheckTimer;
+window.addEventListener('scroll',()=>{
+  clearTimeout(scrollCheckTimer);
+  scrollCheckTimer=setTimeout(()=>{
+    const viewCenter=window.scrollY+(window.innerHeight/2);
+    sections.forEach((s,i)=>{
+      const top=s.offsetTop;
+      const bot=top+s.offsetHeight;
+      if(viewCenter>=top&&viewCenter<=bot){
+        document.querySelectorAll('.nav-dot').forEach((d,j)=>{
+          d.classList.toggle('active',j===i);
+        });
+        currentIdx=i;
+      }
+    });
+  },100);
+},{passive:true});
 
 // ===== PARALLAX FOR AMBIENT GLOW =====
 document.addEventListener('mousemove',e=>{
