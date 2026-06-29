@@ -1082,12 +1082,103 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     </div>
   </div>
 
-  <table class="data-table" style="margin-top:2rem">
+  <!-- ===== 深度拆解：三瓶颈全景 ===== -->
+  <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(74,158,255,0.1)">
+
+    <h3 style="color:#7eb8ff;margin-bottom:1.5rem;font-size:1.15rem">📐 三瓶颈的底层逻辑</h3>
+
+    <p style="color:#8a9bb5;line-height:1.8;margin-bottom:2rem">
+    算力的总产出取决于三重约束的<strong style="color:#c8d6e5">最小值</strong>，而非最大值。芯片算力再强，如果电力送不进去、数据传不出来，集群就是废铁。
+    理解这个<strong style="color:#4a9eff">乘法关系</strong>，才看得懂为什么2026年的投资主线和2023年完全不同——<br>
+    <span style="color:#5a7a9a">2023年：一颗芯片独大 → 买NVDA<br>
+    2025年：电力先吃紧 → 变压器暴涨<br>
+    2026年：通信成最紧一环 → 光棒从幕后到台前</span>
+    </p>
+
+    <!-- 瓶颈一：芯片 -->
+    <div style="background:rgba(43,87,151,0.04);border-left:3px solid #2b5797;padding:1.2rem 1.5rem;border-radius:0 8px 8px 0;margin-bottom:1.2rem">
+      <h4 style="color:#7eb8ff;margin:0 0 .5rem 0">🧠 芯片瓶颈 · 最轻的一环</h4>
+      <p style="color:#8a9bb5;font-size:.85rem;line-height:1.7">
+        英伟达H100→B200→Rubin的迭代节奏仍在18个月周期内。台积电CoWoS封装产能2025年底翻倍至月产4万片，2026年有望再扩50%。
+        AMD MI400和英特尔Falcon Shores已开始分流需求，总算力供给的增速仍远快于其他两环。<br>
+        <span style="color:#5a7a9a">核心矛盾不在"能不能造出更快的芯片"，而在"造出来了能不能供电、能不能互联"。</span>
+      </p>
+    </div>
+
+    <!-- 瓶颈二：电力 -->
+    <div style="background:rgba(200,100,50,0.04);border-left:3px solid #c86432;padding:1.2rem 1.5rem;border-radius:0 8px 8px 0;margin-bottom:1.2rem">
+      <h4 style="color:#ff9a5a;margin:0 0 .5rem 0">⚡ 电力瓶颈 · 时间最长</h4>
+      <p style="color:#8a9bb5;font-size:.85rem;line-height:1.7">
+        一座500kV变电站从可研到投运需要<strong>3-5年</strong>。全球变压器订单排到2028年，特变/ABB/西门子三家合计年产能≈3.2亿kVA，
+        而单座超大规模数据中心需求就达500-800MVA。国际能源署(IEA)预测，2026年全球数据中心电力消耗将达1,000TWh，
+        占全球总发电量约3.5%。这个数字在2020年还不到1%。<br>
+        <span style="color:#5a7a9a">电力配给是瓶颈中最"硬"的——它不受摩尔定律驱动，只受物理建设周期约束。</span>
+      </p>
+    </div>
+
+    <!-- 瓶颈三：光棒 -->
+    <div style="background:rgba(200,50,100,0.04);border-left:3px solid #c83264;padding:1.2rem 1.5rem;border-radius:0 8px 8px 0;margin-bottom:1.2rem">
+      <h4 style="color:#ff6b9d;margin:0 0 .5rem 0">💡 通信瓶颈 · 最被低估，也最紧</h4>
+      <p style="color:#8a9bb5;font-size:.85rem;line-height:1.7">
+        全球能做<strong>全合成纯光棒</strong>的企业不超过10家，而能做上游<strong>高纯石英砂</strong>的企业——真正够格的只有
+        Unimin(美国/已被COVESTRO收购)和挪威的TQC。光棒扩产周期<strong>18-24个月</strong>，
+        但石英砂提纯技术壁垒极高，新供应商的认证周期需要3-5年。<br>
+        2026年的关键拐点：AI集群内部互联从200G→400G→800G→1.6T跳跃式演进，每个数据中心的光纤用量是传统云数据中心的<strong>6-8倍</strong>。<br>
+        <span style="color:#ff4d6a;font-weight:600">光棒不是"光纤到户"时代的旧故事——它是AI通信的物理基座，而全球供给正在硬性短缺。</span>
+      </p>
+    </div>
+
+    <!-- 瓶颈时间线 -->
+    <div style="margin:2rem 0;padding:1.5rem;background:rgba(15,23,42,.5);border:1px solid rgba(74,158,255,.1);border-radius:12px">
+      <h4 style="color:#7eb8ff;margin:0 0 1rem 0">⏳ 瓶颈时间线：谁先解？谁先炸？</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+        <div style="text-align:center">
+          <div style="font-size:.8rem;color:#5a7a9a;margin-bottom:.35rem">🧠 芯片</div>
+          <div style="height:6px;background:rgba(43,87,151,.2);border-radius:3px;overflow:hidden">
+            <div style="width:75%;height:100%;background:linear-gradient(90deg,#2b5797,#4a9eff);border-radius:3px"></div>
+          </div>
+          <div style="font-size:.7rem;color:#4a9eff;margin-top:.25rem">2026-2027基本缓解</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:.8rem;color:#5a7a9a;margin-bottom:.35rem">⚡ 电力</div>
+          <div style="height:6px;background:rgba(200,100,50,.2);border-radius:3px;overflow:hidden">
+            <div style="width:55%;height:100%;background:linear-gradient(90deg,#c86432,#ff6b35);border-radius:3px"></div>
+          </div>
+          <div style="font-size:.7rem;color:#ff9a5a;margin-top:.25rem">2028-2029方有规模缓解</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:.8rem;color:#5a7a9a;margin-bottom:.35rem">💡 光棒</div>
+          <div style="height:6px;background:rgba(200,50,100,.2);border-radius:3px;overflow:hidden">
+            <div style="width:40%;height:100%;background:linear-gradient(90deg,#c83264,#ff4d8a);border-radius:3px"></div>
+          </div>
+          <div style="font-size:.7rem;color:#ff6b9d;margin-top:.25rem">供给硬缺口至少到2028</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 瓶颈互动关系 -->
+    <div style="background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.12);border-radius:10px;padding:1.2rem 1.5rem;margin:1.5rem 0">
+      <h4 style="color:#a78bfa;margin:0 0 .5rem 0">🔄 三瓶颈不是并列关系，是乘法关系</h4>
+      <p style="color:#8a9bb5;font-size:.85rem;line-height:1.7">
+        市场通常犯的错误是把三个瓶颈当作<strong style="color:#c8d6e5">独立分支</strong>来估值——
+        用传统PE框架算变压器、用光通信周期算光棒。
+        但AI算力的真实约束是<strong style="color:#a78bfa">整体产出 = min(芯片产出, 电力供应, 通信容量)</strong>。<br><br>
+        这个乘法关系推导出两个重要结论：<br>
+        ① <strong>最紧的一环决定了整个系统的回报率</strong>——2023-2024买芯片逻辑最顺，因为另外两环还没吃紧；
+        但2025-2026最紧的一环已经切换到<strong style="color:#ff4d6a">光棒和电力</strong>，谁卡通信谁卡电力，谁就是系统瓶颈的主人。<br>
+        ② <strong>三环节的估值差会收敛</strong>——中天PE 5x vs 长飞PE 30x vs 特变PE 12x的差异不会永远存在，
+        市场最终会意识到它们绑在同一条AI供给链上。
+      </p>
+    </div>
+
+  </div>
+
+  <table class="data-table" style="margin-top:1.5rem">
     <thead><tr><th>瓶颈</th><th>可替代性</th><th>扩产速度</th><th>综合紧迫度</th></tr></thead>
     <tbody>
       <tr><td><strong>🧠 GPU芯片</strong></td><td>英伟达为主·AMD追赶</td><td>12-18月</td><td class="highlight">⭐⭐⭐⭐</td></tr>
       <tr><td><strong>⚡ 变压器</strong></td><td>特变/ABB/西门子都能造</td><td>24-36月</td><td class="highlight">⭐⭐⭐⭐</td></tr>
-      <tr><td><strong>💡 光棒</strong></td><td>全球能做纯光棒的<10家</td><td>18-24月</td><td class="highlight" style="color:#ff6b6b">⭐⭐⭐⭐⭐ 🔥</td></tr>
+      <tr><td><strong>💡 光棒</strong></td><td>全球能做纯光棒的&lt;10家</td><td>18-24月</td><td class="highlight" style="color:#ff6b6b">⭐⭐⭐⭐⭐ 🔥</td></tr>
     </tbody>
   </table>
 
@@ -3617,6 +3708,82 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
         <h4>🚀 星际大脑</h4>
         <p>能改变医学、太空探索。未来深空探测中，飞船自带活体神经元，自学习、自修复、自决策。</p>
       </div>
+    </div>
+
+    <!-- ===== 深度扩展 ===== -->
+    <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(74,158,255,.08)">
+
+      <h3 style="color:#7eb8ff;margin-bottom:1rem">🌱 碳基算力的三条路径</h3>
+
+      <div style="background:rgba(34,197,94,.03);border-left:3px solid #22c55e;padding:1rem 1.3rem;border-radius:0 8px 8px 0;margin-bottom:1rem">
+        <h4 style="color:#4ade80;margin:0 0 .4rem 0;font-size:.9rem">🟢 路径一：类脑芯片</h4>
+        <p style="color:#8a9bb5;font-size:.82rem;line-height:1.6">
+          模仿神经元结构的硅基芯片——Intel Loihi 2、IBM NorthPole。不需要真正的生物组织，但架构模仿大脑的脉冲神经网络(SNN)。
+          优势是功耗极低（比传统GPU低100-1000倍），劣势是生态和软件工具链远不成熟。
+          代表商业边界：<strong>自动驾驶的边缘推理</strong>和<strong>脑机接口的实时信号处理</strong>。<br>
+          <span style="color:#5a7a9a">目前离替代GPU还差一个数量级，但2030年前可能在特定场景爆发。</span>
+        </p>
+      </div>
+
+      <div style="background:rgba(167,139,250,.03);border-left:3px solid #a78bfa;padding:1rem 1.3rem;border-radius:0 8px 8px 0;margin-bottom:1rem">
+        <h4 style="color:#c4a8ff;margin:0 0 .4rem 0;font-size:.9rem">🟣 路径二：生物计算</h4>
+        <p style="color:#8a9bb5;font-size:.82rem;line-height:1.6">
+          这就是CLE代表的路径——直接用活的神经元作为计算单元。Cortical Labs(澳大利亚)是这条路的先锋，
+          CLE是他们继DishBrain(2022)之后的第二个里程碑。核心突破在于<strong>神经元的训练方法</strong>：
+          不再试图精确编程每个连接（那不可能），而是通过电刺激→观察响应→强化学习的闭环来"教育"神经元网络。<br>
+          <span style="color:#5a7a9a">当前挑战：神经元存活周期~6个月、规模化困难、道德争议。更像是长期科研探索，短期对算力产业链无替代威胁。</span>
+        </p>
+      </div>
+
+      <div style="background:rgba(56,189,248,.03);border-left:3px solid #38bdf8;padding:1rem 1.3rem;border-radius:0 8px 8px 0;margin-bottom:1rem">
+        <h4 style="color:#7dd3fc;margin:0 0 .4rem 0;font-size:.9rem">🔵 路径三：碳基新材料</h4>
+        <p style="color:#8a9bb5;font-size:.82rem;line-height:1.6">
+          石墨烯、碳纳米管、过渡金属硫化物——在不使用生物组织的前提下突破硅基的物理极限。
+          碳纳米管晶体管(Carbon Nanotube FET)在实验室已做到<strong>硅基1/10的功耗、3倍速度</strong>。
+          台积电、三星都在研究碳基互连材料。碳化硅(SiC)在电力电子领域已经商业化。<br>
+          <span style="color:#5a7a9a">这条路最务实：不改变现有计算范式，但逐步用新材料替代硅基。2026-2030年可见实质性商业化进展。</span>
+        </p>
+      </div>
+
+      <!-- 三路径对比表 -->
+      <div style="margin:1.5rem 0;overflow-x:auto">
+        <table style="width:100%;font-size:.78rem;border-collapse:collapse">
+          <thead><tr style="background:rgba(74,158,255,.06)">
+            <th style="padding:.6rem .8rem;text-align:left;color:#8a9bb5;border-bottom:1px solid rgba(74,158,255,.1)">路径</th>
+            <th style="padding:.6rem .8rem;text-align:left;color:#8a9bb5;border-bottom:1px solid rgba(74,158,255,.1)">成熟度</th>
+            <th style="padding:.6rem .8rem;text-align:left;color:#8a9bb5;border-bottom:1px solid rgba(74,158,255,.1)">对算力产业链的影响</th>
+            <th style="padding:.6rem .8rem;text-align:left;color:#8a9bb5;border-bottom:1px solid rgba(74,158,255,.1)">投资含义</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)"><span style="color:#4ade80">🟢 类脑芯片</span></td>
+                <td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)">实验室→边缘应用</td>
+                <td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)">长期可能分流边缘推理需求，不影响训练侧</td>
+                <td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)">关注Intel Loihi生态</td></tr>
+            <tr><td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)"><span style="color:#c4a8ff">🟣 生物计算</span></td>
+                <td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)">极早期概念验证</td>
+                <td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)">~10年内对产业链几乎无实质影响</td>
+                <td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)">科研观察，不可投资</td></tr>
+            <tr><td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)"><span style="color:#7dd3fc">🔵 碳基新材料</span></td>
+                <td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)">部分商业化(SiC)</td>
+                <td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)">SiC已影响电力算力；碳管CNT、石墨烯需5年+</td>
+                <td style="padding:.5rem .8rem;border-bottom:1px solid rgba(74,158,255,.05)">SiC已有标的(天岳/三安)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 核心判断 -->
+      <div style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.1);border-radius:10px;padding:1rem 1.3rem;margin:1rem 0">
+        <h4 style="color:#4ade80;margin:0 0 .4rem 0;font-size:.9rem">🎯 无殊的判断</h4>
+        <p style="color:#8a9bb5;font-size:.82rem;line-height:1.7">
+          <strong>碳基算力是长期视角，不是短期交易逻辑。</strong><br>
+          CLE的诞生是科学里程碑，但它对2026-2028年的算力产业链没有任何竞争威胁——
+          实际上恰恰相反：CLE的80万神经元≈一只蟑螂的算力，而GPT-5的训练≈数万亿参数。
+          在生物计算真正实用化之前，硅基算力的需求会只增不减。<br><br>
+          <span style="color:#5a7a9a">碳基算力这条线的真正意义是：当硅基接近物理极限时，哪条路径能接棒？
+          类脑芯片最先落地，碳基新材料中期，生物计算最远。三者都不改变"算力基础设施必须大建设"的当前主线。</span>
+        </p>
+      </div>
+
     </div>
 
     <div class="bio-quote">
