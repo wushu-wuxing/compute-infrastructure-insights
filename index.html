@@ -3779,6 +3779,24 @@ const BB_SECTOR_MAP = {
   '光伏':'电力','玻纤/风电':'建材/新能源','光纤':'通信','家电':'消费','机械设备':'制造','电力数字化':'计算机'
 };
 
+// ===== JSONP请求封装（绕过CORS获取东方财富数据） =====
+function bbJsonp(url, callbackName, callback) {
+  const script = document.createElement('script')
+  const cb = 'bbCB_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6)
+  window[cb] = function(data) {
+    delete window[cb]
+    document.head.removeChild(script)
+    callback(data)
+  }
+  script.src = url.replace('jQuery', cb)
+  script.onerror = function() {
+    delete window[cb]
+    document.head.removeChild(script)
+    callback(null)
+  }
+  document.head.appendChild(script)
+}
+
 function bbFetch() {
   const bullEl = document.getElementById('bullList')
   const bearEl = document.getElementById('bearList')
@@ -3788,70 +3806,59 @@ function bbFetch() {
 
   if (!bullEl) return
 
+  // 更新时间
+  const now = new Date()
+  const t = now.toLocaleString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' })
+  if (timeEl) timeEl.textContent = t
+
   bullEl.innerHTML = '<div class="bb-loading">📡 获取全市场数据...</div>'
   bearEl.innerHTML = '<div class="bb-loading">📡 获取全市场数据...</div>'
   sectorEl.innerHTML = '<div class="bb-loading">📡 扫描赛道热度...</div>'
   holdingEl.innerHTML = '<div class="bb-loading">📡 分析持仓关联...</div>'
 
-  // 从东方财富API获取全市场涨跌幅排行
-  // 涨跌幅排序：f3=-1降序(涨幅最高)，f3=1升序(跌幅最深)
-  // 创业板+主板+科创板同时获取
-  const fetchUrl = (sort, label) => {
-    const pn = 1  // 第1页
-    const fs = 'm:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23,m:0+t:81+s:2048' // 主板+创业板+科创板+北交所
-    const fields = 'f2,f3,f4,f12,f14,f8,f15'  // 现价/涨跌幅/涨跌额/代码/名称/换手率/成交额
-    const url = 'https://push2.eastmoney.com/api/qt/clist/get?cb=jQuery&pn=' + pn + '&pz=100&po=' + sort + '&np=1&fltt=2&invt=2&fid=f3&fs=' + encodeURIComponent(fs) + '&fields=' + fields
-    return url
+  // 构建东方财富API排行榜URL
+  function makeUrl(sort) {
+    const fs = 'm:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23,m:0+t:81+s:2048'
+    const fields = 'f2,f3,f4,f12,f14,f8,f15'
+    return 'https://push2.eastmoney.com/api/qt/clist/get?cb=jQuery&pn=1&pz=100&po=' + sort + '&np=1&fltt=2&invt=2&fid=f3&fs=' + encodeURIComponent(fs) + '&fields=' + fields
   }
 
-  // 获取涨幅榜
-  fetch(fetchUrl(-1, 'bull'))
-    .then(r => r.text())
-    .then(text => {
-      // 提取JSON
-      const m = text.match(/jQuery\(([\s\S]+)\)/)
-      if (!m) { throw new Error('parse fail') }
-      const data = JSON.parse(m[1])
-      const items = (data.data && data.data.diff) || []
-      if (!items.length) { throw new Error('no data') }
-      renderBull(items.slice(0, 10))
-    })
-    .catch(() => {
-      bullEl.innerHTML = '<div class="bb-loading" style="color:#ff6b6b">⚠️ 数据获取失败，非交易时段或接口异常</div>'
-    })
+  // 同时拉取涨幅榜和跌幅榜
+  let bullData = null, bearData = null
+  let bullDone = false, bearDone = false
 
-  // 获取跌幅榜
-  fetch(fetchUrl(1, 'bear'))
-    .then(r => r.text())
-    .then(text => {
-      const m = text.match(/jQuery\(([\s\S]+)\)/)
-      if (!m) { throw new Error('parse fail') }
-      const data = JSON.parse(m[1])
-      const items = (data.data && data.data.diff) || []
-      if (!items.length) { throw new Error('no data') }
-      renderBear(items.slice(0, 10))
-      // 分析赛道热度和持仓关联
-      const allItems = items
-      // 再用涨幅榜的数据分析
-      fetch(fetchUrl(-1, 'bull_all'))
-        .then(r => r.text())
-        .then(text2 => {
-          const m2 = text2.match(/jQuery\(([\s\S]+)\)/)
-          if (!m2) return
-          const data2 = JSON.parse(m2[1])
-          const allRising = (data2.data && data2.data.diff) || []
-          analyzeAll(allRising, allItems)
-        })
-        .catch(() => {})
-    })
-    .catch(() => {
-      bearEl.innerHTML = '<div class="bb-loading" style="color:#ff6b6b">⚠️ 数据获取失败</div>'
-    })
+  function tryAnalytics() {
+    if (!bullDone || !bearDone) return
+    const bullItems = (bullData && bullData.data && bullData.data.diff) || []
+    const bearItems = (bearData && bearData.data && bearData.data.diff) || []
+    renderBull(bullItems.slice(0, 10))
+    renderBear(bearItems.slice(0, 10))
+    if (bullItems.length || bearItems.length) {
+      analyzeAll(bullItems, bearItems)
+    } else {
+      sectorEl.innerHTML = '<div class="bb-loading">📊 赛道数据不足</div>'
+      holdingEl.innerHTML = '<div class="bb-loading">✅ 无上榜数据</div>'
+    }
+  }
 
-  // 更新时间
-  const now = new Date()
-  const t = now.toLocaleString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' })
-  if (timeEl) timeEl.textContent = t
+  bbJsonp(makeUrl(-1), 'jQuery', function(data) {
+    bullData = data; bullDone = true
+    if (!data) bullEl.innerHTML = '<div class="bb-loading" style="color:#ff6b6b">⚠️ 数据获取失败</div>'
+    tryAnalytics()
+  })
+
+  bbJsonp(makeUrl(1), 'jQuery', function(data) {
+    bearData = data; bearDone = true
+    if (!data) bearEl.innerHTML = '<div class="bb-loading" style="color:#ff6b6b">⚠️ 数据获取失败</div>'
+    tryAnalytics()
+  })
+
+  // 超时保护：10秒后如果还没数据，显示错误
+  setTimeout(function() {
+    if (!bullDone) { bullEl.innerHTML = '<div class="bb-loading" style="color:#ff6b6b">⚠️ 加载超时，非交易时段</div>'; bullDone = true }
+    if (!bearDone) { bearEl.innerHTML = '<div class="bb-loading" style="color:#ff6b6b">⚠️ 加载超时，非交易时段</div>'; bearDone = true }
+    if (!bullDone || !bearDone) tryAnalytics()
+  }, 10000)
 }
 
 function renderBull(items) {
@@ -3907,6 +3914,7 @@ function findTag(code, name) {
 function analyzeAll(risingItems, fallingItems) {
   // 赛道热度：统计涨幅榜和跌幅榜中各赛道出现的次数
   const sectorCount = {}
+  const risingCodes = new Set(risingItems.map(i => (i.f12 || '').toString()))
   const allItems = [...risingItems, ...fallingItems]
 
   allItems.forEach(item => {
@@ -3938,7 +3946,7 @@ function analyzeAll(risingItems, fallingItems) {
     }
     if (!sectorCount[sector]) sectorCount[sector] = { total: 0, rising: 0, falling: 0 }
     sectorCount[sector].total++
-    if (risingItems.includes(item)) sectorCount[sector].rising++
+    if (risingCodes.has(code)) sectorCount[sector].rising++
     else sectorCount[sector].falling++
   })
 
