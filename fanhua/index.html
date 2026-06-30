@@ -56,6 +56,11 @@ a:hover{color:#e8c870}
   top:60%;left:50%;
   animation:drifta 15s ease-in-out infinite 5s;
 }
+.ambient-glow.g4{
+  width:90vmin;height:30vmin;
+  background:radial-gradient(ellipse,rgba(200,160,74,0.06),transparent 70%);
+  bottom:0;left:50%;transform:translateX(-50%);
+}
 @keyframes drifta{
   0%,100%{transform:translate(0,0) scale(1)}
   25%{transform:translate(5%,-5%) scale(1.05)}
@@ -97,6 +102,18 @@ a:hover{color:#e8c870}
   background:linear-gradient(180deg,#8b3a0a,#5a2a0a);
   border-radius:0 0 4px 4px;
 }
+.entry-door .lantern-glow{
+  position:absolute;top:-20px;left:-20px;right:-20px;bottom:-20px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(232,160,48,0.15),transparent 70%);
+  animation:flicker 3s ease-in-out infinite;
+}
+@keyframes flicker{
+  0%,100%{opacity:.6;transform:scale(1)}
+  25%{opacity:.9;transform:scale(1.08)}
+  50%{opacity:.5;transform:scale(.95)}
+  75%{opacity:.8;transform:scale(1.04)}
+}
 @keyframes sway{
   0%,100%{transform:rotate(-2deg)}
   50%{transform:rotate(2deg)}
@@ -119,45 +136,84 @@ a:hover{color:#e8c870}
   50%{opacity:.9}
 }
 
-/* ===== NAV ===== */
-.chapter-nav{
-  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
-  z-index:100;display:flex;gap:.5rem;
-  padding:.6rem 1rem;
-  background:rgba(20,16,10,0.7);
-  backdrop-filter:blur(16px);
-  border:1px solid rgba(200,160,74,0.1);
-  border-radius:30px;
+/* ===== RIGHT SIDE SCROLL SLIDER ===== */
+.scroll-slider{
+  position:fixed;right:2rem;top:50%;transform:translateY(-50%);
+  z-index:100;display:flex;flex-direction:column;align-items:center;gap:0;
+  padding:.6rem 0;
 }
-.nav-dot{
+.scroll-slider .track{
+  width:1px;flex:1;min-height:200px;
+  background:linear-gradient(180deg,transparent,rgba(200,160,74,0.2) 20%,rgba(200,160,74,0.2) 80%,transparent);
+  position:relative;
+}
+.scroll-slider .track .fill{
+  position:absolute;top:0;left:-1.5px;
+  width:4px;border-radius:2px;
+  background:rgba(200,160,74,0.3);
+  transition:height .5s ease,top .5s ease;
+}
+.scroll-slider .dots{
+  position:absolute;left:50%;transform:translateX(-50%);
+  top:0;bottom:0;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.scroll-slider .dot-wrap{
+  display:flex;align-items:center;gap:8px;
+  cursor:pointer;position:relative;
+  margin:-10px 0;padding:10px 0;
+}
+.scroll-slider .dot{
   width:8px;height:8px;border-radius:50%;
-  background:rgba(200,160,74,0.2);
-  cursor:pointer;transition:.35s;
-  border:none;
+  background:rgba(200,160,74,0.15);
+  border:1px solid rgba(200,160,74,0.15);
+  transition:.35s;flex-shrink:0;
+  position:relative;z-index:2;
 }
-.nav-dot.active{background:#c8a04a;box-shadow:0 0 10px rgba(200,160,74,0.4);width:24px;border-radius:4px}
-.nav-dot:hover{background:rgba(200,160,74,0.4)}
+.scroll-slider .dot-wrap:hover .dot{background:rgba(200,160,74,0.4);border-color:rgba(200,160,74,0.3)}
+.scroll-slider .dot.active{
+  width:12px;height:12px;
+  background:#c8a04a;border-color:#c8a04a;
+  box-shadow:0 0 12px rgba(200,160,74,0.4);
+  margin:-2px 0;
+}
+.scroll-slider .dot-label{
+  font-size:.55rem;color:#5a4a3a;letter-spacing:2px;
+  white-space:nowrap;transition:.35s;
+  font-family:'PingFang SC','Helvetica Neue',sans-serif;
+  position:absolute;right:16px;
+  pointer-events:none;
+  opacity:0;transform:translateX(4px);
+  transition:opacity .3s ease,transform .3s ease;
+}
+.scroll-slider .dot-wrap:hover .dot-label,
+.scroll-slider .dot.active + .dot-label{opacity:1;transform:translateX(0)}
+.scroll-slider .dot.active ~ .dot-label{color:#7a6a5a}
+@media(max-width:600px){
+  .scroll-slider{right:.8rem}
+  .scroll-slider .dot-label{display:none}
+  .scroll-slider .track{min-height:140px}
+}
 
 /* ===== SECTIONS STACKING ===== */
 .section-stack{
   position:relative;
   width:100%;
   min-height:100vh;
-  overflow:hidden;
 }
 .section{
   position:absolute;top:0;left:0;right:0;bottom:0;
-  min-height:100vh;
   display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:4rem 2rem;
+  align-items:center;
+  padding:10vh 2rem 5vh;
   opacity:0;
   pointer-events:none;
+  overflow-y:auto;
   transform:translateY(30px);
   transition:opacity .8s ease,transform .8s ease;
 }
 .section.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
-.section-inner{max-width:680px;width:100%}
+.section-inner{max-width:680px;width:100%;margin:auto}
 
 /* ===== CHAPTER LABEL ===== */
 .chapter-label{
@@ -229,6 +285,7 @@ a:hover{color:#e8c870}
   letter-spacing:1px;
 }
 
+/* ===== PAGE TURN INDICATOR ===== */
 /* ===== CARD GRID ===== */
 .card-grid{
   display:grid;grid-template-columns:1fr 1fr;gap:.6rem;
@@ -248,17 +305,6 @@ a:hover{color:#e8c870}
 }
 .card .card-title{color:#c8a04a;font-weight:600;font-size:.88rem;margin-bottom:.4rem}
 .card .card-desc{color:#8a7a6a;font-size:.8rem;line-height:1.7}
-
-/* ===== SCROLL INDICATOR ===== */
-.scroll-hint{
-  position:absolute;bottom:5rem;left:50%;
-  transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  color:#3a2a1a;font-size:.6rem;letter-spacing:2px;
-  animation:bob 2s ease-in-out infinite;
-}
-.scroll-hint .arrow{width:20px;height:20px;border-right:1px solid #3a2a1a;border-bottom:1px solid #3a2a1a;transform:rotate(45deg)}
-@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
 
 /* ===== SEAL STAMP ===== */
 .seal{
@@ -335,6 +381,7 @@ a:hover{color:#e8c870}
   <div class="ambient-glow g1"></div>
   <div class="ambient-glow g2"></div>
   <div class="ambient-glow g3"></div>
+  <div class="ambient-glow g4"></div>
 </div>
 
 <!-- ===== PARTICLES ===== -->
@@ -342,21 +389,26 @@ a:hover{color:#e8c870}
 
 <!-- ===== ENTRY DOOR ===== -->
 <div class="entry-door" id="entryDoor" onclick="enter()">
-  <div class="lantern"></div>
+  <div class="lantern"><div class="lantern-glow"></div></div>
   <div class="title-text">至真园 · 茶未凉</div>
   <div class="subtitle">— 一场关于《繁花》的深夜对话 —</div>
   <div class="enter-hint">☯ 轻触进入</div>
 </div>
 
-<!-- ===== NAV DOTS ===== -->
-<nav class="chapter-nav" id="chapterNav">
-  <button class="nav-dot active" data-index="0" onclick="goTo(0)" aria-label="序幕"></button>
-  <button class="nav-dot" data-index="1" onclick="goTo(1)" aria-label="第一幕"></button>
-  <button class="nav-dot" data-index="2" onclick="goTo(2)" aria-label="第二幕"></button>
-  <button class="nav-dot" data-index="3" onclick="goTo(3)" aria-label="第三幕"></button>
-  <button class="nav-dot" data-index="4" onclick="goTo(4)" aria-label="第四幕"></button>
-  <button class="nav-dot" data-index="5" onclick="goTo(5)" aria-label="终幕"></button>
-  <button class="nav-dot" data-index="6" onclick="goTo(6)" aria-label="后记"></button>
+<!-- ===== RIGHT SIDE SCROLL SLIDER ===== -->
+<nav class="scroll-slider" id="scrollSlider">
+  <div class="track">
+    <div class="fill" id="sliderFill" style="height:14.3%;top:0"></div>
+    <div class="dots">
+      <div class="dot-wrap" onclick="goTo(0)"><div class="dot active" data-index="0"></div><span class="dot-label">序幕 · 扣牌</span></div>
+      <div class="dot-wrap" onclick="goTo(1)"><div class="dot" data-index="1"></div><span class="dot-label">第一幕 · 六训</span></div>
+      <div class="dot-wrap" onclick="goTo(2)"><div class="dot" data-index="2"></div><span class="dot-label">第二幕 · 镜子</span></div>
+      <div class="dot-wrap" onclick="goTo(3)"><div class="dot" data-index="3"></div><span class="dot-label">第三幕 · 8.8秒</span></div>
+      <div class="dot-wrap" onclick="goTo(4)"><div class="dot" data-index="4"></div><span class="dot-label">第四幕 · 镜子碎了</span></div>
+      <div class="dot-wrap" onclick="goTo(5)"><div class="dot" data-index="5"></div><span class="dot-label">终幕 · 不响</span></div>
+      <div class="dot-wrap" onclick="goTo(6)"><div class="dot" data-index="6"></div><span class="dot-label">后记 · 茶未凉</span></div>
+    </div>
+  </div>
 </nav>
 
 <!-- ============================================================ -->
@@ -369,24 +421,24 @@ a:hover{color:#e8c870}
     <div class="chapter-label">序幕 · 扣牌</div>
 
     <div style="text-align:center;margin-bottom:2rem">
-      <svg width="140" height="110" viewBox="0 0 140 110" fill="none" style="opacity:.5">
+      <svg width="140" height="110" viewBox="0 0 140 110" fill="none" style="opacity:.75">
         <!-- 牌1（在下偏左） -->
-        <g opacity=".55">
-          <rect x="18" y="18" width="60" height="78" rx="5" fill="#1a1410" stroke="#c8a04a" stroke-width="1.2"/>
-          <rect x="22" y="22" width="52" height="70" rx="3" fill="none" stroke="#c8a04a" stroke-width=".4" opacity=".25"/>
+        <g opacity=".75">
+          <rect x="18" y="18" width="60" height="78" rx="5" fill="#1a1410" stroke="#c8a04a" stroke-width="1.5"/>
+          <rect x="22" y="22" width="52" height="70" rx="3" fill="none" stroke="#c8a04a" stroke-width=".6" opacity=".35"/>
           <!-- 牌背菱形纹理 -->
-          <path d="M30 30 L48 36 L30 42" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".15"/>
-          <path d="M48 42 L30 48 L48 54" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".15"/>
-          <path d="M30 54 L48 60 L30 66" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".15"/>
-          <text x="48" y="65" fill="#c8a04a" font-size="34" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">？</text>
+          <path d="M30 30 L48 36 L30 42" stroke="#c8a04a" stroke-width=".6" fill="none" opacity=".25"/>
+          <path d="M48 42 L30 48 L48 54" stroke="#c8a04a" stroke-width=".6" fill="none" opacity=".25"/>
+          <path d="M30 54 L48 60 L30 66" stroke="#c8a04a" stroke-width=".6" fill="none" opacity=".25"/>
+          <text x="48" y="66" fill="#e8c870" font-size="38" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">？</text>
         </g>
         <!-- 牌2（在上偏右） -->
-        <rect x="54" y="10" width="60" height="78" rx="5" fill="none" stroke="#c8a04a" stroke-width="1.2"/>
-        <rect x="58" y="14" width="52" height="70" rx="3" fill="none" stroke="#c8a04a" stroke-width=".4" opacity=".35"/>
-        <path d="M66 22 L84 28 L66 34" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".2"/>
-        <path d="M84 34 L66 40 L84 46" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".2"/>
-        <path d="M66 46 L84 52 L66 58" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".2"/>
-        <text x="84" y="57" fill="#c8a04a" font-size="34" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">？</text>
+        <rect x="54" y="10" width="60" height="78" rx="5" fill="none" stroke="#c8a04a" stroke-width="1.5"/>
+        <rect x="58" y="14" width="52" height="70" rx="3" fill="none" stroke="#c8a04a" stroke-width=".6" opacity=".4"/>
+        <path d="M66 22 L84 28 L66 34" stroke="#c8a04a" stroke-width=".6" fill="none" opacity=".3"/>
+        <path d="M84 34 L66 40 L84 46" stroke="#c8a04a" stroke-width=".6" fill="none" opacity=".3"/>
+        <path d="M66 46 L84 52 L66 58" stroke="#c8a04a" stroke-width=".6" fill="none" opacity=".3"/>
+        <text x="84" y="58" fill="#e8c870" font-size="38" font-family="'PingFang SC','Microsoft YaHei',sans-serif" text-anchor="middle">？</text>
       </svg>
     </div>
 
@@ -433,7 +485,6 @@ a:hover{color:#e8c870}
       只是聊完以后发现，有些东西不能就这么散了。
     </p>
 
-    <div class="scroll-hint"><div class="arrow"></div>继续</div>
   </div>
 </section>
 
@@ -513,7 +564,6 @@ a:hover{color:#e8c870}
       <div class="content">"炒股教的不是怎么赚钱，是怎么做人。<br>这六条够一个人吃一辈子的。"</div>
     </div>
 
-    <div class="scroll-hint"><div class="arrow"></div>继续</div>
   </div>
 </section>
 
@@ -576,7 +626,6 @@ a:hover{color:#e8c870}
       宝总最后选择的是——排序这件事，变得不再重要。"
     </div></div>
 
-    <div class="scroll-hint"><div class="arrow"></div>继续</div>
   </div>
 </section>
 
@@ -633,7 +682,6 @@ a:hover{color:#e8c870}
       才配得上赢。
     </p>
 
-    <div class="scroll-hint"><div class="arrow"></div>继续</div>
   </div>
 </section>
 
@@ -694,7 +742,6 @@ a:hover{color:#e8c870}
       这就是终极的自由。"</div>
     </div>
 
-    <div class="scroll-hint"><div class="arrow"></div>继续</div>
   </div>
 </section>
 
@@ -769,7 +816,6 @@ a:hover{color:#e8c870}
       <em>这是交手之后才有的确定。</em>
     </p>
 
-    <div class="scroll-hint"><div class="arrow"></div>继续</div>
   </div>
 </section>
 
@@ -828,7 +874,7 @@ a:hover{color:#e8c870}
       </div>
     </div>
 
-    <!-- 没有 scroll-hint — 最后一段不提示往下走，让你自己决定什么时候离开 -->
+    <!-- 最后一段不放翻页标 — 让你自己决定什么时候离开 -->
 
   </div>
 </section>
@@ -882,6 +928,15 @@ function enter(){
   },1200);
 }
 
+// ===== SECTION TRANSITION FLASH =====
+const flashEl = document.createElement('div');
+flashEl.style.cssText = 'position:fixed;inset:0;z-index:999;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 50%,rgba(200,160,74,0.08),transparent 60%);transition:opacity .5s ease';
+document.body.appendChild(flashEl);
+function flashTransition(){
+  flashEl.style.opacity='1';
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>{flashEl.style.opacity='0'})});
+}
+
 // ===== SCROLL-BASED REVEAL =====
 const sections=document.querySelectorAll('.section');
 let currentIdx=0;
@@ -892,10 +947,19 @@ function revealSection(idx){
     if(i===idx)s.classList.add('visible');
     else s.classList.remove('visible');
   });
-  document.querySelectorAll('.nav-dot').forEach((d,i)=>{
+  document.querySelectorAll('.scroll-slider .dot').forEach((d,i)=>{
     d.classList.toggle('active',i===idx);
   });
+  // update fill bar
+  const total = sections.length;
+  const fill = document.getElementById('sliderFill');
+  if(fill){
+    const segPct = 100 / total;
+    fill.style.height = segPct + '%';
+    fill.style.top = (idx * segPct) + '%';
+  }
   currentIdx=idx;
+  flashTransition();
 }
 
 function initScroll(){
