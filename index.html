@@ -3578,13 +3578,13 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     </div>
 
     <h2>🏛️ 核心持仓 · 估值锚点</h2>
-    <p>基于2026年6月29日实时行情数据</p>
+    <p>基于2026年6月30日实时行情数据</p>
 
     <table>
       <thead><tr><th>标的</th><th>代码</th><th>现价</th><th>行业</th><th>合理PE</th><th>PEG</th><th>合理区间</th><th style="color:#4ae68a">买点</th><th style="color:#ff6b6b">卖点</th><th>锚定性</th></tr></thead>
       <tbody>
         <tr>
-          <td><strong>深科技</strong></td><td>000021</td><td>57.34</td>
+          <td><strong>深科技</strong></td><td>000021</td><td>62.95</td>
           <td>存储封测</td>
           <td>22-28x</td>
           <td>0.8</td>
@@ -3594,14 +3594,14 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
           <td><span style="color:#ffc832">🟡 合理偏高</span></td>
         </tr>
         <tr>
-          <td><strong>工业富联</strong></td><td>601138</td><td>68.57</td>
+          <td><strong>工业富联</strong></td><td>601138</td><td>72.64</td>
           <td>AI服务器制造</td>
           <td>28-35x</td>
           <td>1.1</td>
           <td>63-78</td>
           <td style="color:#4ae68a"><strong>&lt;58</strong></td>
           <td style="color:#ff6b6b">&gt;90</td>
-          <td><span style="color:#ffc832">🟡 68止损线守卫</span></td>
+          <td><span style="color:#ffc832">🟡 70止损线守卫</span></td>
         </tr>
         <tr>
           <td><strong>中际旭创</strong></td><td>300308</td><td>1178.10</td>
@@ -4539,15 +4539,15 @@ document.addEventListener('visibilitychange', function() {
 const pfData = {
   capital: 1000000, cash: 314569,
   positions: [
-    { code: 'sz000021', name: '深科技', shares: 2000, avg_cost: 44.04, current_price: 46.46, category: '波段' },
-    { code: 'sz002475', name: '立讯精密', shares: 2000, avg_cost: 69.93, current_price: 68.31, category: '长线' },
-    { code: 'sh601138', name: '工业富联', shares: 300, avg_cost: 78.08, current_price: 77.93, category: '波段' },
-    { code: 'sz002463', name: '沪电股份', shares: 600, avg_cost: 147.90, current_price: 146.24, category: '长线' },
-    { code: 'sz002371', name: '北方华创', shares: 100, avg_cost: 721.04, current_price: 749.59, category: '长线' },
-    { code: 'sz300724', name: '捷佳伟创', shares: 1500, avg_cost: 72.88, current_price: 71.30, category: '长线' },
-    { code: 'sh600089', name: '特变电工', shares: 2500, avg_cost: 23.32, current_price: 23.51, category: '长线' },
-    { code: 'sh601985', name: '中国核电', shares: 5000, avg_cost: 9.12, current_price: 9.04, category: '长线' },
-    { code: 'sh515790', name: '光伏ETF', shares: 59000, avg_cost: 1.017, current_price: 1.019, category: '长线' }
+    { code: 'sz000021', name: '深科技', shares: 2000, avg_cost: 44.04, current_price: 62.95, category: '波段' },
+    { code: 'sz002475', name: '立讯精密', shares: 2000, avg_cost: 69.93, current_price: 69.99, category: '长线' },
+    { code: 'sh601138', name: '工业富联', shares: 300, avg_cost: 78.08, current_price: 72.64, category: '波段' },
+    { code: 'sz002463', name: '沪电股份', shares: 600, avg_cost: 147.90, current_price: 154.62, category: '长线' },
+    { code: 'sz002371', name: '北方华创', shares: 100, avg_cost: 721.04, current_price: 885.86, category: '长线' },
+    { code: 'sz300724', name: '捷佳伟创', shares: 1500, avg_cost: 72.88, current_price: 70.10, category: '长线' },
+    { code: 'sh600089', name: '特变电工', shares: 2500, avg_cost: 23.32, current_price: 22.49, category: '长线' },
+    { code: 'sh601985', name: '中国核电', shares: 5000, avg_cost: 9.12, current_price: 8.89, category: '长线' },
+    { code: 'sh515790', name: '光伏ETF', shares: 59000, avg_cost: 1.017, current_price: 1.032, category: '长线' }
   ],
   trades: [] // loaded from HTML below
 }
