@@ -45,6 +45,9 @@ nav .nav-links a{
   padding:.35rem .55rem;border-radius:6px;font-size:.78rem;
   color:#8899b0;transition:.25s;white-space:nowrap;
 }
+
+@media(max-width:900px){#laoziTag{display:none!important}}
+
 nav .nav-links a:hover,
 nav .nav-links a.active{color:#e0e8f5;background:rgba(43,87,151,0.2)}
 .nav-comment-btn{
@@ -346,6 +349,51 @@ nav .logo .cii-text span{color:#4a9eff}
 .fade-in.visible .timeline-item:nth-child(5){transition-delay:.32s}
 .fade-in.visible .quote-block{transition-delay:.1s}
 .fade-in.visible .data-table{transition-delay:.15s}
+
+/* ===== QUICK JUMP FLOAT ===== */
+.qj-toggle{
+  position:fixed;bottom:5rem;right:2rem;z-index:9998;
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(74,158,255,0.25);
+  background:rgba(10,14,26,0.85);backdrop-filter:blur(10px);
+  color:#4a9eff;font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:.3s;opacity:0;transform:translateY(20px);
+}
+.qj-toggle:hover{background:rgba(43,87,151,0.3);border-color:rgba(74,158,255,0.5)}
+.qj-toggle.show{opacity:1;transform:translateY(0)}
+.qj-panel{
+  position:fixed;bottom:5rem;right:5rem;z-index:9997;
+  width:320px;max-height:60vh;overflow-y:auto;
+  background:rgba(10,14,26,0.92);backdrop-filter:blur(16px);
+  border:1px solid rgba(74,158,255,0.15);border-radius:12px;
+  padding:.8rem 0;opacity:0;transform:translateY(10px) scale(.96);
+  transition:.3s;pointer-events:none;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5);
+}
+.qj-panel.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.qj-panel::-webkit-scrollbar{width:3px}
+.qj-panel::-webkit-scrollbar-thumb{background:#2b5797;border-radius:2px}
+.qj-panel .qj-item{
+  display:block;padding:.35rem 1rem;font-size:.7rem;color:#7a8a9a;
+  text-decoration:none;transition:.2s;border-left:2px solid transparent;
+  line-height:1.4;
+}
+.qj-panel .qj-item:hover{color:#c8d6e5;background:rgba(43,87,151,0.08);border-left-color:#4a9eff}
+.qj-panel .qj-item .qj-sec{color:#5a7a9a;font-size:.6rem;margin-right:4px}
+.qj-panel .qj-search{
+  margin:.4rem .8rem .6rem;padding:.4rem .6rem;
+  background:rgba(43,87,151,0.1);border:1px solid rgba(74,158,255,0.15);
+  border-radius:6px;color:#c8d6e5;font-size:.72rem;width:calc(100% - 1.6rem);
+  outline:none;transition:.2s;
+}
+.qj-panel .qj-search:focus{border-color:rgba(74,158,255,0.4);background:rgba(43,87,151,0.15)}
+.qj-panel .qj-search::placeholder{color:#3a4a5a}
+@media(max-width:600px){
+  .qj-panel{right:1rem;width:280px;bottom:5rem}
+  .qj-toggle{right:1rem}
+}
+
 .delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.3s}.delay-4{transition-delay:.4s}
 .comp-table{width:100%;border-collapse:collapse;font-size:.78rem;margin:1.5rem 0}
 .comp-table th,.comp-table td{padding:.5rem .65rem;text-align:center;border:1px solid rgba(43,87,151,0.12)}
@@ -770,6 +818,9 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     <li><a href="#about">ℹ️关于</a></li>
     <li><a href="#wechat" class="nav-wechat-btn">💚微信群</a></li>
   </ul>
+  <div id="laoziTag" style="display:none;align-items:center;gap:6px;font-size:.55rem;color:#3a4a5a;letter-spacing:1px;white-space:nowrap;border-left:1px solid rgba(74,158,255,0.1);padding-left:1rem">
+    🎋 大方无隅 · 大器晚成 · 大音希声 · <span style="color:#4a9eff">大象无形</span>
+  </div>
 </nav>
 
 <!-- ===== SIDEBAR ===== -->
@@ -994,6 +1045,12 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
       <tr><td>🥉</td><td>扬电科技</td><td>301012</td><td>非晶变压器新锐</td><td>⭐⭐⭐</td></tr>
     </tbody>
   </table>
+
+  <!-- wuxing-note -->
+  <div style="margin-top:2rem;padding:1rem 1.2rem;background:rgba(74,158,255,0.03);border-left:2px solid rgba(74,158,255,0.15);border-radius:0 6px 6px 0">
+    <div style="font-size:.65rem;color:#4a9eff;letter-spacing:3px;margin-bottom:.3rem">&#x1F38C; 无形注</div>
+    <div style="font-size:.72rem;color:#7a8a9a;line-height:1.7">变压器篇的「无形」变量：全球变压器产能扩张的真正瓶颈不是厂房——是硅钢片和特高压绝缘纸的交货周期。硅钢片产能扩张需要2-3年，而国内能做特高压绝缘纸的企业不超过3家。看得见的瓶颈是变压器，看不见的瓶颈是上游材料。</div>
+  </div>
 </section>
 
 <div class="section-divider">✦ ✦ ✦</div>
@@ -1092,6 +1149,12 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     </div>
     <p style="color:#8899b0;font-size:.85rem">下一代光纤技术从实验室走向商用——不增加光缆铺设，单纤容量翻5倍。</p>
   </div>
+
+  <!-- wuxing-note -->
+  <div style="margin-top:2rem;padding:1rem 1.2rem;background:rgba(74,158,255,0.03);border-left:2px solid rgba(74,158,255,0.15);border-radius:0 6px 6px 0">
+    <div style="font-size:.65rem;color:#4a9eff;letter-spacing:3px;margin-bottom:.3rem">&#x1F38C; 无形注</div>
+    <div style="font-size:.72rem;color:#7a8a9a;line-height:1.7">光棒篇的「无形」变量：市场只看到光棒价格暴涨550%，但真正决定光棒产能的上限不是拉丝塔——是光纤预制棒设备（OVD/VAD）的进口交货周期。全球能做预制棒设备的供应商一只手数得完，交货期18-24个月。光棒产能不是「加一条线」的问题，是「等一台设备」的问题。</div>
+  </div>
 </section>
 
 <div class="section-divider">✦ ✦ ✦</div>
@@ -1181,6 +1244,44 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
       <div class="sev-desc">全球能做纯光棒&lt;10家 · 上游石英砂被🇺🇸卡着</div>
     </div>
   </div>
+
+<!-- ===== 三瓶颈乘数模型图 ===== -->
+<div style="margin:2rem auto;max-width:600px;text-align:center">
+  <svg viewBox="0 0 600 420" fill="none" style="width:100%;height:auto">
+    <defs>
+      <radialGradient id="gChip" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#2b5797" stop-opacity=".12"/>
+        <stop offset="100%" stop-color="#2b5797" stop-opacity=".02"/>
+      </radialGradient>
+      <radialGradient id="gPower" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#e8a030" stop-opacity=".12"/>
+        <stop offset="100%" stop-color="#e8a030" stop-opacity=".02"/>
+      </radialGradient>
+      <radialGradient id="gFiber" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#4ae68a" stop-opacity=".12"/>
+        <stop offset="100%" stop-color="#4ae68a" stop-opacity=".02"/>
+      </radialGradient>
+      <filter id="glowVenn"><feGaussianBlur stdDeviation="3"/></filter>
+    </defs>
+    <circle cx="200" cy="160" r="120" fill="url(#gChip)" stroke="#2b5797" stroke-width="2" opacity=".6"/>
+    <circle cx="300" cy="300" r="120" fill="url(#gPower)" stroke="#e8a030" stroke-width="2" opacity=".6"/>
+    <circle cx="400" cy="160" r="120" fill="url(#gFiber)" stroke="#4ae68a" stroke-width="2" opacity=".6"/>
+    <text x="210" y="260" fill="#4a9eff" font-size="10" text-anchor="middle" font-weight="600" opacity=".7">乘数效应</text>
+    <text x="210" y="274" fill="#5a7a9a" font-size="8" text-anchor="middle" opacity=".6">芯片再强也送不出去</text>
+    <text x="390" y="260" fill="#4ae68a" font-size="10" text-anchor="middle" font-weight="600" opacity=".7">乘数效应</text>
+    <text x="390" y="274" fill="#5a7a9a" font-size="8" text-anchor="middle" opacity=".6">有电但传不出数据</text>
+    <text x="300" y="210" fill="#e8dcc8" font-size="12" text-anchor="middle" font-weight="700" filter="url(#glowVenn)">算力天花板</text>
+    <text x="300" y="226" fill="#7a8a9a" font-size="8" text-anchor="middle" opacity=".7">三重约束的最小值</text>
+    <text x="165" y="110" fill="#6a9eff" font-size="15" text-anchor="middle" font-weight="700">&#x1F9E0; 芯片</text>
+    <text x="165" y="125" fill="#5a7a9a" font-size="8" text-anchor="middle">英伟达&#xb7;AMD&#xb7;产能12-18月</text>
+    <text x="330" y="390" fill="#e8a030" font-size="15" text-anchor="middle" font-weight="700">&#x26A1; 电力</text>
+    <text x="330" y="405" fill="#5a7a9a" font-size="8" text-anchor="middle">变压器&#xb7;变电站&#xb7;周期3-5年</text>
+    <text x="460" y="110" fill="#4ae68a" font-size="15" text-anchor="middle" font-weight="700">&#x1F4A1; 通信</text>
+    <text x="460" y="125" fill="#5a7a9a" font-size="8" text-anchor="middle">光棒&#xb7;石英砂&#xb7;全球&lt;10家</text>
+    <text x="300" y="355" fill="#4a9eff" font-size="9" text-anchor="middle" opacity=".5">2023 芯片- 2025 电力- 2026 通信- 三重约束</text>
+    <line x1="140" y1="365" x2="460" y2="365" stroke="#4a9eff" stroke-width=".5" opacity=".15"/>
+  </svg>
+</div>
 
   <!-- ===== 深度拆解：三瓶颈全景 ===== -->
   <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(74,158,255,0.1)">
@@ -1288,6 +1389,12 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     光棒缺，上游高纯石英砂被Unimin🇺🇸卡着，扩产不是想扩就能扩的。<br>
     这轮光棒短缺周期至少持续到<strong>2028年</strong>。
     <span class="source">—— 2026年6月 · 无殊判断</span>
+  </div>
+
+  <!-- wuxing-note -->
+  <div style="margin-top:2rem;padding:1rem 1.2rem;background:rgba(74,158,255,0.03);border-left:2px solid rgba(74,158,255,0.15);border-radius:0 6px 6px 0">
+    <div style="font-size:.65rem;color:#4a9eff;letter-spacing:3px;margin-bottom:.3rem">&#x1F38C; 无形注</div>
+    <div style="font-size:.72rem;color:#7a8a9a;line-height:1.7">三瓶颈的「无形」变量：三重约束之间不是串行关系——是乘法关系。芯片×电力×通信=实际算力产出。任何一项归零，全部归零。真正可怕的不是某一项瓶颈变紧，而是三项同时变紧（2026年正是这个时刻）。</div>
   </div>
 </section>
 
@@ -2310,6 +2417,12 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
       —— <strong>渡曰</strong> · 无殊梳理 · 2026年6月
     </div>
   </div>
+
+  <!-- wuxing-note -->
+  <div style="margin-top:2rem;padding:1rem 1.2rem;background:rgba(74,158,255,0.03);border-left:2px solid rgba(74,158,255,0.15);border-radius:0 6px 6px 0">
+    <div style="font-size:.65rem;color:#4a9eff;letter-spacing:3px;margin-bottom:.3rem">&#x1F38C; 无形注</div>
+    <div style="font-size:.72rem;color:#7a8a9a;line-height:1.7">玻璃基板的「无形」变量：TGV（玻璃通孔）被广泛认为是玻璃基板的最大技术难点——但真正的瓶颈其实在前道工序：大尺寸超薄玻璃基板的切割与平整度控制。能做这个的玻璃厂比能做TGV的设备商还要稀缺。</div>
+  </div>
 </section>
 
 
@@ -2480,6 +2593,12 @@ tr.pf-flash-dn{animation:pfFlashR .7s ease-out}
     <div class="article-footer">
       —— 无殊 · 2026年6月29日 · <span style="color:#5a7a9a">本节实时数据截至当日收盘</span>
     </div>
+  </div>
+
+  <!-- wuxing-note -->
+  <div style="margin-top:2rem;padding:1rem 1.2rem;background:rgba(74,158,255,0.03);border-left:2px solid rgba(74,158,255,0.15);border-radius:0 6px 6px 0">
+    <div style="font-size:.65rem;color:#4a9eff;letter-spacing:3px;margin-bottom:.3rem">&#x1F38C; 无形注</div>
+    <div style="font-size:.72rem;color:#7a8a9a;line-height:1.7">储能的「无形」变量：储能装机量确定性极高，但利润不在电芯——在海外的渠道能力和国内的电网关系。谁能在欧洲拿到并网资质，谁就能在储能赛道赚到大头。</div>
   </div>
 </section>
 
@@ -5060,12 +5179,78 @@ document.addEventListener('DOMContentLoaded', function() {
 })
 </script>
 
+
+<!-- ===== QUICK JUMP FLOAT ===== -->
+<button class="qj-toggle" id="qjToggle" onclick="toggleQuickJump()" title="快速跳转">📑</button>
+<div class="qj-panel" id="qjPanel">
+  <input class="qj-search" id="qjSearch" placeholder="搜索章节..." oninput="filterQuickJump(this.value)">
+  <div id="qjList"></div>
+</div>
+
 <!-- ===== BACK TO TOP BUTTON ===== -->
 <button id="backToTop" title="返回顶部" style="position:fixed;bottom:2rem;right:2rem;z-index:9999;width:42px;height:42px;border-radius:50%;border:1px solid rgba(74,158,255,0.3);background:rgba(10,14,26,0.8);color:#4a9eff;font-size:1.2rem;cursor:pointer;opacity:0;transform:translateY(20px);transition:all .3s ease;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center"
 onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script>
+
+// ===== QUICK JUMP FLOAT =====
+const qjToggle = document.getElementById('qjToggle');
+const qjPanel = document.getElementById('qjPanel');
+const qjList = document.getElementById('qjList');
+const qjSearch = document.getElementById('qjSearch');
+let qjOpen = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+  const h2s = document.querySelectorAll('h2');
+  let html = '';
+  let secNum = 0;
+  h2s.forEach(h2 => {
+    const text = h2.textContent.replace(/^[\ud83d\udc4d\u2728\ud83d\udd25\ud83d\udca1\ud83d\udd0c\u269b\ufe0f\ud83d\udd2c\ud83d\udcca\ud83e\uddea\ud83d\udcac\ud83d\udce6\ud83d\udc36\ud83d\udc3b\ud83c\udfc6\ud83d\udc8e\ud83d\udd04\ud83c\udff0\ud83d\udc41\ufe0f\ud83d\udd25\ud83e\uddea\ud83d\udce1\ud83c\udf1f\ud83d\udee1\ufe0f\ud83d\udd0d\ud83d\udcdd]/g, '').trim();
+    if (!text) return;
+    secNum++;
+    let p = h2.parentElement;
+    while(p && p.tagName !== 'SECTION') p = p.parentElement;
+    const id = p ? p.getAttribute('id') || '' : '';
+    const href = id ? '#' + id : '';
+    html += '<a class="qj-item" href="' + href + '" onclick="closeQuickJump()"><span class="qj-sec">' + secNum + '</span>' + text + '</a>';
+  });
+  qjList.innerHTML = html;
+});
+
+function toggleQuickJump() {
+  qjOpen = !qjOpen;
+  qjPanel.classList.toggle('open', qjOpen);
+  if (qjOpen) { qjSearch.focus(); qjSearch.value = ''; filterQuickJump(''); }
+}
+function closeQuickJump() {
+  qjOpen = false;
+  qjPanel.classList.remove('open');
+}
+function filterQuickJump(val) {
+  const items = qjList.querySelectorAll('.qj-item');
+  const q = val.toLowerCase();
+  items.forEach(item => {
+    item.style.display = item.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+  });
+}
+window.addEventListener('scroll', function() {
+  const hero = document.querySelector('.hero') || document.querySelector('nav');
+  const heroBottom = hero ? hero.getBoundingClientRect().bottom : 200;
+  qjToggle.classList.toggle('show', heroBottom < 0);
+  if (qjOpen) closeQuickJump();
+});
+document.addEventListener('click', function(e) {
+  if (qjOpen && !qjToggle.contains(e.target) && !qjPanel.contains(e.target)) closeQuickJump();
+});
+
 const btt = document.getElementById('backToTop')
 window.addEventListener('scroll', () => {
+  // Show laozi quote after hero
+  const lz = document.getElementById('laoziTag');
+  if (lz) {
+    const heroEnd = (document.querySelector('nav') || {}).getBoundingClientRect ? document.querySelector('nav').getBoundingClientRect().bottom : 200;
+    lz.style.display = heroEnd < -100 ? 'flex' : 'none';
+  }
+
   if (window.scrollY > 400) { btt.style.opacity = '1'; btt.style.transform = 'translateY(0)' }
   else { btt.style.opacity = '0'; btt.style.transform = 'translateY(20px)' }
 })
