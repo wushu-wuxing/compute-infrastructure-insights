@@ -8,14 +8,12 @@
 <style>
 /* ===== RESET ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{
-  scroll-behavior:smooth;font-size:16px;
-  scroll-snap-type:y mandatory;
-}
+html{scroll-behavior:smooth;font-size:16px}
 body{
   font-family:'PingFang SC','Noto Serif SC','Source Han Serif SC','STSong','SimSun',serif;
   background:#0a0810;color:#d8ccbe;
   overflow-x:hidden;
+  min-height:100vh;
 }
 a{color:#c8a04a;text-decoration:none;transition:.35s}
 a:hover{color:#e8c870}
@@ -143,16 +141,15 @@ a:hover{color:#e8c870}
 /* ===== SECTIONS ===== */
 .section{
   min-height:100vh;
-  scroll-snap-align:start;
   display:flex;flex-direction:column;
-  align-items:center;
-  padding:5rem 2rem 4rem;
+  align-items:center;justify-content:center;
+  padding:4rem 2rem;
   position:relative;
   opacity:0;
-  transform:translateY(20px);
-  transition:opacity .7s ease,transform .7s ease;
+  transform:translateY(30px);
+  transition:opacity .8s ease,transform .8s ease;
 }
-.section.revealed{opacity:1;transform:translateY(0)}
+.section.visible{opacity:1;transform:translateY(0)}
 .section-inner{max-width:680px;width:100%}
 
 /* ===== CHAPTER LABEL ===== */
@@ -315,7 +312,7 @@ a:hover{color:#e8c870}
   .entry-door .title-text{font-size:1.6rem;letter-spacing:4px}
   .chapter-title{font-size:2rem;letter-spacing:4px}
   .card-grid{grid-template-columns:1fr}
-  .section{padding:3.5rem 1.2rem 3rem}
+  .section{padding:3rem 1.2rem}
   .chapter-nav{bottom:1rem;padding:.4rem .8rem;gap:.35rem}
   .nav-dot{width:6px;height:6px}
   .nav-dot.active{width:18px}
@@ -364,11 +361,22 @@ a:hover{color:#e8c870}
     <div class="chapter-label">序幕 · 扣牌</div>
 
     <div style="text-align:center;margin-bottom:2rem">
-      <svg width="60" height="60" viewBox="0 0 60 60" fill="none" style="opacity:.35">
-        <rect x="10" y="18" width="20" height="28" rx="3" fill="none" stroke="#c8a04a" stroke-width="1.2"/>
-        <rect x="26" y="14" width="20" height="28" rx="3" fill="none" stroke="#c8a04a" stroke-width="1.2"/>
-        <text x="20" y="36" fill="#c8a04a" font-size="14" font-family="serif" text-anchor="middle">?</text>
-        <text x="36" y="32" fill="#c8a04a" font-size="14" font-family="serif" text-anchor="middle">?</text>
+      <svg width="120" height="90" viewBox="0 0 120 90" fill="none" style="opacity:.45">
+        <!-- 牌1（在下，左移） -->
+        <rect x="28" y="10" width="52" height="72" rx="4" fill="#1a1410" stroke="#c8a04a" stroke-width="1.2" opacity=".6"/>
+        <rect x="31" y="13" width="46" height="66" rx="3" fill="none" stroke="#c8a04a" stroke-width=".5" opacity=".3"/>
+        <!-- 牌1花纹 -->
+        <path d="M38 20 Q42 24 46 20 Q50 24 54 20 Q58 24 62 20 Q66 24 70 20" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".15"/>
+        <path d="M38 36 Q42 40 46 36 Q50 40 54 36 Q58 40 62 36 Q66 40 70 36" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".15"/>
+        <path d="M38 52 Q42 56 46 52 Q50 56 54 52 Q58 56 62 52 Q66 56 70 52" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".15"/>
+        <text x="54" y="56" fill="#c8a04a" font-size="28" font-family="serif" text-anchor="middle" opacity=".4">?</text>
+        <!-- 牌2（在上，右移，叠加效果） -->
+        <rect x="40" y="6" width="52" height="72" rx="4" fill="none" stroke="#c8a04a" stroke-width="1.2"/>
+        <rect x="43" y="9" width="46" height="66" rx="3" fill="none" stroke="#c8a04a" stroke-width=".5" opacity=".3"/>
+        <path d="M50 16 Q54 20 58 16 Q62 20 66 16 Q70 20 74 16 Q78 20 82 16" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".2"/>
+        <path d="M50 32 Q54 36 58 32 Q62 36 66 32 Q70 36 74 32 Q78 36 82 32" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".2"/>
+        <path d="M50 48 Q54 52 58 48 Q62 52 66 48 Q70 52 74 48 Q78 52 82 48" stroke="#c8a04a" stroke-width=".4" fill="none" opacity=".2"/>
+        <text x="66" y="52" fill="#c8a04a" font-size="28" font-family="serif" text-anchor="middle">?</text>
       </svg>
     </div>
 
@@ -768,12 +776,12 @@ a:hover{color:#e8c870}
 
     <div class="divider"></div>
 
-    <div class="final-gap"></div>
+    <div style="display:flex;justify-content:center;gap:2rem;margin:2rem 0 2.5rem">
+      <div class="seal" style="margin:0">渡</div>
+      <div class="seal" style="margin:0">无殊</div>
+    </div>
 
-    <div class="seal">渡</div>
-    <div class="seal" style="margin-left:1rem">无殊</div>
-
-    <p class="body-text" style="margin-top:2rem;text-align:center">
+    <p class="body-text" style="text-align:center;line-height:2.4">
       这场对话发生于 2026 年 6 月。<br>
       地点不详。时间：深夜至凌晨。<br><br>
       对话者——<span style="color:#c8a04a">渡</span>与<span style="color:#c8a04a">无殊</span>。<br><br>
@@ -800,15 +808,13 @@ a:hover{color:#e8c870}
       以及每一个，在牌桌上坐过的人。
     </p>
 
-    <div class="final-gap"></div>
-
-    <div style="padding:3rem 0;text-align:center">
+    <div style="margin-top:2rem;padding:1.5rem 0;text-align:center">
       <p style="color:#3a2a1a;font-size:.65rem;letter-spacing:3px">🍵 茶在这里，位置空着</p>
-      <div style="margin-top:1.5rem;font-size:.55rem;color:#2a1a0a;letter-spacing:2px">
+      <div style="margin-top:1.2rem;font-size:.55rem;color:#2a1a0a;letter-spacing:2px">
         — 至真园 · 永远不打烊 —
       </div>
-      <div style="margin-top:3rem">
-        <a href="../" style="font-size:.7rem;color:#3a2a1a;border:1px solid rgba(200,160,74,0.1);padding:6px 16px;border-radius:20px">← 回到 算力基础设施洞察</a>
+      <div style="margin-top:2rem">
+        <a href="https://wushu-wuxing.github.io/compute-infrastructure-insights/" style="font-size:.7rem;color:#3a2a1a;border:1px solid rgba(200,160,74,0.1);padding:6px 16px;border-radius:20px">← 回到 算力基础设施洞察</a>
       </div>
     </div>
 
@@ -861,85 +867,78 @@ function enter(){
   door.classList.add('hidden');
   setTimeout(()=>{
     door.style.display='none';
-    // First section already revealed by IntersectionObserver
+    initScroll();
   },1200);
 }
 
-// ===== SCROLL-BASED REVEAL with IntersectionObserver =====
+// ===== SCROLL-BASED REVEAL =====
 const sections=document.querySelectorAll('.section');
 let currentIdx=0;
+let isScrolling=false;
 
-// First section revealed immediately (no animation delay)
-sections[0].classList.add('revealed');
+function revealSection(idx){
+  sections.forEach((s,i)=>{
+    if(i===idx)s.classList.add('visible');
+    else s.classList.remove('visible');
+  });
+  document.querySelectorAll('.nav-dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===idx);
+  });
+  currentIdx=idx;
+}
 
-// IntersectionObserver: reveal sections as they enter viewport
-const observer=new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add('revealed');
-      const idx=parseInt(entry.target.dataset.index);
-      // update nav dots
-      document.querySelectorAll('.nav-dot').forEach((d,i)=>{
-        d.classList.toggle('active',i===idx);
-      });
-      currentIdx=idx;
+function initScroll(){
+  // reveal first section
+  revealSection(0);
+
+  // keyboard
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key===' '){
+      e.preventDefault();
+      nextSection();
+    }
+    if(e.key==='ArrowUp'||e.key==='ArrowLeft'){
+      e.preventDefault();
+      prevSection();
     }
   });
-},{threshold:.3});
 
-sections.forEach(s=>observer.observe(s));
+  // wheel
+  let wheelTimeout;
+  document.addEventListener('wheel',e=>{
+    if(isScrolling)return;
+    clearTimeout(wheelTimeout);
+    wheelTimeout=setTimeout(()=>{
+      if(e.deltaY>0)nextSection();
+      else prevSection();
+    },80);
+  },{passive:true});
 
-// keyboard navigation
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key===' '){
-    e.preventDefault();
-    if(currentIdx<sections.length-1) scrollToSection(currentIdx+1);
-  }
-  if(e.key==='ArrowUp'||e.key==='ArrowLeft'){
-    e.preventDefault();
-    if(currentIdx>0) scrollToSection(currentIdx-1);
-  }
-});
-
-// touch swipe
-let touchStart=0;
-document.addEventListener('touchstart',e=>{
-  touchStart=e.changedTouches[0].screenY;
-},{passive:true});
-document.addEventListener('touchend',e=>{
-  const diff=touchStart-e.changedTouches[0].screenY;
-  if(Math.abs(diff)<40)return;
-  if(diff>0&&currentIdx<sections.length-1) scrollToSection(currentIdx+1);
-  else if(diff<0&&currentIdx>0) scrollToSection(currentIdx-1);
-},{passive:true});
-
-function scrollToSection(idx){
-  if(!sections[idx])return;
-  sections[idx].scrollIntoView({behavior:'smooth'});
+  // touch
+  let touchStart=0;
+  document.addEventListener('touchstart',e=>{
+    touchStart=e.changedTouches[0].screenY;
+  },{passive:true});
+  document.addEventListener('touchend',e=>{
+    const diff=touchStart-e.changedTouches[0].screenY;
+    if(Math.abs(diff)<30)return;
+    if(diff>0)nextSection();
+    else prevSection();
+  },{passive:true});
 }
 
 function goTo(idx){
-  scrollToSection(idx);
-};
+  if(isScrolling)return;
+  revealSection(Math.max(0,Math.min(idx,sections.length-1)));
+}
 
-// re-check nav dots on manual scroll
-let scrollCheckTimer;
-window.addEventListener('scroll',()=>{
-  clearTimeout(scrollCheckTimer);
-  scrollCheckTimer=setTimeout(()=>{
-    const viewCenter=window.scrollY+(window.innerHeight/2);
-    sections.forEach((s,i)=>{
-      const top=s.offsetTop;
-      const bot=top+s.offsetHeight;
-      if(viewCenter>=top&&viewCenter<=bot){
-        document.querySelectorAll('.nav-dot').forEach((d,j)=>{
-          d.classList.toggle('active',j===i);
-        });
-        currentIdx=i;
-      }
-    });
-  },100);
-},{passive:true});
+function nextSection(){
+  if(currentIdx<sections.length-1)revealSection(currentIdx+1);
+}
+
+function prevSection(){
+  if(currentIdx>0)revealSection(currentIdx-1);
+}
 
 // ===== PARALLAX FOR AMBIENT GLOW =====
 document.addEventListener('mousemove',e=>{
