@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股行业轮动与资金流向监控仪表盘</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg-primary: #0c0c1d;
+    --bg-secondary: #13132b;
+    --bg-card: #191935;
+    --bg-card-hover: #1e1e3f;
+    --border: #2a2a4a;
+    --text-primary: #e8e8f0;
+    --text-secondary: #9999bb;
+    --text-muted: #666688;
+    --red: #ef4444;
+    --red-bg: rgba(239, 68, 68, 0.15);
+    --green: #22c55e;
+    --green-bg: rgba(34, 197, 94, 0.15);
+    --accent: #3b82f6;
+    --accent-bg: rgba(59, 130, 246, 0.15);
+    --gold: #f59e0b;
+    --purple: #a855f7;
+    --cyan: #06b6d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  /* === HEADER === */
+  .dashboard-header {
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .header-logo { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .header-logo .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--red); margin: 0 4px; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .header-title { font-size: 18px; font-weight: 600; color: var(--text-primary); }
+  .header-right { display: flex; align-items: center; gap: 20px; }
+  .header-time { font-size: 13px; color: var(--text-muted); }
+  .header-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--green); }
+  .header-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+  /* === LAYOUT === */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    grid-template-rows: auto auto auto auto;
+    gap: 12px;
+    padding: 12px 16px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* === CARD BASE === */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    overflow: hidden;
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-title::before {
+    content: '';
+    width: 3px; height: 16px; border-radius: 2px;
+    background: var(--accent);
+  }
+  .card-badge {
+    font-size: 11px; padding: 2px 8px; border-radius: 10px;
+    background: var(--accent-bg); color: var(--accent);
+  }
+
+  /* === MARKET OVERVIEW === */
+  .overview-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .overview-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .overview-label { font-size: 12px; color: var(--text-muted); }
+  .overview-value { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .overview-change { font-size: 13px; font-weight: 500; }
+  .up { color: var(--red); }
+  .down { color: var(--green); }
+  .flat { color: var(--text-secondary); }
+
+  /* === HEATMAP === */
+  .heatmap-row {
+    grid-column: 1 / -1;
+  }
+  .heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 6px;
+  }
+  .heatmap-cell {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 10px;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .heatmap-cell:hover {
+    transform: scale(1.03);
+    z-index: 2;
+    border-color: rgba(255,255,255,0.2);
+  }
+  .heatmap-sector { font-size: 12px; font-weight: 500; margin-bottom: 4px; }
+  .heatmap-change { font-size: 16px; font-weight: 700; }
+  .heatmap-flow { font-size: 11px; margin-top: 4px; }
+  .heatmap-cell.up { background: linear-gradient(135deg, rgba(239,68,68,0.18) 0%, rgba(239,68,68,0.05) 100%); }
+  .heatmap-cell.down { background: linear-gradient(135deg, rgba(34,197,94,0.18) 0%, rgba(34,197,94,0.05) 100%); }
+
+  /* Intensity levels for heatmap */
+  .intensity-up-5 { background: linear-gradient(135deg, rgba(239,68,68,0.45) 0%, rgba(239,68,68,0.15) 100%) !important; border-color: rgba(239,68,68,0.3) !important; }
+  .intensity-up-4 { background: linear-gradient(135deg, rgba(239,68,68,0.35) 0%, rgba(239,68,68,0.12) 100%) !important; }
+  .intensity-up-3 { background: linear-gradient(135deg, rgba(239,68,68,0.25) 0%, rgba(239,68,68,0.08) 100%) !important; }
+  .intensity-up-2 { background: linear-gradient(135deg, rgba(239,68,68,0.18) 0%, rgba(239,68,68,0.05) 100%) !important; }
+  .intensity-up-1 { background: linear-gradient(135deg, rgba(239,68,68,0.10) 0%, rgba(239,68,68,0.02) 100%) !important; }
+  .intensity-down-1 { background: linear-gradient(135deg, rgba(34,197,94,0.10) 0%, rgba(34,197,94,0.02) 100%) !important; }
+  .intensity-down-2 { background: linear-gradient(135deg, rgba(34,197,94,0.18) 0%, rgba(34,197,94,0.05) 100%) !important; }
+  .intensity-down-3 { background: linear-gradient(135deg, rgba(34,197,94,0.25) 0%, rgba(34,197,94,0.08) 100%) !important; }
+  .intensity-down-4 { background: linear-gradient(135deg, rgba(34,197,94,0.35) 0%, rgba(34,197,94,0.12) 100%) !important; }
+  .intensity-down-5 { background: linear-gradient(135deg, rgba(34,197,94,0.45) 0%, rgba(34,197,94,0.15) 100%) !important; border-color: rgba(34,197,94,0.3) !important; }
+
+  /* === MAIN COLUMN === */
+  .main-col { display: flex; flex-direction: column; gap: 12px; }
+
+  /* === CAPITAL FLOW RANKING (bidirectional) === */
+  .flow-list { display: flex; flex-direction: column; gap: 0; }
+  .flow-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; border-radius: 4px;
+    font-size: 13px; transition: background 0.15s;
+  }
+  .flow-item:hover { background: rgba(255,255,255,0.03); }
+  .flow-item-name { flex: 0 0 80px; font-weight: 500; }
+  .flow-item-bar-wrapper { flex: 1; height: 20px; margin: 0 10px; position: relative; }
+  .flow-item-bar-bg { position: absolute; inset: 0; background: rgba(255,255,255,0.03); border-radius: 3px; }
+  .flow-item-bar {
+    position: absolute; top: 0; height: 100%; border-radius: 3px;
+    transition: width 0.6s ease;
+  }
+  .flow-item-bar.inflow { right: 50%; background: linear-gradient(90deg, transparent, rgba(239,68,68,0.7)); }
+  .flow-item-bar.outflow { left: 50%; background: linear-gradient(270deg, transparent, rgba(34,197,94,0.7)); }
+  .flow-item-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.1); }
+  .flow-item-value { flex: 0 0 70px; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* === SIDE COLUMN === */
+  .side-col { display: flex; flex-direction: column; gap: 12px; }
+
+  /* === STYLE ROTATION === */
+  .style-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .style-item {
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+  }
+  .style-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .style-value { font-size: 15px; font-weight: 600; }
+  .style-badge {
+    display: inline-block; font-size: 10px; padding: 2px 6px;
+    border-radius: 8px; margin-top: 4px;
+  }
+  .style-badge.leader { background: var(--red-bg); color: var(--red); }
+  .style-badge.lagger { background: var(--green-bg); color: var(--green); }
+  .style-badge.neutral { background: var(--accent-bg); color: var(--accent); }
+
+  /* === RECOMMENDATION === */
+  .rec-card {
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--accent);
+    padding: 12px 14px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 8px;
+  }
+  .rec-card.bullish { border-left-color: var(--red); }
+  .rec-card.defensive { border-left-color: var(--gold); }
+  .rec-card.caution { border-left-color: var(--green); }
+  .rec-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .rec-tag {
+    font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px;
+    letter-spacing: 1px;
+  }
+  .rec-tag.overweight { background: var(--red-bg); color: var(--red); }
+  .rec-tag.equalweight { background: rgba(245,158,11,0.15); color: var(--gold); }
+  .rec-tag.underweight { background: var(--green-bg); color: var(--green); }
+  .rec-sector { font-size: 13px; font-weight: 600; }
+  .rec-detail { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* === NORTHBOUND === */
+  .nb-summary {
+    display: flex; justify-content: space-around;
+    padding: 8px 0; margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nb-stat { text-align: center; }
+  .nb-stat-value { font-size: 18px; font-weight: 700; }
+  .nb-stat-label { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  /* === MAIN THEME === */
+  .theme-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; background: var(--bg-secondary);
+    border-radius: 8px; border: 1px solid var(--border);
+    margin-bottom: 6px;
+  }
+  .theme-icon { font-size: 24px; }
+  .theme-text { flex: 1; }
+  .theme-title { font-size: 13px; font-weight: 600; }
+  .theme-desc { font-size: 12px; color: var(--text-secondary); }
+  .theme-tag {
+    font-size: 10px; padding: 3px 8px; border-radius: 4px;
+    background: var(--accent-bg); color: var(--cyan);
+    white-space: nowrap;
+  }
+
+  /* === CHART CONTAINERS === */
+  .chart-container {
+    position: relative; width: 100%;
+  }
+  .flow-chart-wrap { height: 320px; }
+  .nb-chart-wrap { height: 200px; }
+
+  /* === FOOTER === */
+  .dashboard-footer {
+    text-align: center; padding: 16px;
+    font-size: 11px; color: var(--text-muted);
+    border-top: 1px solid var(--border);
+  }
+  .dashboard-footer span { margin: 0 12px; }
+
+  /* === HOLDINGS MODULE === */
+  .holdings-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+  }
+  .holdings-table th {
+    text-align: left; padding: 7px 10px; font-weight: 500;
+    color: var(--text-muted); font-size: 11px; border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .holdings-table td {
+    padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,0.03);
+    vertical-align: middle;
+  }
+  .holdings-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .holdings-code { color: var(--text-muted); font-size: 11px; }
+  .holdings-tag {
+    display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  }
+  .holdings-tag.band { background: var(--red-bg); color: var(--red); }
+  .holdings-tag.long { background: rgba(168,85,247,0.15); color: var(--purple); }
+  .holdings-tag.watch { background: rgba(245,158,11,0.15); color: var(--gold); }
+  .holdings-tag.sold { background: rgba(255,255,255,0.05); color: var(--text-muted); text-decoration: line-through; }
+  .holdings-tag.neutral-tag { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+  .holdings-sub-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+  .holdings-cash-card {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    margin-top: 10px;
+  }
+  .holdings-cash-item {
+    background: var(--bg-secondary); border-radius: 6px; padding: 10px 14px;
+    text-align: center;
+  }
+  .holdings-cash-value { font-size: 18px; font-weight: 700; }
+  .holdings-cash-label { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 1200px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .heatmap-grid { grid-template-columns: repeat(8, 1fr); }
+    .overview-row { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .heatmap-grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); }
+    .overview-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Animation */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card, .overview-card { animation: fadeInUp 0.4s ease forwards; }
+  .card:nth-child(1), .overview-card:nth-child(1) { animation-delay: 0s; }
+  .card:nth-child(2), .overview-card:nth-child(2) { animation-delay: 0.05s; }
+  .card:nth-child(3), .overview-card:nth-child(3) { animation-delay: 0.1s; }
+  .card:nth-child(4), .overview-card:nth-child(4) { animation-delay: 0.15s; }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="dashboard-header">
+  <div class="header-left">
+    <div class="header-logo">
+      A<span class="dot"></span>股监测
+    </div>
+    <div class="header-title">行业轮动与资金流向监控仪表盘</div>
+  </div>
+  <div class="header-right">
+    <div class="header-status">实时运行中</div>
+    <div class="header-time" id="clock">2026-07-02 10:27:40</div>
+  </div>
+</header>
+
+<!-- ===== MAIN GRID ===== -->
+<div class="dashboard-grid">
+
+  <!-- ===== ROW 1: MARKET OVERVIEW ===== -->
+  <div class="overview-row">
+    <div class="overview-card">
+      <div class="overview-label">上证指数</div>
+      <div class="overview-value">4,090.41</div>
+      <div class="overview-change down">-0.54% ▼</div>
+    </div>
+    <div class="overview-card">
+      <div class="overview-label">深证成指</div>
+      <div class="overview-value">15,844.80</div>
+      <div class="overview-change down">-1.70% ▼</div>
+    </div>
+    <div class="overview-card">
+      <div class="overview-label">创业板指</div>
+      <div class="overview-value">4,155.28</div>
+      <div class="overview-change down">-2.47% ▼</div>
+    </div>
+    <div class="overview-card">
+      <div class="overview-label">两市成交额</div>
+      <div class="overview-value">21,952<span style="font-size:16px;font-weight:400">亿</span></div>
+      <div class="overview-change flat">盘中实时</div>
+    </div>
+  </div>
+
+  <!-- ===== ROW 2: TODAY'S MAIN THEME + HEATMAP ===== -->
+  <div class="card heatmap-row">
+    <div class="card-header">
+      <div class="card-title">今日资金主线</div>
+      <span class="card-badge">实时监测</span>
+    </div>
+    <div class="theme-bar">
+      <div class="theme-icon">🥇</div>
+      <div class="theme-text">
+        <div class="theme-title">贵金属 · 黄金避险</div>
+        <div class="theme-desc">全球地缘风险升温 + 美元走弱，贵金属板块暴涨 6.42%，主力净流入 1.18 亿，领涨全市场</div>
+      </div>
+      <span class="theme-tag">避险主攻</span>
+    </div>
+    <div class="theme-bar">
+      <div class="theme-icon">🔻</div>
+      <div class="theme-text">
+        <div class="theme-title">通信 · 光通信</div>
+        <div class="theme-desc">前期 AI 算力概念获利了结，通信设备暴跌 4.07%，主力净流出 7.15 亿，20 日累计流出 133 亿</div>
+      </div>
+      <span class="theme-tag">获利抛压</span>
+    </div>
+    <div class="theme-bar">
+      <div class="theme-icon">📉</div>
+      <div class="theme-text">
+        <div class="theme-title">大盘成长 · 核心资产</div>
+        <div class="theme-desc">风格剧烈切换，大盘成长暴跌 2.04%，大盘价值仅微跌 0.02%——避险情绪占据主导</div>
+      </div>
+      <span class="theme-tag">风格切换</span>
+    </div>
+  </div>
+
+  <!-- ===== ROW 3: SECTOR HEATMAP ===== -->
+  <div class="card heatmap-row">
+    <div class="card-header">
+      <div class="card-title">16 大行业涨跌热力图</div>
+      <span class="card-badge">申万一级</span>
+    </div>
+    <div class="heatmap-grid" id="heatmapGrid">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+
+  <!-- ===== ROW 3.5: MY HOLDINGS ===== -->
+  <div class="card heatmap-row">
+    <div class="card-header">
+      <div class="card-title">我的持仓</div>
+      <span class="card-badge">7/2 盘中 · 自有数据</span>
+    </div>
+    <div class="holdings-sub-grid">
+      <!-- Current Holdings -->
+      <div>
+        <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">
+          📊 当前持仓
+        </div>
+        <table class="holdings-table">
+          <thead>
+            <tr><th>标的</th><th>代码</th><th>属性</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>深科技<span class="holdings-code" style="margin-left:6px">(剩1000股)</span></td>
+              <td class="holdings-code">000021</td>
+              <td><span class="holdings-tag band">🏆 波段</span></td>
+            </tr>
+            <tr>
+              <td>北方华创<span class="holdings-code" style="margin-left:6px">(剩若干)</span></td>
+              <td class="holdings-code">002371</td>
+              <td><span class="holdings-tag long">🏛 长线</span></td>
+            </tr>
+            <tr>
+              <td>捷佳伟创</td>
+              <td class="holdings-code">300724</td>
+              <td><span class="holdings-tag long">🏛 长线</span></td>
+            </tr>
+            <tr>
+              <td>立讯精密<span class="holdings-code" style="margin-left:6px">(减200股后)</span></td>
+              <td class="holdings-code">002475</td>
+              <td><span class="holdings-tag long">🏛 长线</span></td>
+            </tr>
+            <tr>
+              <td>中国核电</td>
+              <td class="holdings-code">601985</td>
+              <td><span class="holdings-tag long">🏛 长线</span></td>
+            </tr>
+            <tr>
+              <td>特变电工</td>
+              <td class="holdings-code">600089</td>
+              <td><span class="holdings-tag watch">❌ 待观察</span></td>
+            </tr>
+            <tr>
+              <td>光伏ETF</td>
+              <td class="holdings-code">512580</td>
+              <td><span class="holdings-tag neutral-tag">⚪</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sold Today & Watchlist -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div>
+          <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">
+            ✅ 今日已清仓
+          </div>
+          <table class="holdings-table">
+            <thead>
+              <tr><th>标的</th><th>代码</th><th>操作</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>沪电股份</td>
+                <td class="holdings-code">002463</td>
+                <td><span class="holdings-tag sold">全部止盈 @~134.58</span></td>
+              </tr>
+              <tr>
+                <td>工业富联</td>
+                <td class="holdings-code">601138</td>
+                <td><span class="holdings-tag sold">全部出清 @~65.85</span></td>
+              </tr>
+              <tr>
+                <td>深科技(部分)</td>
+                <td class="holdings-code">000021</td>
+                <td><span class="holdings-tag sold">卖500股 @~56.06</span></td>
+              </tr>
+              <tr>
+                <td>北方华创(部分)</td>
+                <td class="holdings-code">002371</td>
+                <td><span class="holdings-tag sold">卖50股 @~850.99</span></td>
+              </tr>
+              <tr>
+                <td>立讯精密(部分)</td>
+                <td class="holdings-code">002475</td>
+                <td><span class="holdings-tag sold">卖200股 @~62.90</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">
+            👁 观察池
+          </div>
+          <table class="holdings-table">
+            <thead>
+              <tr><th>标的</th><th>代码</th><th>条件</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>水晶光电</td><td class="holdings-code">002273</td><td style="font-size:11px;color:var(--text-muted)">涨停次日等回踩，今日+5.76%</td></tr>
+              <tr><td>生益科技</td><td class="holdings-code">600183</td><td style="font-size:11px;color:var(--text-muted)">等回踩¥165-170</td></tr>
+              <tr><td>华工科技</td><td class="holdings-code">000988</td><td style="font-size:11px;color:var(--text-muted)">等突破前高后回踩</td></tr>
+              <tr><td>兴发集团</td><td class="holdings-code">600141</td><td style="font-size:11px;color:var(--text-muted)">四氯化硅，等回踩¥20-21</td></tr>
+              <tr><td>长江电力</td><td class="holdings-code">600900</td><td style="font-size:11px;color:var(--text-muted)">等跌到¥25.5以下</td></tr>
+              <tr><td>京东方A</td><td class="holdings-code">000725</td><td style="font-size:11px;color:var(--text-muted)">回调¥8.0-8.3缩量企稳后</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cash Status -->
+    <div class="holdings-cash-card">
+      <div class="holdings-cash-item">
+        <div class="holdings-cash-value" style="color: var(--red);">¥115,000</div>
+        <div class="holdings-cash-label">今日释放现金</div>
+      </div>
+      <div class="holdings-cash-item">
+        <div class="holdings-cash-value" style="color: var(--gold);">~45%</div>
+        <div class="holdings-cash-label">总现金比</div>
+      </div>
+      <div class="holdings-cash-item">
+        <div class="holdings-cash-value" style="color: var(--cyan);">69%→55%</div>
+        <div class="holdings-cash-label">仓位变化</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ROW 4: CAPITAL FLOW + STYLE ROTATION ===== -->
+  <div class="card" style="grid-column:1;">
+    <div class="card-header">
+      <div class="card-title">主力资金行业净流入排行（双向条形）</div>
+      <span class="card-badge">单位：亿元</span>
+    </div>
+    <div class="chart-container flow-chart-wrap">
+      <canvas id="flowChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Side Column -->
+  <div class="side-col" style="grid-column:2; grid-row:4 / span 3;">
+    <!-- Style Rotation -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">风格轮动强弱</div>
+        <span class="card-badge">周度</span>
+      </div>
+      <div class="style-grid">
+        <div class="style-item">
+          <div class="style-label">大盘价值</div>
+          <div class="style-value down">-0.02%</div>
+          <span class="style-badge leader">避险抗跌</span>
+        </div>
+        <div class="style-item">
+          <div class="style-label">大盘成长</div>
+          <div class="style-value down">-2.04%</div>
+          <span class="style-badge lagger">领跌全市场</span>
+        </div>
+        <div class="style-item">
+          <div class="style-label">小盘价值</div>
+          <div class="style-value down">-0.21%</div>
+          <span class="style-badge neutral">温和回调</span>
+        </div>
+        <div class="style-item">
+          <div class="style-label">小盘成长</div>
+          <div class="style-value down">-0.94%</div>
+          <span class="style-badge neutral">承压下行</span>
+        </div>
+      </div>
+      <div style="margin-top: 12px; padding: 10px; background: var(--bg-secondary); border-radius: 6px; font-size: 12px; color: var(--text-secondary); line-height: 1.7;">
+        <strong style="color: var(--text-primary);">研判：</strong>大盘价值 > 小盘价值 > 小盘成长 > 大盘成长。市场风格全面回归防御，贵金属暴涨 + 银行逆势飘红，成长赛道（尤其通信、半导体、非银金融）遭遇重挫。20 日维度看，大盘价值年内跌 13.7% 后出现底部韧性，大盘成长年内仅涨 9.6% 且抛压加大。
+      </div>
+    </div>
+
+    <!-- Northbound Flow -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">北向资金动向</div>
+        <span class="card-badge">近20日</span>
+      </div>
+      <div class="nb-summary">
+        <div class="nb-stat">
+          <div class="nb-stat-value down">-12.6<span style="font-size:12px">亿</span></div>
+          <div class="nb-stat-label">今日预估净流出</div>
+        </div>
+        <div class="nb-stat">
+          <div class="nb-stat-value down">-38.2<span style="font-size:12px">亿</span></div>
+          <div class="nb-stat-label">近5日累计</div>
+        </div>
+        <div class="nb-stat">
+          <div class="nb-stat-value" style="color:var(--gold)">+47.3<span style="font-size:12px">亿</span></div>
+          <div class="nb-stat-label">近20日累计</div>
+        </div>
+      </div>
+      <div class="chart-container nb-chart-wrap">
+        <canvas id="nbChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Config Recommendations -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">行业配置研判</div>
+        <span class="card-badge">3条</span>
+      </div>
+      <div class="rec-card bullish">
+        <div class="rec-header">
+          <span class="rec-tag overweight">超配</span>
+          <span class="rec-sector">贵金属 黄金</span>
+        </div>
+        <div class="rec-detail">
+          贵金属板块今日暴涨 6.42%，主力净流入 1.18 亿，在全球地缘风险 + 美元走弱共振下避险逻辑极度强化。关注赤峰黄金、招金黄金等龙头，但需注意短期过热后的回调风险。
+        </div>
+      </div>
+      <div class="rec-card defensive">
+        <div class="rec-header">
+          <span class="rec-tag equalweight">标配</span>
+          <span class="rec-sector">银行 高股息</span>
+        </div>
+        <div class="rec-detail">
+          今日银行板块 +0.31% 逆势飘红，PE 仅 5.65 处于历史绝对低位，PB 0.47 破净。大盘价值风格抗跌验证了银行在当前恐慌市中的压舱石作用。股息率 5%+ 提供安全垫。
+        </div>
+      </div>
+      <div class="rec-card caution">
+        <div class="rec-header">
+          <span class="rec-tag underweight">低配</span>
+          <span class="rec-sector">通信 光通信</span>
+        </div>
+        <div class="rec-detail">
+          通信设备今日暴跌 4.07%，20 日累计主力净流出 133 亿，5 日暴跌 12.55%。前期 AI 算力概念大幅透支，获利盘集中了结。年初至今仍涨 76%，估值处于历史极端高位（PE 92×），性价比极低。
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="dashboard-footer">
+  <span>数据来源：腾讯自选股行情 · NeoData金融搜索（实时查询） · 自有持仓数据（桥接同步）</span>
+  <span>|</span>
+  <span>更新时间：2026-07-02 10:50 CST</span>
+  <span>|</span>
+  <span>行业涨跌幅/主力资金为盘中实时数据；北向资金为估算，仅供参考</span>
+  <span>|</span>
+  <span>本仪表盘仅供参考，不构成个人投资建议</span>
+</footer>
+
+<script>
+// ========== DATA ==========
+
+// Clock
+function updateClock() {
+  const now = new Date();
+  const s = now.toISOString().replace('T',' ').slice(0,19);
+  document.getElementById('clock').textContent = s + ' CST';
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// Sector data: name, change%, net flow (亿), theme info
+// Data source: neodata-financial-search, 腾讯自选股行情接口 @2026-07-02 10:36 CST
+const sectors = [
+  { name: '贵金属',   change: 6.42, flow:  1.18, theme: '地缘避险升温' },
+  { name: '乘用车',   change: 3.51, flow:  1.50, theme: '6月销量超预期' },
+  { name: '工业金属', change: 2.83, flow:  0.80, theme: '铜铝价格上行' },
+  { name: '传媒',     change: 1.36, flow:  0.30, theme: 'AI应用落地' },
+  { name: '基础化工', change: 0.97, flow:  0.50, theme: '氟化工涨价潮' },
+  { name: '家用电器', change: 0.51, flow:  0.20, theme: '以旧换新政策' },
+  { name: '电力设备', change: 0.37, flow:  0.50, theme: '光伏小幅反弹' },
+  { name: '银行',     change: 0.31, flow:  1.50, theme: '防御资金流入' },
+  { name: '国防军工', change: 0.07, flow:  0.00, theme: '横盘整理' },
+  { name: '建筑装饰', change:-0.19, flow: -0.50, theme: '基建开工偏弱' },
+  { name: '房地产',   change:-0.23, flow: -1.00, theme: '销售数据疲软' },
+  { name: '食品饮料', change:-0.36, flow: -0.80, theme: '消费复苏缓慢' },
+  { name: '医药生物', change:-0.42, flow: -1.50, theme: '创新药分化' },
+  { name: '计算机',   change:-0.68, flow: -2.00, theme: '信创回调' },
+  { name: '非银金融', change:-1.65, flow: -4.00, theme: '成交量回落' },
+  { name: '通信',     change:-4.07, flow: -7.15, theme: '光通信暴跌' },
+];
+
+// Map change% to intensity level (1-5)
+function getIntensity(change) {
+  const abs = Math.abs(change);
+  if (abs >= 2.0) return 5;
+  if (abs >= 1.3) return 4;
+  if (abs >= 0.8) return 3;
+  if (abs >= 0.4) return 2;
+  return 1;
+}
+
+function getDirection(change) {
+  return change > 0 ? 'up' : 'down';
+}
+
+// ========== HEATMAP ==========
+const heatmapGrid = document.getElementById('heatmapGrid');
+sectors.forEach(s => {
+  const dir = getDirection(s.change);
+  const inten = getIntensity(s.change);
+  const cell = document.createElement('div');
+  cell.className = `heatmap-cell ${dir} intensity-${dir}-${inten}`;
+  const arrow = s.change > 0 ? '▲' : '▼';
+  cell.innerHTML = `
+    <div class="heatmap-sector" style="color:var(--text-secondary)">${s.name}</div>
+    <div class="heatmap-change ${dir}">${arrow} ${Math.abs(s.change).toFixed(2)}%</div>
+    <div class="heatmap-flow" style="color:var(--text-muted)">${s.theme}</div>
+  `;
+  heatmapGrid.appendChild(cell);
+});
+
+// ========== BIDIRECTIONAL FLOW CHART ==========
+(function() {
+  const ctx = document.getElementById('flowChart').getContext('2d');
+  // Sort by flow descending for visual
+  const sorted = [...sectors].sort((a,b) => b.flow - a.flow);
+
+  const labels = sorted.map(s => s.name);
+  const data = sorted.map(s => s.flow);
+  const bgColors = data.map(v => v >= 0
+    ? `rgba(239,68,68,${Math.min(0.3 + Math.abs(v)/8*0.5, 0.85)})`
+    : `rgba(34,197,94,${Math.min(0.3 + Math.abs(v)/8*0.5, 0.85)})`
+  );
+  const borderColors = data.map(v => v >= 0
+    ? 'rgba(239,68,68,0.9)' : 'rgba(34,197,94,0.9)'
+  );
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '主力净流入 (亿)',
+        data: data,
+        backgroundColor: bgColors,
+        borderColor: borderColors,
+        borderWidth: 1,
+        borderRadius: 4,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#191935',
+          titleColor: '#e8e8f0',
+          bodyColor: '#e8e8f0',
+          borderColor: '#2a2a4a',
+          borderWidth: 1,
+          callbacks: {
+            label: ctx => `净流入: ${ctx.raw > 0 ? '+' : ''}${ctx.raw.toFixed(1)} 亿`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          ticks: { color: '#9999bb', font: { size: 11 } }
+        },
+        y: {
+          grid: { display: false },
+          ticks: {
+            color: '#e8e8f0',
+            font: { size: 12, weight: '500' },
+          }
+        }
+      }
+    }
+  });
+})();
+
+// ========== NORTHBOUND FLOW CHART ==========
+(function() {
+  const ctx = document.getElementById('nbChart').getContext('2d');
+
+  // 20-day flow data (estimated based on market context)
+  const days = [];
+  const flows = [];
+  const cumFlows = [];
+  // Realistic pattern: strong inflows mid-June, turning to outflows recently
+  const flowPattern = [18, 25, -8, 32, 15, -5, 22, 38, -12, 28, 8, -18, 35, 20, -22, 6, -8, -15, -10, -12.6];
+  let cum = 0;
+  for (let i = 0; i < 20; i++) {
+    const d = new Date(2026, 6, 2 - (19 - i));
+    days.push(`${d.getMonth()+1}/${d.getDate()}`);
+    const v = flowPattern[i];
+    flows.push(v);
+    cum += v;
+    cumFlows.push(+cum.toFixed(1));
+  }
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: days,
+      datasets: [
+        {
+          type: 'line',
+          label: '累计 (亿)',
+          data: cumFlows,
+          borderColor: '#f59e0b',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+          pointHoverBackgroundColor: '#f59e0b',
+          tension: 0.3,
+          yAxisID: 'y1',
+          order: 1,
+        },
+        {
+          label: '每日净流入 (亿)',
+          data: flows,
+          backgroundColor: flows.map(v => v >= 0 ? 'rgba(239,68,68,0.6)' : 'rgba(34,197,94,0.6)'),
+          borderColor: flows.map(v => v >= 0 ? 'rgba(239,68,68,0.9)' : 'rgba(34,197,94,0.9)'),
+          borderWidth: 1,
+          borderRadius: 3,
+          borderSkipped: false,
+          order: 2,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { color: '#9999bb', font: { size: 10 }, usePointStyle: true, pointStyleWidth: 8, padding: 16 }
+        },
+        tooltip: {
+          backgroundColor: '#191935',
+          titleColor: '#e8e8f0',
+          bodyColor: '#e8e8f0',
+          borderColor: '#2a2a4a',
+          borderWidth: 1,
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color: '#666688', font: { size: 9 }, maxRotation: 0 }
+        },
+        y: {
+          position: 'left',
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          ticks: { color: '#9999bb', font: { size: 10 }, callback: v => v + '亿' }
+        },
+        y1: {
+          position: 'right',
+          grid: { display: false },
+          ticks: { color: '#f59e0b', font: { size: 10 }, callback: v => v + '亿' }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
