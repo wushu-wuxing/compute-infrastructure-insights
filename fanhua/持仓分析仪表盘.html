@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>持仓分析仪表盘</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg-primary: #0c0c1d;
+    --bg-secondary: #13132b;
+    --bg-card: #191935;
+    --border: #2a2a4a;
+    --text-primary: #e8e8f0;
+    --text-secondary: #9999bb;
+    --text-muted: #666688;
+    --red: #ef4444;
+    --red-bg: rgba(239, 68, 68, 0.15);
+    --green: #22c55e;
+    --green-bg: rgba(34, 197, 94, 0.15);
+    --accent: #3b82f6;
+    --accent-bg: rgba(59, 130, 246, 0.15);
+    --gold: #f59e0b;
+    --purple: #a855f7;
+    --cyan: #06b6d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  /* === HEADER === */
+  .dashboard-header {
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .header-logo { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .header-logo .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold); margin: 0 4px; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .header-title { font-size: 18px; font-weight: 600; }
+  .header-right { display: flex; align-items: center; gap: 20px; }
+  .header-time { font-size: 13px; color: var(--text-muted); }
+
+  /* === NAV === */
+  .nav-bar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .nav-item {
+    padding: 10px 18px; font-size: 13px; color: var(--text-secondary);
+    text-decoration: none; border-bottom: 2px solid transparent;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .nav-item:hover { color: var(--text-primary); }
+  .nav-item.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .nav-item.external::after { content: ' ↗'; font-size: 10px; opacity: 0.5; }
+
+  /* === LAYOUT === */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 12px 16px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .full-row { grid-column: 1 / -1; }
+
+  /* === CARD === */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-title::before {
+    content: ''; width: 3px; height: 16px; border-radius: 2px; background: var(--gold);
+  }
+  .card-badge {
+    font-size: 11px; padding: 2px 8px; border-radius: 10px;
+    background: var(--accent-bg); color: var(--accent);
+  }
+
+  /* === SUMMARY STATS === */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+  .summary-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .summary-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+  .summary-value { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .summary-sub { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+
+  .up { color: var(--red); }
+  .down { color: var(--green); }
+  .flat { color: var(--text-secondary); }
+
+  /* === TABLE === */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .data-table th {
+    text-align: left; padding: 8px 10px; font-weight: 500;
+    color: var(--text-muted); font-size: 11px;
+    border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  .data-table td {
+    padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.03);
+    vertical-align: middle;
+  }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .tag {
+    display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  }
+  .tag.band { background: var(--red-bg); color: var(--red); }
+  .tag.long { background: rgba(168,85,247,0.15); color: var(--purple); }
+  .tag.watch { background: rgba(245,158,11,0.15); color: var(--gold); }
+  .tag.neutral-tag { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+
+  /* === CHART === */
+  .chart-wrap { position: relative; width: 100%; }
+  .chart-pie { height: 260px; }
+  .chart-bar { height: 300px; }
+  .chart-radar { height: 300px; }
+
+  /* === RISK METER === */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .risk-item {
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .risk-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .risk-bar-wrapper {
+    height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; margin-top: 6px; overflow: hidden;
+  }
+  .risk-bar {
+    height: 100%; border-radius: 3px; transition: width 0.6s ease;
+  }
+  .risk-value { font-size: 16px; font-weight: 700; }
+  .risk-desc { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+
+  /* === CONTRIBUTION === */
+  .contrib-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .contrib-name { flex: 0 0 80px; font-size: 12px; font-weight: 500; }
+  .contrib-bar-wrapper { flex: 1; height: 22px; position: relative; }
+  .contrib-bar-bg { position: absolute; inset: 0; background: rgba(255,255,255,0.03); border-radius: 4px; }
+  .contrib-bar {
+    position: absolute; top: 0; height: 100%; border-radius: 4px;
+    transition: width 0.6s ease; display: flex; align-items: center; justify-content: flex-end;
+    padding-right: 6px; font-size: 10px; color: rgba(255,255,255,0.8);
+  }
+  .contrib-bar.positive { left: 50%; background: linear-gradient(90deg, rgba(239,68,68,0.3), rgba(239,68,68,0.7)); }
+  .contrib-bar.negative { right: 50%; background: linear-gradient(270deg, rgba(34,197,94,0.3), rgba(34,197,94,0.7)); }
+  .contrib-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.1); }
+  .contrib-value { flex: 0 0 70px; text-align: right; font-size: 12px; font-variant-numeric: tabular-nums; }
+
+  /* === FOOTER === */
+  .dashboard-footer {
+    text-align: center; padding: 16px; font-size: 11px; color: var(--text-muted);
+    border-top: 1px solid var(--border);
+  }
+  .dashboard-footer span { margin: 0 12px; }
+
+  /* === ANIMATION === */
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .card { animation: fadeInUp 0.4s ease forwards; }
+  .summary-card { animation: fadeInUp 0.4s ease forwards; }
+  .card:nth-child(1), .summary-card:nth-child(1) { animation-delay: 0s; }
+  .card:nth-child(2), .summary-card:nth-child(2) { animation-delay: 0.05s; }
+  .card:nth-child(3), .summary-card:nth-child(3) { animation-delay: 0.1s; }
+  .card:nth-child(4), .summary-card:nth-child(4) { animation-delay: 0.15s; }
+  .card:nth-child(5), .summary-card:nth-child(5) { animation-delay: 0.2s; }
+
+  @media (max-width: 900px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="dashboard-header">
+  <div class="header-left">
+    <div class="header-logo">无<span class="dot"></span>形</div>
+    <div class="header-title">持仓分析仪表盘</div>
+  </div>
+  <div class="header-right">
+    <div class="header-time" id="clock">2026-07-03 15:00:00 CST</div>
+  </div>
+</header>
+
+<!-- ===== NAV ===== -->
+<nav class="nav-bar">
+  <a href="a股行业轮动资金监控-v2.html" class="nav-item">📊 资金监控</a>
+  <a href="7月3日盘后深度复盘.html" class="nav-item">📋 盘后复盘</a>
+  <a href="#" class="nav-item active">💼 持仓仪表盘</a>
+  <a href="https://wushu-wuxing.github.io/compute-infrastructure-insights/fanhua/" class="nav-item external" target="_blank">🏠 繁花站</a>
+  <a href="https://wushu-wuxing.github.io/compute-infrastructure-insights/" class="nav-item external" target="_blank">🌐 无形·非五行</a>
+</nav>
+
+<!-- ===== SUMMARY ===== -->
+<div style="padding: 12px 16px; max-width: 1400px; margin: 0 auto;">
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-label">持仓总市值</div>
+      <div class="summary-value" style="color:var(--gold);" id="totalValue">¥459,237</div>
+      <div class="summary-sub">7只标的</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">今日盈亏</div>
+      <div class="summary-value up" id="todayPnl">+¥4,872</div>
+      <div class="summary-sub" id="todayPnlPct">+1.07%</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">现金占比</div>
+      <div class="summary-value" style="color:var(--cyan);">~45%</div>
+      <div class="summary-sub">¥115,000 释放</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">持仓仓位</div>
+      <div class="summary-value" style="color:var(--purple);">~55%</div>
+      <div class="summary-sub">7/2减仓后</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">最大单仓</div>
+      <div class="summary-value" style="color:var(--red);">北方华创</div>
+      <div class="summary-sub">26.7% 占比</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN GRID ===== -->
+<div class="dashboard-grid">
+
+  <!-- ===== 仓位分布饼图 ===== -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">仓位分布</div>
+      <span class="card-badge">按市值</span>
+    </div>
+    <div class="chart-wrap chart-pie">
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ===== 今日贡献度 ===== -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">今日盈亏贡献度</div>
+      <span class="card-badge">7/3 收盘</span>
+    </div>
+    <div id="contribList"></div>
+  </div>
+
+  <!-- ===== 持仓明细表 ===== -->
+  <div class="card full-row">
+    <div class="card-header">
+      <div class="card-title">持仓明细（含精确股数）</div>
+      <span class="card-badge">7/3 收盘价</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>标的</th><th>代码</th><th>属性</th><th>股数</th>
+          <th>现价</th><th>市值</th><th>占比</th>
+          <th>今日</th><th>5日</th><th>20日</th><th>60日</th><th>量比</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>北方华创</td><td style="color:var(--text-muted)">002371</td>
+          <td><span class="tag long">🏛 长线</span></td>
+          <td>150</td><td>816.00</td>
+          <td>¥122,400</td><td style="color:var(--red)">26.7%</td>
+          <td class="down">-2.98%</td><td class="up">+0.42%</td>
+          <td class="up">+30.30%</td><td class="up">+78.04%</td><td>1.24</td>
+        </tr>
+        <tr>
+          <td>中国核电</td><td style="color:var(--text-muted)">601985</td>
+          <td><span class="tag long">🏛 长线</span></td>
+          <td>5,000</td><td>8.86</td>
+          <td>¥44,300</td><td style="color:var(--gold)">9.6%</td>
+          <td class="up">+0.57%</td><td class="down">-0.78%</td>
+          <td class="down">-4.22%</td><td class="up">+0.57%</td><td>0.76</td>
+        </tr>
+        <tr>
+          <td>立讯精密</td><td style="color:var(--text-muted)">002475</td>
+          <td><span class="tag long">🏛 长线</span></td>
+          <td>1,800</td><td>64.44</td>
+          <td>¥115,992</td><td style="color:var(--red)">25.3%</td>
+          <td class="up">+5.81%</td><td class="down">-5.24%</td>
+          <td class="down">-13.61%</td><td class="up">+32.05%</td><td>0.83</td>
+        </tr>
+        <tr>
+          <td>特变电工</td><td style="color:var(--text-muted)">600089</td>
+          <td><span class="tag watch">❌ 观察</span></td>
+          <td>3,000</td><td>22.01</td>
+          <td>¥66,030</td><td style="color:var(--gold)">14.4%</td>
+          <td class="up">+0.82%</td><td class="down">-1.96%</td>
+          <td class="down">-14.19%</td><td class="down">-13.69%</td><td>0.71</td>
+        </tr>
+        <tr>
+          <td>捷佳伟创</td><td style="color:var(--text-muted)">300724</td>
+          <td><span class="tag long">🏛 长线</span></td>
+          <td>2,000</td><td>71.11</td>
+          <td>¥142,220</td><td style="color:var(--red)">31.0%</td>
+          <td class="up">+1.40%</td><td class="up">+6.52%</td>
+          <td class="down">-5.42%</td><td class="down">-30.44%</td><td>0.89</td>
+        </tr>
+        <tr>
+          <td>深科技</td><td style="color:var(--text-muted)">000021</td>
+          <td><span class="tag band">🏆 波段</span></td>
+          <td>1,000</td><td>55.91</td>
+          <td>¥55,910</td><td style="color:var(--gold)">12.2%</td>
+          <td class="down">-0.21%</td><td class="up">+4.49%</td>
+          <td class="up">+41.69%</td><td class="up">+123.10%</td><td>0.96</td>
+        </tr>
+        <tr>
+          <td>光伏ETF</td><td style="color:var(--text-muted)">512580</td>
+          <td><span class="tag neutral-tag">⚪ ETF</span></td>
+          <td>10,000</td><td>1.295</td>
+          <td>¥12,950</td><td style="color:var(--text-muted)">2.8%</td>
+          <td class="down">-0.08%</td><td class="down">-0.46%</td>
+          <td class="down">-6.02%</td><td class="up">+1.89%</td><td>0.74</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;padding:10px 14px;background:var(--bg-secondary);border-radius:6px;font-size:11px;color:var(--text-muted);">
+      ⚠️ 股数为7/2减仓后估算值。捷佳伟创占比31%为最大单仓（长线），北方华创26.7%次之。
+      建议单仓不超过30%，捷佳伟创略超上限但属于长线持有可接受。
+      总持仓市值约¥559,802（含ETF），现金约¥115,000，总资产约¥674,802。
+    </div>
+  </div>
+
+  <!-- ===== 多周期表现对比 ===== -->
+  <div class="card full-row">
+    <div class="card-header">
+      <div class="card-title">持仓多周期表现对比</div>
+      <span class="card-badge">5日 / 20日 / 60日</span>
+    </div>
+    <div class="chart-wrap chart-bar">
+      <canvas id="perfChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ===== 风险敞口 ===== -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">风险敞口评估</div>
+      <span class="card-badge">5项指标</span>
+    </div>
+    <div class="risk-grid">
+      <div class="risk-item">
+        <div class="risk-label">集中度风险</div>
+        <div class="risk-value" style="color:var(--gold);">中等</div>
+        <div class="risk-bar-wrapper"><div class="risk-bar" style="width:55%;background:var(--gold);"></div></div>
+        <div class="risk-desc">捷佳伟创31% + 北方华创26.7% = 前2仓占57.7%</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-label">行业分散度</div>
+        <div class="risk-value" style="color:var(--green);">良好</div>
+        <div class="risk-bar-wrapper"><div class="risk-bar" style="width:75%;background:var(--green);"></div></div>
+        <div class="risk-desc">覆盖半导体/光伏/核电/电力/电子/ETF 6个方向</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-label">现金覆盖率</div>
+        <div class="risk-value" style="color:var(--green);">充足</div>
+        <div class="risk-bar-wrapper"><div class="risk-bar" style="width:45%;background:var(--green);"></div></div>
+        <div class="risk-desc">现金占比45%，进退有余</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-label">回撤风险</div>
+        <div class="risk-value" style="color:var(--red);">偏高</div>
+        <div class="risk-bar-wrapper"><div class="risk-bar" style="width:65%;background:var(--red);"></div></div>
+        <div class="risk-desc">深科技60日+123%、北方华创+78%，高位回撤风险大</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-label">风格偏移</div>
+        <div class="risk-value" style="color:var(--gold);">均衡</div>
+        <div class="risk-bar-wrapper"><div class="risk-bar" style="width:50%;background:var(--gold);"></div></div>
+        <div class="risk-desc">长线4只+波段1只+观察1只+ETF1只</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-label">Beta暴露</div>
+        <div class="risk-value" style="color:var(--gold);">中高</div>
+        <div class="risk-bar-wrapper"><div class="risk-bar" style="width:60%;background:var(--gold);"></div></div>
+        <div class="risk-desc">半导体/光伏/电子占比较高，与科技板块相关性大</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 行业暴露雷达 ===== -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">行业暴露雷达</div>
+      <span class="card-badge">6方向</span>
+    </div>
+    <div class="chart-wrap chart-radar">
+      <canvas id="radarChart"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="dashboard-footer">
+  <span>数据来源：腾讯自选股 · westock-data</span>
+  <span>|</span>
+  <span>更新时间：2026-07-03 15:00 CST</span>
+  <span>|</span>
+  <span>股数为7/2减仓后估算值，请以实际交割单为准</span>
+  <span>|</span>
+  <span><a href="https://wushu-wuxing.github.io/compute-infrastructure-insights/" style="color:var(--text-muted);text-decoration:none;">wushu-wuxing.github.io</a></span>
+</footer>
+
+<script>
+// ========== CLOCK ==========
+function updateClock() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  document.getElementById('clock').textContent =
+    `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} CST`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ========== HOLDINGS DATA ==========
+const holdings = [
+  { name: '北方华创', shares: 150, price: 816.00, todayPct: -2.98, chg5d: 0.42, chg20d: 30.30, chg60d: 78.04, color: '#a855f7' },
+  { name: '捷佳伟创', shares: 2000, price: 71.11, todayPct: 1.40, chg5d: 6.52, chg20d: -5.42, chg60d: -30.44, color: '#3b82f6' },
+  { name: '立讯精密', shares: 1800, price: 64.44, todayPct: 5.81, chg5d: -5.24, chg20d: -13.61, chg60d: 32.05, color: '#06b6d4' },
+  { name: '特变电工', shares: 3000, price: 22.01, todayPct: 0.82, chg5d: -1.96, chg20d: -14.19, chg60d: -13.69, color: '#f59e0b' },
+  { name: '深科技', shares: 1000, price: 55.91, todayPct: -0.21, chg5d: 4.49, chg20d: 41.69, chg60d: 123.10, color: '#ef4444' },
+  { name: '中国核电', shares: 5000, price: 8.86, todayPct: 0.57, chg5d: -0.78, chg20d: -4.22, chg60d: 0.57, color: '#22c55e' },
+  { name: '光伏ETF', shares: 10000, price: 1.295, todayPct: -0.08, chg5d: -0.46, chg20d: -6.02, chg60d: 1.89, color: '#666688' },
+];
+
+holdings.forEach(h => { h.value = h.shares * h.price; });
+const totalValue = holdings.reduce((s, h) => s + h.value, 0);
+
+// ========== PIE CHART ==========
+(function() {
+  const ctx = document.getElementById('pieChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: holdings.map(h => h.name),
+      datasets: [{
+        data: holdings.map(h => h.value),
+        backgroundColor: holdings.map(h => h.color),
+        borderColor: '#191935',
+        borderWidth: 2,
+        hoverOffset: 8,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: {
+            color: '#e8e8f0',
+            font: { size: 11 },
+            padding: 10,
+            usePointStyle: true,
+            pointStyleWidth: 8,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#191935',
+          titleColor: '#e8e8f0',
+          bodyColor: '#e8e8f0',
+          borderColor: '#2a2a4a',
+          borderWidth: 1,
+          callbacks: {
+            label: ctx => {
+              const pct = (ctx.raw / totalValue * 100).toFixed(1);
+              return `${ctx.label}: ¥${ctx.raw.toLocaleString()} (${pct}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+})();
+
+// ========== CONTRIBUTION LIST ==========
+(function() {
+  const container = document.getElementById('contribList');
+  // 计算今日盈亏贡献（市值 × 今日涨幅）
+  const contribs = holdings.map(h => ({
+    name: h.name,
+    pnl: h.value * h.todayPct / 100,
+    pct: h.todayPct,
+  }));
+  const maxAbs = Math.max(...contribs.map(c => Math.abs(c.pnl)));
+
+  contribs.sort((a, b) => b.pnl - a.pnl).forEach(c => {
+    const isPositive = c.pnl >= 0;
+    const width = Math.abs(c.pnl) / maxAbs * 50;
+    const item = document.createElement('div');
+    item.className = 'contrib-item';
+    item.innerHTML = `
+      <div class="contrib-name">${c.name}</div>
+      <div class="contrib-bar-wrapper">
+        <div class="contrib-bar-bg"></div>
+        <div class="contrib-center"></div>
+        <div class="contrib-bar ${isPositive ? 'positive' : 'negative'}" style="width: ${width}%;"></div>
+      </div>
+      <div class="contrib-value ${isPositive ? 'up' : 'down'}">${isPositive ? '+' : ''}¥${Math.abs(c.pnl).toFixed(0)}</div>
+    `;
+    container.appendChild(item);
+  });
+})();
+
+// ========== PERFORMANCE BAR CHART ==========
+(function() {
+  const ctx = document.getElementById('perfChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: holdings.map(h => h.name),
+      datasets: [
+        {
+          label: '5日',
+          data: holdings.map(h => h.chg5d),
+          backgroundColor: 'rgba(59,130,246,0.6)',
+          borderColor: 'rgba(59,130,246,0.9)',
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+        {
+          label: '20日',
+          data: holdings.map(h => h.chg20d),
+          backgroundColor: 'rgba(168,85,247,0.6)',
+          borderColor: 'rgba(168,85,247,0.9)',
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+        {
+          label: '60日',
+          data: holdings.map(h => h.chg60d),
+          backgroundColor: 'rgba(245,158,11,0.6)',
+          borderColor: 'rgba(245,158,11,0.9)',
+          borderWidth: 1,
+          borderRadius: 3,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { color: '#9999bb', font: { size: 11 }, usePointStyle: true, pointStyleWidth: 8, padding: 16 }
+        },
+        tooltip: {
+          backgroundColor: '#191935', titleColor: '#e8e8f0', bodyColor: '#e8e8f0',
+          borderColor: '#2a2a4a', borderWidth: 1,
+          callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw > 0 ? '+' : ''}${ctx.raw.toFixed(2)}%` }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#e8e8f0', font: { size: 11 } } },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          ticks: { color: '#9999bb', font: { size: 10 }, callback: v => v + '%' }
+        }
+      }
+    }
+  });
+})();
+
+// ========== RADAR CHART ==========
+(function() {
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  // 行业暴露：按市值占比计算
+  const sectors = {
+    '半导体设备': holdings[0].value, // 北方华创
+    '光伏设备': holdings[1].value + holdings[6].value, // 捷佳伟创 + 光伏ETF
+    '消费电子': holdings[2].value, // 立讯精密
+    '电力设备': holdings[3].value, // 特变电工
+    '半导体封测': holdings[4].value, // 深科技
+    '公用事业': holdings[5].value, // 中国核电
+  };
+  const maxVal = Math.max(...Object.values(sectors));
+  const radarData = Object.values(sectors).map(v => v / maxVal * 100);
+
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: Object.keys(sectors),
+      datasets: [{
+        label: '行业暴露',
+        data: radarData,
+        backgroundColor: 'rgba(245,158,11,0.15)',
+        borderColor: 'rgba(245,158,11,0.7)',
+        borderWidth: 2,
+        pointBackgroundColor: '#f59e0b',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#f59e0b',
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#191935', titleColor: '#e8e8f0', bodyColor: '#e8e8f0',
+          borderColor: '#2a2a4a', borderWidth: 1,
+          callbacks: {
+            label: ctx => {
+              const key = Object.keys(sectors)[ctx.dataIndex];
+              const val = Object.values(sectors)[ctx.dataIndex];
+              const pct = (val / totalValue * 100).toFixed(1);
+              return `${key}: ¥${val.toLocaleString()} (${pct}%)`;
+            }
+          }
+        }
+      },
+      scales: {
+        r: {
+          angleLines: { color: 'rgba(255,255,255,0.08)' },
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          pointLabels: { color: '#e8e8f0', font: { size: 11 } },
+          ticks: { display: false, max: 100, min: 0, stepSize: 25 },
+          suggestedMin: 0,
+          suggestedMax: 100,
+        }
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

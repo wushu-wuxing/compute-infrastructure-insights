@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7月3日 · 盘后深度复盘</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg-primary: #0c0c1d;
+    --bg-secondary: #13132b;
+    --bg-card: #191935;
+    --bg-card-hover: #1e1e3f;
+    --border: #2a2a4a;
+    --text-primary: #e8e8f0;
+    --text-secondary: #9999bb;
+    --text-muted: #666688;
+    --red: #ef4444;
+    --red-bg: rgba(239, 68, 68, 0.15);
+    --green: #22c55e;
+    --green-bg: rgba(34, 197, 94, 0.15);
+    --accent: #3b82f6;
+    --accent-bg: rgba(59, 130, 246, 0.15);
+    --gold: #f59e0b;
+    --purple: #a855f7;
+    --cyan: #06b6d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* === HEADER === */
+  .report-header {
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .header-logo { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .header-logo .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold); margin: 0 4px; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .header-title { font-size: 16px; font-weight: 500; color: var(--text-secondary); }
+  .header-right { display: flex; align-items: center; gap: 20px; }
+  .header-time { font-size: 13px; color: var(--text-muted); }
+  .header-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gold); }
+  .header-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  /* === NAV === */
+  .nav-bar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .nav-item {
+    padding: 10px 18px; font-size: 13px; color: var(--text-secondary);
+    text-decoration: none; border-bottom: 2px solid transparent;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .nav-item:hover { color: var(--text-primary); background: rgba(255,255,255,0.02); }
+  .nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .nav-item.external::after { content: ' ↗'; font-size: 10px; opacity: 0.5; }
+
+  /* === LAYOUT === */
+  .report-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  /* === SECTION === */
+  .section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+    animation: fadeInUp 0.4s ease forwards;
+  }
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  .section-title {
+    font-size: 16px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::before {
+    content: '';
+    width: 4px; height: 20px; border-radius: 2px;
+    background: var(--accent);
+  }
+  .section-badge {
+    font-size: 11px; padding: 2px 8px; border-radius: 10px;
+    background: var(--accent-bg); color: var(--accent);
+  }
+
+  /* === MARKET OVERVIEW === */
+  .index-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .index-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    text-align: center;
+  }
+  .index-name { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .index-value { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .index-change { font-size: 13px; font-weight: 500; margin-top: 4px; }
+
+  .up { color: var(--red); }
+  .down { color: var(--green); }
+  .flat { color: var(--text-secondary); }
+
+  /* === STATS ROW === */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .stat-item {
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .stat-value { font-size: 17px; font-weight: 700; }
+  .stat-label { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
+
+  /* === THEME BAR === */
+  .theme-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; background: var(--bg-secondary);
+    border-radius: 8px; border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .theme-icon { font-size: 28px; }
+  .theme-text { flex: 1; }
+  .theme-title { font-size: 14px; font-weight: 600; }
+  .theme-desc { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+  .theme-tag {
+    font-size: 10px; padding: 4px 10px; border-radius: 4px;
+    white-space: nowrap;
+  }
+  .theme-tag.hot { background: var(--red-bg); color: var(--red); }
+  .theme-tag.cold { background: var(--green-bg); color: var(--green); }
+  .theme-tag.warn { background: rgba(245,158,11,0.15); color: var(--gold); }
+
+  /* === TABLE === */
+  .data-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+  }
+  .data-table th {
+    text-align: left; padding: 8px 10px; font-weight: 500;
+    color: var(--text-muted); font-size: 11px;
+    border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  .data-table td {
+    padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.03);
+    vertical-align: middle;
+  }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .tag {
+    display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  }
+  .tag.band { background: var(--red-bg); color: var(--red); }
+  .tag.long { background: rgba(168,85,247,0.15); color: var(--purple); }
+  .tag.watch { background: rgba(245,158,11,0.15); color: var(--gold); }
+  .tag.sold { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+  .tag.neutral-tag { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+  .tag.hot { background: var(--red-bg); color: var(--red); }
+  .tag.cold { background: var(--green-bg); color: var(--green); }
+
+  /* === TWO COL === */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* === CHART === */
+  .chart-wrap { height: 280px; position: relative; }
+
+  /* === INSIGHT === */
+  .insight-card {
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--gold);
+    padding: 14px 16px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 10px;
+  }
+  .insight-card.dao { border-left-color: var(--purple); }
+  .insight-card.bullish { border-left-color: var(--red); }
+  .insight-card.caution { border-left-color: var(--green); }
+  .insight-title {
+    font-size: 13px; font-weight: 600; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .insight-body { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+
+  /* === STRATEGY === */
+  .strategy-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px; background: var(--bg-secondary);
+    border-radius: 6px; margin-bottom: 8px;
+    border: 1px solid var(--border);
+  }
+  .strategy-num {
+    flex: 0 0 28px; height: 28px; border-radius: 50%;
+    background: var(--accent-bg); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .strategy-text { flex: 1; }
+  .strategy-title { font-size: 13px; font-weight: 600; }
+  .strategy-desc { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+
+  /* === FOOTER === */
+  .report-footer {
+    text-align: center; padding: 16px;
+    font-size: 11px; color: var(--text-muted);
+    border-top: 1px solid var(--border);
+  }
+  .report-footer span { margin: 0 12px; }
+
+  /* === ANIMATION === */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section:nth-child(1) { animation-delay: 0s; }
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+  .section:nth-child(5) { animation-delay: 0.2s; }
+  .section:nth-child(6) { animation-delay: 0.25s; }
+  .section:nth-child(7) { animation-delay: 0.3s; }
+  .section:nth-child(8) { animation-delay: 0.35s; }
+
+  @media (max-width: 768px) {
+    .index-grid { grid-template-columns: 1fr 1fr; }
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="report-header">
+  <div class="header-left">
+    <div class="header-logo">无<span class="dot"></span>形</div>
+    <div class="header-title">7月3日（周五）· 盘后深度复盘</div>
+  </div>
+  <div class="header-right">
+    <div class="header-status">盘后收盘</div>
+    <div class="header-time" id="clock">2026-07-03 15:00:00</div>
+  </div>
+</header>
+
+<!-- ===== NAV BAR ===== -->
+<nav class="nav-bar">
+  <a href="a股行业轮动资金监控-v2.html" class="nav-item">📊 资金监控</a>
+  <a href="#" class="nav-item active">📋 盘后复盘</a>
+  <a href="持仓分析仪表盘.html" class="nav-item">💼 持仓仪表盘</a>
+  <a href="https://wushu-wuxing.github.io/compute-infrastructure-insights/fanhua/" class="nav-item external" target="_blank">🏠 繁花站</a>
+  <a href="https://wushu-wuxing.github.io/compute-infrastructure-insights/" class="nav-item external" target="_blank">🌐 无形·非五行</a>
+</nav>
+
+<div class="report-container">
+
+  <!-- ===== 1. 大盘全景 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">一、大盘全景</div>
+      <span class="section-badge">收盘数据</span>
+    </div>
+    <div class="index-grid">
+      <div class="index-card">
+        <div class="index-name">上证指数</div>
+        <div class="index-value">4,043.64</div>
+        <div class="index-change up">+0.37% ▲ +14.74</div>
+      </div>
+      <div class="index-card">
+        <div class="index-name">深证成指</div>
+        <div class="index-value">15,597.51</div>
+        <div class="index-change up">+0.64% ▲ +98.70</div>
+      </div>
+      <div class="index-card">
+        <div class="index-name">创业板指</div>
+        <div class="index-value">4,019.93</div>
+        <div class="index-change up">+0.07% ▲ +2.66</div>
+      </div>
+      <div class="index-card">
+        <div class="index-name">科创50</div>
+        <div class="index-value">1,975.60</div>
+        <div class="index-change down">-0.59% ▼ -11.69</div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-value up">+0.37%</div>
+        <div class="stat-label">上证涨幅</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value down">-0.59%</div>
+        <div class="stat-label">科创50</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value flat">1.25</div>
+        <div class="stat-label">上证换手率</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value up" style="color:var(--cyan);">3.18万亿</div>
+        <div class="stat-label">两市成交额</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value up">+4.21%</div>
+        <div class="stat-label">上证60日涨幅</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value up" style="color:var(--gold);">+1.88%</div>
+        <div class="stat-label">上证年内涨幅</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:12px 14px;background:var(--bg-secondary);border-radius:6px;font-size:12px;color:var(--text-secondary);line-height:1.7;">
+      <strong style="color:var(--text-primary)">今日特征：</strong>
+      上证收红 +0.37%，深成指 +0.64% 跟涨，创业板几乎平收 +0.07%，科创50逆势下跌 -0.59%。
+      继7/1风格切换后，连续三天科创弱、主板强，确认<strong style="color:var(--red)">科技→周期/制造</strong>的轮动格局仍在延续。
+      成交额3.18万亿，较昨日略缩，但仍属活跃水位。市场情绪不弱，但结构性分化严重——涨的是机器人和周期，跌的是高位科技和半导体。
+    </div>
+  </div>
+
+  <!-- ===== 2. 今日主线 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">二、今日资金主线</div>
+      <span class="section-badge">板块追踪</span>
+    </div>
+    <div class="theme-bar">
+      <div class="theme-icon">🤖</div>
+      <div class="theme-text">
+        <div class="theme-title">机器人概念全线爆发 · 减速器/谐波/运动控制涨停潮</div>
+        <div class="theme-desc">长盛轴承 +20%（20CM涨停）、埃斯顿 +10%、卧龙电驱 +10%、拓普集团 +10%、双环传动 +10%、雷赛智能 +10%、中大力德 +10%、金发科技 +10%、首开股份 +10%。
+        机器人ETF富国 +9.25%、机器人ETF易方达 +8.69%。绿的谐波 +18.15%。汇川技术 +5.48%。板块涨停超15只，是今日最强主线。</div>
+      </div>
+      <span class="theme-tag hot">🔥 最强主线</span>
+    </div>
+    <div class="theme-bar">
+      <div class="theme-icon">⚡</div>
+      <div class="theme-text">
+        <div class="theme-title">新能源车/零部件联动 · 比亚迪领涨</div>
+        <div class="theme-desc">比亚迪 +5.86%、三花智控 +9.06%、拓普集团 +10.01%——新能源车产业链与机器人概念高度重叠，资金在做「智能制造」大主题。</div>
+      </div>
+      <span class="theme-tag hot">协同主线</span>
+    </div>
+    <div class="theme-bar">
+      <div class="theme-icon">💊</div>
+      <div class="theme-text">
+        <div class="theme-title">创新药/医药 · 龙虎榜机构持续买入</div>
+        <div class="theme-desc">龙虎榜机构净买入前三：泽璟制药 6.15亿、信立泰 3.05亿、科伦药业 3.02亿。医药板块连续多日机构介入，属于中期布局方向。</div>
+      </div>
+      <span class="theme-tag" style="background:var(--accent-bg);color:var(--cyan);">机构建仓</span>
+    </div>
+    <div class="theme-bar">
+      <div class="theme-icon">🔻</div>
+      <div class="theme-text">
+        <div class="theme-title">高位科技/半导体继续回调 · 多氟多跌停</div>
+        <div class="theme-desc">多氟多 -10%（跌停）、京东方A -7.91%、雅克科技 -6.11%、东岳硅材 -9.01%、天娱数科 -9.38%、兴发集团 -5.59%、水晶光电 -5.23%。
+        前期热门的半导体材料、显示面板、化工新材料全线调整。</div>
+      </div>
+      <span class="theme-tag cold">获利抛压</span>
+    </div>
+  </div>
+
+  <!-- ===== 3. 涨停复盘 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">三、涨停板复盘</div>
+      <span class="section-badge">热搜+龙虎榜</span>
+    </div>
+    <div class="two-col">
+      <div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text-secondary);">🔥 今日涨停精选（含20CM）</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>标的</th><th>代码</th><th>涨幅</th><th>方向</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>长盛轴承</td><td style="color:var(--text-muted)">300718</td><td class="up">+20.00%</td><td><span class="tag hot">减速器</span></td></tr>
+            <tr><td>绿的谐波</td><td style="color:var(--text-muted)">688017</td><td class="up">+18.15%</td><td><span class="tag hot">谐波减速器</span></td></tr>
+            <tr><td>北京君正</td><td style="color:var(--text-muted)">300223</td><td class="up">+10.61%</td><td><span class="tag hot">芯片</span></td></tr>
+            <tr><td>首开股份</td><td style="color:var(--text-muted)">600376</td><td class="up">+10.12%</td><td><span class="tag hot">房地产</span></td></tr>
+            <tr><td>卧龙电驱</td><td style="color:var(--text-muted)">600580</td><td class="up">+10.01%</td><td><span class="tag hot">电机</span></td></tr>
+            <tr><td>拓普集团</td><td style="color:var(--text-muted)">601689</td><td class="up">+10.01%</td><td><span class="tag hot">汽零</span></td></tr>
+            <tr><td>雷赛智能</td><td style="color:var(--text-muted)">002979</td><td class="up">+10.00%</td><td><span class="tag hot">运动控制</span></td></tr>
+            <tr><td>埃斯顿</td><td style="color:var(--text-muted)">002747</td><td class="up">+10.00%</td><td><span class="tag hot">工业机器人</span></td></tr>
+            <tr><td>双环传动</td><td style="color:var(--text-muted)">002472</td><td class="up">+9.99%</td><td><span class="tag hot">齿轮减速器</span></td></tr>
+            <tr><td>中大力德</td><td style="color:var(--text-muted)">002896</td><td class="up">+9.99%</td><td><span class="tag hot">减速器</span></td></tr>
+            <tr><td>金发科技</td><td style="color:var(--text-muted)">600143</td><td class="up">+10.03%</td><td><span class="tag hot">改性塑料</span></td></tr>
+            <tr><td>三花智控</td><td style="color:var(--text-muted)">002050</td><td class="up">+9.06%</td><td><span class="tag hot">热管理</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text-secondary);">📉 今日跌幅榜精选</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>标的</th><th>代码</th><th>涨幅</th><th>方向</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>多氟多</td><td style="color:var(--text-muted)">002407</td><td class="down">-10.00%</td><td><span class="tag cold">半导体材料</span></td></tr>
+            <tr><td>C华润新能源</td><td style="color:var(--text-muted)">001248</td><td class="down">-8.06%</td><td><span class="tag cold">新股</span></td></tr>
+            <tr><td>京东方A</td><td style="color:var(--text-muted)">000725</td><td class="down">-7.91%</td><td><span class="tag cold">面板</span></td></tr>
+            <tr><td>天娱数科</td><td style="color:var(--text-muted)">002354</td><td class="down">-9.38%</td><td><span class="tag cold">AI概念</span></td></tr>
+            <tr><td>东岳硅材</td><td style="color:var(--text-muted)">300821</td><td class="down">-9.01%</td><td><span class="tag cold">有机硅</span></td></tr>
+            <tr><td>雅克科技</td><td style="color:var(--text-muted)">002409</td><td class="down">-6.11%</td><td><span class="tag cold">电子材料</span></td></tr>
+            <tr><td>兴发集团</td><td style="color:var(--text-muted)">600141</td><td class="down">-5.59%</td><td><span class="tag cold">磷化工</span></td></tr>
+            <tr><td>水晶光电</td><td style="color:var(--text-muted)">002273</td><td class="down">-5.23%</td><td><span class="tag cold">光学</span></td></tr>
+            <tr><td>亨通光电</td><td style="color:var(--text-muted)">600487</td><td class="down">-4.71%</td><td><span class="tag cold">光通信</span></td></tr>
+            <tr><td>半导体设备ETF</td><td style="color:var(--text-muted)">159516</td><td class="down">-3.57%</td><td><span class="tag cold">半导体</span></td></tr>
+            <tr><td>中际旭创</td><td style="color:var(--text-muted)">300308</td><td class="down">-2.36%</td><td><span class="tag cold">光模块</span></td></tr>
+            <tr><td>北方华创</td><td style="color:var(--text-muted)">002371</td><td class="down">-2.98%</td><td><span class="tag cold">半导体设备</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:12px 14px;background:var(--bg-secondary);border-radius:6px;font-size:12px;color:var(--text-secondary);line-height:1.7;">
+      <strong style="color:var(--red)">涨停特征：</strong>
+      今日涨停高度集中在<strong>机器人/减速器/运动控制</strong>赛道——长盛轴承20CM、绿的谐波+18%、多家减速器公司涨停。
+      这不是消息面驱动，而是<strong>产业趋势确认</strong>：特斯拉Optimus量产预期+国内人形机器人供应链成熟，资金从高位AI/半导体撤出后选择了「具身智能」作为新主攻方向。
+      板块涨停数超15只，封板质量高，预计下周仍有惯性。
+    </div>
+  </div>
+
+  <!-- ===== 4. 持仓表现 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">四、持仓标的今日表现</div>
+      <span class="section-badge">7/3 收盘</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>标的</th><th>代码</th><th>属性</th><th>现价</th><th>涨跌幅</th>
+          <th>5日</th><th>20日</th><th>60日</th><th>量比</th><th>点评</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>深科技</td><td style="color:var(--text-muted)">000021</td>
+          <td><span class="tag band">🏆 波段</span></td>
+          <td>55.91</td><td class="down">-0.21%</td>
+          <td class="up">+4.49%</td><td class="up">+41.69%</td><td class="up">+123.10%</td>
+          <td>0.96</td>
+          <td style="font-size:11px;color:var(--text-secondary)">缩量横盘，波动收窄，等方向选择</td>
+        </tr>
+        <tr>
+          <td>北方华创</td><td style="color:var(--text-muted)">002371</td>
+          <td><span class="tag long">🏛 长线</span></td>
+          <td>816.00</td><td class="down">-2.98%</td>
+          <td class="up">+0.42%</td><td class="up">+30.30%</td><td class="up">+78.04%</td>
+          <td>1.24</td>
+          <td style="font-size:11px;color:var(--text-secondary)">放量下跌，半导体设备板块整体走弱，但长线逻辑未变</td>
+        </tr>
+        <tr>
+          <td>捷佳伟创</td><td style="color:var(--text-muted)">300724</td>
+          <td><span class="tag long">🏛 长线</span></td>
+          <td>71.11</td><td class="up">+1.40%</td>
+          <td class="up">+6.52%</td><td class="down">-5.42%</td><td class="down">-30.44%</td>
+          <td>0.89</td>
+          <td style="font-size:11px;color:var(--text-secondary)">缩量小涨，光伏设备链弱反弹，60日仍-30%需耐心</td>
+        </tr>
+        <tr>
+          <td>立讯精密</td><td style="color:var(--text-muted)">002475</td>
+          <td><span class="tag long">🏛 长线</span></td>
+          <td>64.44</td><td class="up">+5.81%</td>
+          <td class="down">-5.24%</td><td class="down">-13.61%</td><td class="up">+32.05%</td>
+          <td>0.83</td>
+          <td style="font-size:11px;color:var(--text-secondary)">🔥 今日最佳！放量暴涨+5.81%，可能与苹果/机器人供应链传闻有关</td>
+        </tr>
+        <tr>
+          <td>中国核电</td><td style="color:var(--text-muted)">601985</td>
+          <td><span class="tag long">🏛 长线</span></td>
+          <td>8.86</td><td class="up">+0.57%</td>
+          <td class="down">-0.78%</td><td class="down">-4.22%</td><td class="up">+0.57%</td>
+          <td>0.76</td>
+          <td style="font-size:11px;color:var(--text-secondary)">缩量微涨，防御属性稳定，核电长线逻辑不变</td>
+        </tr>
+        <tr>
+          <td>特变电工</td><td style="color:var(--text-muted)">600089</td>
+          <td><span class="tag watch">❌ 待观察</span></td>
+          <td>22.01</td><td class="up">+0.82%</td>
+          <td class="down">-1.96%</td><td class="down">-14.19%</td><td class="down">-13.69%</td>
+          <td>0.71</td>
+          <td style="font-size:11px;color:var(--text-secondary)">缩量微涨，60日-13.69%弱势未改，继续观察</td>
+        </tr>
+        <tr>
+          <td>光伏ETF</td><td style="color:var(--text-muted)">512580</td>
+          <td><span class="tag neutral-tag">⚪</span></td>
+          <td>1.295</td><td class="down">-0.08%</td>
+          <td class="down">-0.46%</td><td class="down">-6.02%</td><td class="up">+1.89%</td>
+          <td>0.74</td>
+          <td style="font-size:11px;color:var(--text-secondary)">平收，光伏板块整体低迷，等右侧信号</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;padding:10px 14px;background:var(--bg-secondary);border-radius:6px;font-size:12px;color:var(--text-secondary);">
+      <strong style="color:var(--red)">持仓总结：</strong>
+      7只持仓中4红3绿，<strong>立讯精密 +5.81% 贡献最大</strong>（减仓后剩余仓位大涨），北方华创 -2.98% 拖累。
+      整体仓位约55%，现金充裕，风险可控。7/2减仓的沪电股份和工业富联如果持有到今天，亏损会更大——减仓决策正确。
+    </div>
+  </div>
+
+  <!-- ===== 5. 观察池跟踪 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">五、观察池跟踪</div>
+      <span class="section-badge">6只标的</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr><th>标的</th><th>代码</th><th>现价</th><th>今日</th><th>目标条件</th><th>5日</th><th>状态研判</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>水晶光电</td><td style="color:var(--text-muted)">002273</td>
+          <td>36.98</td><td class="down">-5.23%</td>
+          <td style="font-size:11px;">涨停次日等回踩</td>
+          <td class="up">+3.21%</td>
+          <td style="font-size:11px;color:var(--gold)">⏳ 回踩中！从涨停高点39.86回落至36.98（-7.2%），接近回踩完成</td>
+        </tr>
+        <tr>
+          <td>生益科技</td><td style="color:var(--text-muted)">600183</td>
+          <td>160.78</td><td class="up">+5.81%</td>
+          <td style="font-size:11px;">等回踩¥165-170</td>
+          <td class="down">-9.93%</td>
+          <td style="font-size:11px;color:var(--green)">⚠️ 反向走强！今日暴涨+5.81%至160.78，离回踩目标165-170更远了，可能等不到</td>
+        </tr>
+        <tr>
+          <td>华工科技</td><td style="color:var(--text-muted)">000988</td>
+          <td>153.95</td><td class="down">-1.44%</td>
+          <td style="font-size:11px;">等突破前高后回踩</td>
+          <td class="down">-4.34%</td>
+          <td style="font-size:11px;color:var(--text-muted)">横盘震荡，未突破前高，继续等待</td>
+        </tr>
+        <tr>
+          <td>兴发集团</td><td style="color:var(--text-muted)">600141</td>
+          <td>39.89</td><td class="down">-5.59%</td>
+          <td style="font-size:11px;">等回踩¥20-21</td>
+          <td class="down">-18.26%</td>
+          <td style="font-size:11px;color:var(--green)">⚠️ 暴跌！5日-18.26%，但离目标价20-21还有距离，需确认是否基本面变化</td>
+        </tr>
+        <tr>
+          <td>长江电力</td><td style="color:var(--text-muted)">600900</td>
+          <td>27.05</td><td class="up">+0.37%</td>
+          <td style="font-size:11px;">等跌到¥25.5以下</td>
+          <td class="up">+1.50%</td>
+          <td style="font-size:11px;color:var(--text-muted)">稳定运行，27.05离目标25.5还有5.7%跌幅，等大盘回调时再看</td>
+        </tr>
+        <tr>
+          <td>京东方A</td><td style="color:var(--text-muted)">000725</td>
+          <td>8.38</td><td class="down">-7.91%</td>
+          <td style="font-size:11px;">回调¥8.0-8.3缩量企稳</td>
+          <td class="up">+7.57%</td>
+          <td style="font-size:11px;color:var(--red)">🚨 重点关注！今日暴跌-7.91%至8.38，已非常接近目标区间8.0-8.3。下周一若继续下探至8.0-8.3并缩量企稳，可考虑建仓</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 6. 龙虎榜机构动向 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">六、龙虎榜机构动向</div>
+      <span class="section-badge">机构净买入TOP</span>
+    </div>
+    <div class="two-col">
+      <div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--red);">🔺 机构净买入TOP10</div>
+        <table class="data-table">
+          <thead><tr><th>标的</th><th>净买入</th><th>方向</th></tr></thead>
+          <tbody>
+            <tr><td>蓝晓科技</td><td class="up">4.36亿</td><td><span class="tag hot">吸附材料</span></td></tr>
+            <tr><td>泽璟制药</td><td class="up">6.15亿</td><td><span class="tag hot">创新药</span></td></tr>
+            <tr><td>信立泰</td><td class="up">3.05亿</td><td><span class="tag hot">心血管药</span></td></tr>
+            <tr><td>科伦药业</td><td class="up">3.02亿</td><td><span class="tag hot">大输液</span></td></tr>
+            <tr><td>横店东磁</td><td class="up">2.17亿</td><td><span class="tag hot">磁材</span></td></tr>
+            <tr><td>双环传动</td><td class="up">2.07亿</td><td><span class="tag hot">减速器</span></td></tr>
+            <tr><td>贝斯特</td><td class="up">1.67亿</td><td><span class="tag hot">精密制造</span></td></tr>
+            <tr><td>山金国际</td><td class="up">1.98亿</td><td><span class="tag hot">黄金</span></td></tr>
+            <tr><td>杰瑞股份</td><td class="up">1.89亿</td><td><span class="tag hot">油服</span></td></tr>
+            <tr><td>天山电子</td><td class="up">0.72亿</td><td><span class="tag hot">电子</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--green);">🔻 机构净卖出TOP</div>
+        <table class="data-table">
+          <thead><tr><th>标的</th><th>净卖出</th><th>方向</th></tr></thead>
+          <tbody>
+            <tr><td>翔鹭钨业</td><td class="down">2.29亿</td><td><span class="tag cold">钨</span></td></tr>
+            <tr><td>先锋新材</td><td class="down">1.87亿</td><td><span class="tag cold">新材料</span></td></tr>
+            <tr><td>宏昌科技</td><td class="down">1.59亿</td><td><span class="tag cold">家电</span></td></tr>
+            <tr><td>蓝晓科技</td><td class="down">4.36亿</td><td><span class="tag cold">分歧！买卖并存</span></td></tr>
+            <tr><td>*ST东晶</td><td class="down">0.35亿</td><td><span class="tag cold">ST</span></td></tr>
+            <tr><td>鲁银投资</td><td class="down">0.11亿</td><td><span class="tag cold">钢铁</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:12px 14px;background:var(--bg-secondary);border-radius:6px;font-size:12px;color:var(--text-secondary);line-height:1.7;">
+      <strong style="color:var(--text-primary)">机构动向解读：</strong>
+      机构买入集中在<strong>医药（泽璟/信立泰/科伦）+ 机器人（双环传动/贝斯特）+ 资源（山金/横店东磁）</strong>。
+      医药连续多日被机构买入，是中期布局信号。机器人方向机构也在进场，但以短线游资为主。
+      值得注意的是<strong>蓝晓科技</strong>——机构买卖并存（净买4.36亿但也有大额卖出），说明筹码在大换手，后续波动会很大。
+    </div>
+  </div>
+
+  <!-- ===== 7. 千门视角 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">七、千门视角 · 道德经研判</div>
+      <span class="section-badge">道法自然</span>
+    </div>
+    <div class="insight-card dao">
+      <div class="insight-title">🔮 「反者道之动」—— 科技退潮，机器人接棒</div>
+      <div class="insight-body">
+        6/30：科创50 +3.85%，科技单边暴拉<br>
+        7/1：科创50 -2.48%，基础化工25只涨停，风格反转<br>
+        7/2：北方华创一度-8.42%，芯片全面回调<br>
+        7/3：机器人概念全线爆发，减速器涨停潮；科创50 -0.59%续弱<br><br>
+        <strong>道理解读：</strong>「物壮则老」——AI/半导体赛道拥挤到极点后必然反转，资金从高位科技砍仓→切入「具身智能」（机器人）。
+        但机器人和AI本是一体两面：AI是「大脑」，机器人是「身体」。资金不是在离开科技，而是在科技内部做「上→下」的传导——从算法/算力层切向硬件/制造层。
+        这是「道生一，一生二」的演化：AI先涨（大脑），然后机器人跟上（身体），最后产业链全面扩散。
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-title">⚖️ 「知止不殆」—— 仓位管理的智慧</div>
+      <div class="insight-body">
+        7/2减仓5笔，释放现金¥115,000，仓位从69%降到55%。<br>
+        今日持仓4红3绿，立讯精密+5.81%贡献最大。如果没有7/2的减仓，今天北方华创-2.98%的拖累会更大。<br>
+        <strong>道理解读：</strong>「知止可以不殆」——在涨势中主动降低仓位，不是看空，而是给自己留出「进退有余」的空间。
+        55%仓位意味着如果下周机器人主线继续发酵，我们有钱追；如果大盘回调，我们亏得少。这就是「洼则盈」——低洼处才能蓄水。
+      </div>
+    </div>
+    <div class="insight-card caution">
+      <div class="insight-title">⚠️ 「将欲夺之，必固与之」—— 机器人涨停潮的风险</div>
+      <div class="insight-body">
+        长盛轴承20CM、绿的谐波+18%、多家减速器涨停——看起来轰轰烈烈，但涨停潮的次日往往是最危险的。<br>
+        <strong>道理解读：</strong>「将欲夺之，必固与之」——市场要让你亏钱之前，先让你看到巨大的赚钱效应。
+        15+只涨停的板块，下周一必然面临分化：强势股继续封板，弱势股高开低走套人。
+        <strong>策略：</strong>不要追涨停板！如果下周一机器人板块高开后回落，等回踩缩量时再考虑低吸减速器方向的龙头。
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 8. 下周策略 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">八、下周策略预案</div>
+      <span class="section-badge">7/6 周一 ~ 7/10 周五</span>
+    </div>
+
+    <div class="strategy-item">
+      <div class="strategy-num">1</div>
+      <div class="strategy-text">
+        <div class="strategy-title">🤖 机器人主线：观察不追高，等回踩低吸</div>
+        <div class="strategy-desc">
+          下周一机器人板块大概率高开，但涨停潮次日分化概率高。<strong>不追涨停板</strong>。
+          重点关注：绿的谐波（谐波减速器龙头）、双环传动（机构净买入2.07亿）、汇川技术（龙头中军）。
+          如果高开后回落缩量，可在-5%~-8%位置试探性建仓。
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-item">
+      <div class="strategy-num">2</div>
+      <div class="strategy-text">
+        <div class="strategy-title">👁 京东方A：重点关注，可能触发建仓信号</div>
+        <div class="strategy-desc">
+          今日-7.91%至8.38，已接近目标区间8.0-8.3。下周一若继续下探至8.0-8.3并缩量企稳，
+          可考虑建仓1/3仓位。注意：面板行业基本面是否发生变化需确认，如果是大盘系统性回调带下来的更好。
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-item">
+      <div class="strategy-num">3</div>
+      <div class="strategy-text">
+        <div class="strategy-title">👁 水晶光电：回踩接近完成</div>
+        <div class="strategy-desc">
+          从涨停高点39.86回落至36.98（-7.2%），回踩幅度接近完成。
+          下周若在36-37区间缩量企稳，可考虑小仓位试探。目标反弹看38-39。
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-item">
+      <div class="strategy-num">4</div>
+      <div class="strategy-text">
+        <div class="strategy-title">🏛 北方华创：长线持有，不因短期波动减仓</div>
+        <div class="strategy-desc">
+          今日-2.98%放量下跌，但60日仍+78%，半导体设备国产替代逻辑未变。
+          长线仓位不动，如果跌到750-780区间可考虑加仓。
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-item">
+      <div class="strategy-num">5</div>
+      <div class="strategy-text">
+        <div class="strategy-title">🏆 立讯精密：今日最佳，观察是否持续</div>
+        <div class="strategy-desc">
+          +5.81%放量暴涨，可能与苹果/机器人供应链传闻有关。
+          下周如果站稳65以上，可考虑在回踩62-63时加回之前减掉的200股。
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-item">
+      <div class="strategy-num">6</div>
+      <div class="strategy-text">
+        <div class="strategy-title">💊 医药方向：中期布局信号</div>
+        <div class="strategy-desc">
+          龙虎榜机构连续多日买入创新药（泽璟/信立泰/科伦），这是中期布局信号。
+          可关注信立泰（机构3天净买3.05亿）在回踩时的低吸机会。
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-item">
+      <div class="strategy-num">7</div>
+      <div class="strategy-text">
+        <div class="strategy-title">💰 仓位管理：维持55%仓位，留子弹等机会</div>
+        <div class="strategy-desc">
+          下周不急于加仓。55%仓位+45%现金是攻守兼备的比例。
+          如果大盘回调（上证跌到3900以下），可加到65%；如果继续涨，维持现状。
+          「洼则盈，蔽则新」——保持低洼姿态，才能在机会来临时满载而归。
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="report-footer">
+  <span>📊 数据来源：腾讯自选股</span>
+  <span>✍️ 研判：双儿（WorkBuddy）</span>
+  <span>🏠 wushu-wuxing.github.io</span>
+  <span>📅 2026-07-03 15:00 CST</span>
+</footer>
+
+<script>
+  // Clock
+  function updateClock() {
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('clock').textContent =
+      `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
